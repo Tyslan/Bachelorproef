@@ -1,0 +1,38 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure(2) do |config|
+  (0..3).each do |i|
+  config.vm.define "node-#{i}" do |node|
+
+    # Specify the box
+    node.vm.box = "ubuntu/trusty64"
+
+    # Set ip
+    node.vm.network "private_network", ip: "192.168.33.1#{i}"
+
+    # Set ssh port
+    # node.ssh.port = "3#{i}"
+
+    # Vagrant up message
+    node.vm.post_up_message = "node-#{i} is alive and kicking"
+
+    node.vm.provider "virtualbox" do |vb|
+      # Customize the amount of memory on the VM:
+      vb.memory = "1024"
+
+      #Set Name of vm
+      vb.name = "Cassandra-Multi-Node-#{i}"
+    end
+
+    node.vm.provision "shell", path: "provision/setup.sh"
+
+    node.vm.provision "shell",
+      inline: "echo hello from node #{i}"
+    end
+  end
+end

@@ -1,0 +1,14 @@
+# vagrant
+*/.vagrant/**
+
+#LaTeX
+*.aux
+*.lof
+*.log
+*.lot
+*.out
+*.synctex.gz
+*.toc
+
+#BibTex
+*.bak
