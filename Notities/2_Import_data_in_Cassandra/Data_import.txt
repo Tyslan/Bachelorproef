@@ -1,0 +1,52 @@
+Aanmaken Keyspace
+
+  https://docs.datastax.com/en/cql/3.0/cql/cql_reference/create_keyspace_r.html
+  http://www.tutorialspoint.com/cassandra/cassandra_create_keyspace.htm
+
+  CREATE KEYSPACE TESTDATA
+  WITH replication = {'class':'SimpleStrategy', 'replication_factor':1};
+
+  class = strategie die gebruikt wordt voor de replicatie
+  replication_factor = op hoeveel nodes moet de data voorkomen, voorlopig 1 omdat er met een single node wordt gewerkt.
+
+Aanmaken tabel
+
+  https://docs.datastax.com/en/cql/3.0/cql/cql_reference/create_table_r.html 
+  http://www.tutorialspoint.com/cassandra/cassandra_create_table.htm 
+
+  USE testdata
+
+  CREATE TABLE testtable(
+     id int PRIMARY KEY,
+     age int,
+     lastname text,
+     firstname text
+  );
+  SELECT * FROM testtable
+
+Toevoegen van data aan de tabel
+
+  https://docs.datastax.com/en/cql/3.0/cql/cql_reference/insert_r.html 
+  http://www.planetcassandra.org/insert-select-records/ 
+
+  INSERT INTO testtable (id, age, lastname, firstname) VALUES (1, 23, 'Verschingel', 'Lorenz');
+  INSERT INTO testtable (id, age, lastname, firstname) VALUES (2, 24, 'Evereart', 'Frederic');
+  SELECT * FROM testtable
+
+Import csv
+
+  http://www.datastax.com/dev/blog/simple-data-importing-and-exporting-with-cassandra
+  
+  import van csv met zelfde resultaat als hierboven van de inserts. Comma Seperated fields.
+
+  vb csv:  1, 23, Verschingel, Lorenz
+           2, 24, Evereart, Frederic
+           3, 30, Vansevenant, Thomas
+
+  COPY testtable(id, age, lastname, firstname)
+  FROM ( 'file.csv')
+
+  Opmerking 1: Cassandra sorteert de kolommen alfabetisch. Bij het importeren van csv kan dit problemen geven als de kolomnamen niet worden meegegeven.
+    http://www.planetcassandra.org/blog/we-shall-have-order/
+
+  Opmering 2: Cassandra doet ook soms vreemd bij null waarden, ookal word de optie WHERE NULL = ‘NULL’ meegegeven.

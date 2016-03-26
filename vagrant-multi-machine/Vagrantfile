@@ -1,38 +1,68 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+boxes = [
+  { :name => 'cassandra-master', :ip => '192.168.33.10', :cpus =>2, :memory => 2048 },
+  { :name => 'cassandra-node-1', :ip => '192.168.33.11', :cpus =>2, :memory => 2048 },
+  { :name => 'cassandra-node-2', :ip => '192.168.33.12', :cpus =>2, :memory => 2048 },
+  { :name => 'cassandra-node-3', :ip => '192.168.33.13', :cpus =>2, :memory => 2048 }
+]
+
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure(2) do |config|
-  (0..3).each do |i|
-  config.vm.define "node-#{i}" do |node|
+  boxes.each do |box|
+    config.vm.define box[:name] do |config|
 
-    # Specify the box
-    node.vm.box = "ubuntu/trusty64"
+      # Specify the box
+      config.vm.box = "ubuntu/trusty64"
 
-    # Set ip
-    node.vm.network "private_network", ip: "192.168.33.1#{i}"
+      # Set ip
+      config.vm.network :private_network, ip: box[:ip]
 
-    # Set ssh port
-    # node.ssh.port = "3#{i}"
+      # Manage /etc/hosts on host and VMs
+      config.hostmanager.enabled = false
+      config.hostmanager.manage_host = true
+      config.hostmanager.include_offline = true
+      config.hostmanager.ignore_private_ip = false
 
-    # Vagrant up message
-    node.vm.post_up_message = "node-#{i} is alive and kicking"
+      # Set host name
+      config.vm.hostname = box[:name]
 
-    node.vm.provider "virtualbox" do |vb|
-      # Customize the amount of memory on the VM:
-      vb.memory = "1024"
+      # Vagrant up message
+      config.vm.post_up_message = box[:name] + " is alive and kicking"
 
-      #Set Name of vm
-      vb.name = "Cassandra-Multi-Node-#{i}"
-    end
+      # Virtualbox config
+      config.vm.provider "virtualbox" do |vb|
+        # Customize the amount of memory on the VM:
+        vb.memory = box[:memory]
 
-    node.vm.provision "shell", path: "provision/setup.sh"
+        # Customize the amount of cpus on the VM:
+        vb.cpus = box[:cpus]
 
-    node.vm.provision "shell",
-      inline: "echo hello from node #{i}"
+        #Set Name of vm
+        vb.name = box[:name]
+      end
+
+      #Copy hosts
+      config.vm.provision :shell, :inline => "cp -fv /vagrant/hosts /etc/hosts"
+
+      if (box[:name] == "cassandra-master")
+        # Port forwarding
+        config.vm.network "forwarded_port", guest: 8888, host: 8888
+
+        #config.vm.provision :shell, :inline => $master_script
+        config.vm.provision "shell", path: "provision/setup_dse.sh"
+      else
+        #config.vm.provision :shell, :inline => $slave_script
+        config.vm.provision :shell, :path => "provision/setup_slave.sh"
+      end
+
+      #hostmanager config
+      config.vm.provision :hostmanager
+
     end
   end
 end

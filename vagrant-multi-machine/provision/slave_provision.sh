@@ -1,11 +1,11 @@
 #!/bin/bash
 
-echo "Provisioning virtual machine..."
+echo "Provisioning slave..."
 echo "Adding needed repositories"
 # add repository for java 8
 sudo add-apt-repository ppa:webupd8team/java -y
 # add the repo's source
-echo "deb http://www.apache.org/dist/cassandra/debian 33x main" | sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list
+echo "deb http://www.apache.org/dist/cassandra/debian 30x main" | sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list
 # add three public keys from the Apache Software Foundation associated with the package repositories
 gpg --keyserver pgp.mit.edu --recv-keys F758CE318D77295D
 sudo gpg --export --armor F758CE318D77295D | sudo apt-key add -
@@ -24,6 +24,7 @@ sudo apt-get install -y oracle-java8-installer
 echo "Installing Cassandra"
 sudo apt-get install cassandra -yf
 
-echo "Hello I'm up and running"
-echo "To check if cassandra is running execute the following:"
-echo "sudo service cassandra status"
+sudo service cassandra stop
+
+sed -i 's/seeds: \"\"/seeds: \"192.168.50.100\"/' /etccassandra/cassandra.yaml
+sed -i 's/rpc_address:.*$/rpc_address: 0.0.0.0/' /etc/cassandra/cassandra.yaml

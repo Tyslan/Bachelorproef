@@ -1,0 +1,88 @@
+Bronnen:
+Vagrant:
+https://www.vagrantup.com/docs/getting-started/
+
+provisioning:
+http://www.sitepoint.com/vagrantfile-explained-setting-provisioning-shell/
+
+Java8:
+http://www.webupd8.org/2012/09/install-oracle-java-8-in-ubuntu-via-ppa.html
+
+Cassandra Single node:
+http://wiki.apache.org/cassandra/GettingStarted
+http://wiki.apache.org/cassandra/DebianPackaging
+https://www.digitalocean.com/community/tutorials/how-to-install-cassandra-and-run-a-single-node-cluster-on-ubuntu-14-04
+
+Muli-machine vagrant:
+https://www.vagrantup.com/docs/multi-machine/
+https://www.vagrantup.com/docs/vagrantfile/tips.html
+http://www.thisprogrammingthing.com/2015/multiple-vagrant-vms-in-one-vagrantfile/
+https://maci0.wordpress.com/2013/11/09/dynamic-multi-machine-vagrantfile/
+https://thornelabs.net/2014/11/13/multi-machine-vagrantfile-with-shorter-cleaner-syntax-using-json-and-loops.html
+
+Cassandra Multi node:
+http://docs.datastax.com/en/cassandra/3.x/cassandra/initialize/initSingleDS.html
+https://github.com/bcantoni/vagrant-cassandra/tree/master/2.MultiNode
+http://chathurigunawardhana.blogspot.be/2014/04/configure-multi-node-cluster-setup.html
+http://arturmkrtchyan.com/how-to-setup-multi-node-cassandra-2-cluster
+https://www.digitalocean.com/community/tutorials/how-to-configure-a-multi-node-cluster-with-cassandra-on-a-ubuntu-vps
+http://foorious.com/ikn/devops/cassandra-cluster-trusty-install/
+
+Flow Single Node:
+
+vagrant init ubuntu/trusty64
+
+change vagrantfile and write setup.sh
+
+vagrant up (--provision)
+	--provision to force reload of setup.sh
+
+login to vagrant and check cassandra:
+	sudo service cassandra status
+
+Flow Multinode:
+
+write vagrant file
+Copy provision file from single node
+
+configure cluster
+/var/lib/cassandra
+/etc/cassandra --> yaml file
+
+yamlfile datastax:
+	seed = 192.168.33.10 (node-0)	line 343
+	listen_address = empty 		line 472
+	rcp_address =	own ip		line 546
+	endpoint_snitch = GossipingPropertyFileSnitch	line 802
+
+Telkens opnieuw problemen met pid file --> nog op te lossen
+  http://stackoverflow.com/questions/19873573/could-not-access-pidfile-for-cassandra
+  Lagere versie proberen 3.0.x, 2.2.x ipv de tick tock release.
+  http://grokbase.com/t/cassandra/user/143a010m3t/cassandra-dsc-2-0-5-not-starting-could-not-access-pidfile-for-cassandra
+    Fouten steeds op sporen via sudo cassandra -R
+      Fout in yaml: Mag clusternaam in yaml niet aanpassan als dit niet eerste gebeurt in cassandra cql. --> originele naam laten staan
+      Verkeerde configuratie van snitch op rack en node
+
+https://github.com/bcantoni/vagrant-cassandra/tree/master/2.MultiNode
+  baseren op deze github om muli node cluster omgeving op te zetten en via opscenter van datastax cluster configureren
+  portforwarding van poort 8888 naar 8888 vagrant
+
+  ops center -> brand new cluster
+	name: 		test cluster
+	type: 		local
+	package:	datastax community 2.1.11
+	Enpoint snitch: Gossiping
+	vagrant/vagrant
+	local nodes: 	cassandra-node-1
+			cassandra-node-2
+			cassandra-node-3
+
+	datacenter: 	ip's
+			192.168.33.1x
+				
+  installeren van hostmanager plugin vagrant
+
+  meer geheugen en cpu geven aan vm's
+
+  connect via een van de ip's van de nodes:
+    cqlsh 192.168.33.1x 9042
