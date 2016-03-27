@@ -86,3 +86,14 @@ https://github.com/bcantoni/vagrant-cassandra/tree/master/2.MultiNode
 
   connect via een van de ip's van de nodes:
     cqlsh 192.168.33.1x 9042
+
+    create keyspace testspace
+    use testspace
+    create table fietstelling(   time text,   source text,   count int,   primary key (time, source, count) );
+    copy fietstelling (time, source, count) from '/vagrant/resources/thermischefietsentellingen.csv' with delimiter=';' and header = true;
+    select * from fietstelling
+    
+  Bij heropstarten cluster na vagrant up een restart uitvoeren van opscenter
+    sudo service opscenterd restart
+  Anders worden de nodes niet gevonden
+  Andere mogelijk die nog te onderzoeken valt is het veranderen van volgorde van de opstart procedure: de opscenter node dan als laatste laten opstarten.
