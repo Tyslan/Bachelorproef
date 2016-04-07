@@ -1,0 +1,18 @@
+\chapter{Installatie Cassandra}
+\label{ch:installatie_cassandra}
+
+Voor de installatie van de Cassandra cluster werd gebruik gemaakt van virtuele machines en het OpsCenter van Datastax.
+De cluster omgeving werd opgezet door middel van vagrant machines.
+De installatie van Cassandra en het opzetten de cluster gebeurde met het OpsCenter van Datastax.
+Er werd geopteerd om gebruik te maken van OpsCenter omdat dit een gemakkelijke manier is om snel een Cassandra cluster te bekomen.
+Van het OpsCenter werd er voor de community edition v\textit{xxxxx} gekozen.
+Hiermee komt Cassandra 2.1.11 geïnstalleerd.
+
+Om te beginnen aan het opzetten van de van de clusters werd geopteerd om gebruik te maken van virtuele machines, die geconfigureerd werden met Vagrant.
+De setup bestaat uit 1 master node waarop het OpsCenter runt en dan 3 slave nodes waar de uiteindelijke Cassandra database op komt te runnen.
+Na de NAT router van Oracle Virtual Box werd een privaat netwerk opgezet zodanig deze machines met elkaar konden communiceren.
+Hiervoor moest elke machine een ip-adres krijgen binnen het netwerk en ook de /etc/hosts aangepast worden.
+
+Eenmaal de virtuele machines correct geconfigureerd waren, werd er overgegaan tot de eigenlijke installatie van Cassandra.
+Zoals eerder vermeld werd hiervoor gebruik gemaakt van het OpsCenter.
+Hiervoor werd op de master node naar de localhost:8888 gesurft om de installatie te starten. Op de pagina dit te voorschijn komt werd voor de optie 'brand new cluster gekozen'.
