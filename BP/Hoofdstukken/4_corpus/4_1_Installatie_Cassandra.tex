@@ -5,7 +5,7 @@ Voor de installatie van de Cassandra cluster werd gebruik gemaakt van virtuele m
 De cluster omgeving werd opgezet door middel van vagrant machines.
 De installatie van Cassandra en het opzetten de cluster gebeurde met het OpsCenter van Datastax.
 Er werd geopteerd om gebruik te maken van OpsCenter omdat dit een gemakkelijke manier is om snel een Cassandra cluster te bekomen.
-Van het OpsCenter werd er voor de community edition v\textit{xxxxx} gekozen.
+Van het OpsCenter werd er voor de community edition 5.2.4 gekozen.
 Hiermee komt Cassandra 2.1.11 geïnstalleerd.
 
 Om te beginnen aan het opzetten van de van de clusters werd geopteerd om gebruik te maken van virtuele machines, die geconfigureerd werden met Vagrant.
@@ -16,3 +16,17 @@ Hiervoor moest elke machine een ip-adres krijgen binnen het netwerk en ook de /e
 Eenmaal de virtuele machines correct geconfigureerd waren, werd er overgegaan tot de eigenlijke installatie van Cassandra.
 Zoals eerder vermeld werd hiervoor gebruik gemaakt van het OpsCenter.
 Hiervoor werd op de master node naar de localhost:8888 gesurft om de installatie te starten. Op de pagina dit te voorschijn komt werd voor de optie 'brand new cluster gekozen'.
+
+In het volgende venster wordt er om verschillende zaken gevraagd.
+Tabel \ref{•} en figuur \ref{•} geven weer hoe dit venster ingevuld werd.
+
+Hier dient ook een datacenter toegevoegd te worden.
+Hierbij wordt de naam van het datacenter vrij gekozen en zijn de node properties het ip-adres van de slave nodes \ref{•}.
+
+Eenmaal de datacenters zijn toegevoegd kan men verdergaan.
+Bij het drukken op de knop 'build cluster word nog gevraagd om de fingerprints van de nodes te accepteren \ref{•}.
+
+Hierna begint OpsCenter met de installatie van de Cassandra cluster \ref{•}.
+Deze installatie neemt enkele ogenblikken in beslag.
+Als hier fouten voorkomen ligt dit veelal aan het feit dat er onvoldoende werkgeheugen aanwezig is op de slave nodes.
+In de setup die hier gebruikt werd het minimium aanvaarde geheugen geven aan de slave nodes, nl 2GB.
