@@ -12,3 +12,6 @@
 
 #BibTex
 *.bak
+*.bbl
+*.blg
+*.lol
