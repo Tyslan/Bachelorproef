@@ -7,7 +7,7 @@
 %% Preamble
 %%========================================================================
 
-\documentclass[pdftex,a4paper,12pt,twoside]{report}
+\documentclass[pdftex,a4paper,12pt]{report}
 
 % XXX: Let op: dit sjabloon is gemaakt om dubbelzijdig af te drukken
 % Voor enkelzijdig, verwijder ``twoside'' hierboven.
@@ -24,8 +24,11 @@
 \usepackage{eurosym}         % Euro-symbool €
 \usepackage{geometry}
 \usepackage{graphicx}        % Invoegen van tekeningen
+\usepackage{subcaption}		 % invoegen van subfiguren
+\usepackage{float}			 % Positie van figuren vastleggen
 \usepackage[pdftex,bookmarks=true]{hyperref}
                              % PDF krijgt klikbare links & verwijzingen,
+\usepackage{parskip}
                              %  inhoudstafel
 \usepackage{listings}        % Broncode mooi opmaken
 \usepackage{multirow}        % Tekst over verschillende cellen in tabellen
@@ -143,5 +146,6 @@
 
 \listoffigures
 \listoftables
+\lstlistoflistings
 
 \end{document}
