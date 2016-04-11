@@ -57,7 +57,7 @@ Tabel \ref{tab:cas_conf} en figuur \ref{fig:cas_conf_1} geven weer hoe dit venst
     \label{fig:cas_conf_1}
 \end{figure}
 
-Hier dient ook een datacenter toegevoegd te worden.
+Hier dient een datacenter toegevoegd te worden.
 Hierbij wordt de naam van het datacenter vrij gekozen en zijn de node properties het ip-adres van de slave nodes (Figuur: \ref{fig:cas_conf_2}).
 
 \begin{figure}[H]
@@ -80,7 +80,8 @@ Bij het drukken op de knop 'build cluster word nog gevraagd om de fingerprints v
 Hierna begint OpsCenter met de installatie van de Cassandra cluster (Figuur: \ref{fig:cas_install}).
 Deze installatie neemt enkele ogenblikken in beslag.
 Als hier fouten voorkomen ligt dit veelal aan het feit dat er onvoldoende werkgeheugen aanwezig is op de slave nodes.
-In de setup die hier gebruikt werd het minimium aanvaarde geheugen geven aan de slave nodes, nl 2GB.
+In de setup die hier gebruikt werd het minimum aanvaarde geheugen geven aan de slave nodes, nl 2GB.
+Samen met Cassandra wordt ook de DataStax agent meegeïnstalleerd zodat het OpsCenter kan communiceren met iedere node.
 
 \begin{figure}[H]
 	\centering
@@ -102,3 +103,13 @@ In de setup die hier gebruikt werd het minimium aanvaarde geheugen geven aan de 
 	\caption{Installatie van Cassandra door OpsCenter}
 	\label{fig:cas_install}
 \end{figure}
+
+\section{Toevoegen van een node}
+Het proces van het toevoegen van een node is zeer gelijkaardig aan het opzetten van de cluster.
+Hierbij dient men in het OpsCenter bij het menu cluster actions voor de optie add node kiezen.
+Het volgend scherm is gelijk aan het scherm die ingevuld moest worden bij het toevoegen dan de datacenters bij de installatie.
+In hier wordt nu in dit schrijven een vierde node toegevoegd aan de cluster.
+
+Ook dient vermeld te worden dat het OpsCenter van DataStax niet de enige manier is om de cluster te monitoren.
+Cassandra voorziet zelf de tool nodetool hiervoor.
+Met deze tool kan de status van de cluster eveneens opgevraagd worden.
