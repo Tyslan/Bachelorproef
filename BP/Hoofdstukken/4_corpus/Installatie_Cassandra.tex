@@ -104,12 +104,43 @@ Samen met Cassandra wordt ook de DataStax agent meegeïnstalleerd zodat het OpsC
 	\label{fig:cas_install}
 \end{figure}
 
+Na de installatie komt men terecht in het Dashboard van OpsCenter (Figuur \ref{fig:cas_opscenter_tour_dashboard}).
+Hierin worden een aantal zaken weergegeven zoals de gezondheid van de cluster, het aantal write requests, de write request latency, \ldots
+Hier kunnen nog meer grafieken aan toegevoegd worden via de knop "add graph".
+In het tabblad nodes kan gezondheid van de cluster bekeken worden evenals hoe de data verdeeld zit over de cluster.
+Deze informatie kan in ringvorm zoals op figuur \ref{fig:cas_opscenter_tour_nodes} weergegeven worden of in lijst vorm.
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{.49\textwidth}
+		\centering
+		\includegraphics[width=.99\linewidth]{img/4_1_installatie_cassandra/2_Tour_1_Dashboard}
+		\caption{Tabblad dashboard}
+		\label{fig:cas_opscenter_tour_dashboard}
+	\end{subfigure}
+	\begin{subfigure}{.49\textwidth}
+		\centering
+		\includegraphics[width=.99\linewidth]{img/4_1_installatie_cassandra/2_Tour_2_Nodes}
+		\caption{Tabblad nodes: ring}
+		\label{fig:cas_opscenter_tour_nodes}
+	\end{subfigure}
+	\caption{Rondleiding in OpsCenter}
+	\label{fig:cas_opscenter_tour}
+\end{figure}
+
+Cassandra voorziet zelf ook een tool die deze monitoring voorziet, nodetool.
+Om te bekijken of de installatie gelukt is kan men via ssh inloggen op een van de nodes van de cluster en hier nodetool laten lopen (Figuur \ref{fig:cas_nodetool}).
+Als men met nodetool de status opvraagt dan krijgt men eveneens alle nodes in de cluster te zien, samen het de hoeveelheid data die ze bevatten en hoeveel dit percentueel is van de data die aanwezig is in de cluster.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{img/4_1_installatie_cassandra/3_Node_setup}
+	\caption{Cassandra: nodetool}
+	\label{fig:cas_nodetool}
+\end{figure}
+
 \section{Toevoegen van een node}
 Het proces van het toevoegen van een node is zeer gelijkaardig aan het opzetten van de cluster.
 Hierbij dient men in het OpsCenter bij het menu cluster actions voor de optie add node kiezen.
 Het volgend scherm is gelijk aan het scherm die ingevuld moest worden bij het toevoegen dan de datacenters bij de installatie.
 In hier wordt nu in dit schrijven een vierde node toegevoegd aan de cluster.
-
-Ook dient vermeld te worden dat het OpsCenter van DataStax niet de enige manier is om de cluster te monitoren.
-Cassandra voorziet zelf de tool nodetool hiervoor.
-Met deze tool kan de status van de cluster eveneens opgevraagd worden.
