@@ -52,7 +52,7 @@ Tabel \ref{tab:cas_conf} en figuur \ref{fig:cas_conf_1} geven weer hoe dit venst
 
 \begin{figure}[H]
   	\centering
-    \includegraphics[width=0.5\textwidth]{img/4_1_installatie_cassandra/1_Configuration_part_1}
+    \includegraphics[width=0.5\textwidth]{img/4_installatie_cassandra/1_Configuration_part_1}
     \caption{Cassandra: Instellingen deel 1}
     \label{fig:cas_conf_1}
 \end{figure}
@@ -62,20 +62,13 @@ Hierbij wordt de naam van het datacenter vrij gekozen en zijn de node properties
 
 \begin{figure}[H]
   	\centering
-    \includegraphics[width=0.5\textwidth]{img/4_1_installatie_cassandra/1_Configuration_part_2}
+    \includegraphics[width=0.5\textwidth]{img/4_installatie_cassandra/1_Configuration_part_2}
     \caption{Cassandra: Instellingen deel 2}
     \label{fig:cas_conf_2}
 \end{figure}
 
 Eenmaal de datacenters zijn toegevoegd kan men verdergaan.
-Bij het drukken op de knop 'build cluster word nog gevraagd om de fingerprints van de nodes te accepteren (Figuur: \ref{fig:cas_conf_3}).
-
-\begin{figure}[H]
-  	\centering
-    \includegraphics[width=0.5\textwidth]{img/4_1_installatie_cassandra/1_Configuration_part_3}
-    \caption{Cassandra: Instellingen deel 3}
-    \label{fig:cas_conf_3}
-\end{figure}
+Bij het drukken op de knop 'build cluster word nog gevraagd om de fingerprints van de nodes te accepteren.
 
 Hierna begint OpsCenter met de installatie van de Cassandra cluster (Figuur: \ref{fig:cas_install}).
 Deze installatie neemt enkele ogenblikken in beslag.
@@ -87,17 +80,17 @@ Samen met Cassandra wordt ook de DataStax agent meegeïnstalleerd zodat het OpsC
 	\centering
 	\begin{subfigure}{.49\textwidth}
   		\centering
-  		\includegraphics[width=.9\linewidth]{img/4_1_installatie_cassandra/1_Configuration_part_4}
+  		\includegraphics[width=.9\linewidth]{img/4_installatie_cassandra/1_Configuration_part_4}
   		\caption{Deel 1}
 	\end{subfigure}
 	\begin{subfigure}{.49\textwidth}
   		\centering
-  		\includegraphics[width=.9\linewidth]{img/4_1_installatie_cassandra/1_Configuration_part_5}
+  		\includegraphics[width=.9\linewidth]{img/4_installatie_cassandra/1_Configuration_part_5}
   		\caption{Deel 2}
 	\end{subfigure}
 	\begin{subfigure}{.49\textwidth}
   		\centering
-  		\includegraphics[width=.9\linewidth]{img/4_1_installatie_cassandra/1_Configuration_part_6}
+  		\includegraphics[width=.9\linewidth]{img/4_installatie_cassandra/1_Configuration_part_6}
   		\caption{Deel 3}
 	\end{subfigure}
 	\caption{Installatie van Cassandra door OpsCenter}
@@ -108,19 +101,19 @@ Na de installatie komt men terecht in het Dashboard van OpsCenter (Figuur \ref{f
 Hierin worden een aantal zaken weergegeven zoals de gezondheid van de cluster, het aantal write requests, de write request latency, \ldots
 Hier kunnen nog meer grafieken aan toegevoegd worden via de knop "add graph".
 In het tabblad nodes kan gezondheid van de cluster bekeken worden evenals hoe de data verdeeld zit over de cluster.
-Deze informatie kan in ringvorm zoals op figuur \ref{fig:cas_opscenter_tour_nodes} weergegeven worden of in lijst vorm.
+Deze informatie kan in ringvorm zoals op figuur \ref{fig:cas_opscenter_tour_nodes} weergegeven worden of in een lijst.
 
 \begin{figure}[H]
 	\centering
 	\begin{subfigure}{.49\textwidth}
 		\centering
-		\includegraphics[width=.99\linewidth]{img/4_1_installatie_cassandra/2_Tour_1_Dashboard}
+		\includegraphics[width=.99\linewidth]{img/4_installatie_cassandra/2_Tour_1_Dashboard}
 		\caption{Tabblad dashboard}
 		\label{fig:cas_opscenter_tour_dashboard}
 	\end{subfigure}
 	\begin{subfigure}{.49\textwidth}
 		\centering
-		\includegraphics[width=.99\linewidth]{img/4_1_installatie_cassandra/2_Tour_2_Nodes}
+		\includegraphics[width=.99\linewidth]{img/4_installatie_cassandra/2_Tour_2_Nodes}
 		\caption{Tabblad nodes: ring}
 		\label{fig:cas_opscenter_tour_nodes}
 	\end{subfigure}
@@ -134,13 +127,41 @@ Als men met nodetool de status opvraagt dan krijgt men eveneens alle nodes in de
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.5\textwidth]{img/4_1_installatie_cassandra/3_Node_setup}
-	\caption{Cassandra: nodetool}
+	\includegraphics[width=0.5\textwidth]{img/4_installatie_cassandra/3_Node_setup}
+	\caption{Nodetool}
 	\label{fig:cas_nodetool}
 \end{figure}
 
 \section{Toevoegen van een node}
 Het proces van het toevoegen van een node is zeer gelijkaardig aan het opzetten van de cluster.
-Hierbij dient men in het OpsCenter bij het menu cluster actions voor de optie add node kiezen.
-Het volgend scherm is gelijk aan het scherm die ingevuld moest worden bij het toevoegen dan de datacenters bij de installatie.
-In hier wordt nu in dit schrijven een vierde node toegevoegd aan de cluster.
+Hierbij dient men in het OpsCenter bij het menu "cluster actions" voor de optie "add node" kiezen (Figuur \ref{fig:cas_add_node_1}).
+Hier wordt een vierde node toegevoegd aan de cluster.
+Net zoals bij de installatie van de cluster wordt opnieuw het scherm getoond waarin de aanmeld gegevens voor de gegeven node gevraagd worden (Figuur \ref{fig:cas_add_node_2}).
+Via de knop "Add/Expand Datacenter" kan men op dezelfde manier nodes toevoegen aan het bestaande datacenter die tijdens de installatie werd aangemaakt.
+Bij het bevestigen wordt opnieuw gevraagd om de fingerprint van de node te accepteren.
+Hierna begint de installatie van de software op de node, de agent en cassandra worden geïnstalleerd en geconfigureerd.
+Na dit alles kan men in het tabblad nodes, deze maal als een lijst, zien dat de nieuwe node is toegevoegd aan de cluster (Figuur: \ref{fig:cas_add_node_3}).
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{.49\textwidth}
+		\centering
+		\includegraphics[width=.9\linewidth]{img/4_installatie_cassandra/4_Add_Node_1}
+		\caption{Add node}
+		\label{fig:cas_add_node_1}
+	\end{subfigure}
+	\begin{subfigure}{.49\textwidth}
+		\centering
+		\includegraphics[width=.9\linewidth]{img/4_installatie_cassandra/4_Add_Node_2}
+		\caption{Deel 2}
+		\label{fig:cas_add_node_2}
+	\end{subfigure}
+	\begin{subfigure}{\textwidth}
+		\centering
+		\includegraphics[width=.9\linewidth]{img/4_installatie_cassandra/4_Add_Node_7a}
+		\caption{Tabblad node met 4 nodes}
+		\label{fig:cas_add_node_3}
+	\end{subfigure}
+	\caption{Toevoegen van een node via OpsCenter}
+	\label{fig:cas_add_node}
+\end{figure}
