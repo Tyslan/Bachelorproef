@@ -50,3 +50,14 @@ Import csv
     http://www.planetcassandra.org/blog/we-shall-have-order/
 
   Opmering 2: Cassandra doet ook soms vreemd bij null waarden, ookal word de optie WHERE NULL = ‘NULL’ meegegeven.
+
+sstableloader
+http://www.datastax.com/dev/blog/using-the-cassandra-bulk-loader-updated
+https://github.com/yukim/cassandra-bulkload-example/tree/master/src/main/java/bulkload
+
+cassandra-loader
+maakt gebruik van async insert into
+https://github.com/brianmhess/cassandra-loader
+
+Bulkloader vs Copy vs cassandra-loader
+http://www.slideshare.net/BrianHess4/bulk-loading-into-cassandra

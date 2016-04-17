@@ -19,11 +19,29 @@ Dit is een zeer eenvoudige manier om data te importeren in Cassandra.
 Toch wordt dit deze methode niet aangeraden om te gebruiken bij het importeren van grote hoeveelheden data.
 Bij ca. 1 miljoen rijen, afhankelijk van het aantal kolommen, kan het zijn dat deze methode vast loopt.
 Dit kan men op een aantal manieren oplossen.
-De 2 meest voorkomende zijn:
+De drie meest voorkomende zijn:
 
 \begin{enumerate}
 	\item Het opsplitsen van één groot csv bestand in verschillende kleinere bestanden.
-	\item Het gebruik van de bulkloader die Cassandra voorziet.
+	\item Het gebruik van de sstableloader die Cassandra voorziet.
+	\item Het gebruik van cassandra-loader
 \end{enumerate}
 
-\section{Importeren via bulk loader}
+\section{Importeren via sstableloader}
+
+Het importeren van data via sstableloader is eveneens een eenvoudig proces.
+Hier zijn reeds verschillende implementaties van, zoals cassandra bulkloader.
+
+Enkele belangrijke nadelen van deze manier zijn:
+\begin{itemize}
+	\item Men moet een aangepaste applicatie schrijven om dit te kunnen gebruiken.
+	\item Om sstrableloader te kunnen gebruiken dienen alle nodes van de cluster online te zijn.
+	\item De SSTable dient aangemaakt te zijn vooraleer men deze methode kan gebruiken.
+\end{itemize}
+
+\section{Importeren via cassandra-loader}
+Dit is een Java programma van Brain Hess.
+Dit programma maakt gebruik van de CQL driver die voorzien is door DataStax.
+Het ganse principe van dit programma is om asynchroon cql inserts te doen.
+
+\section{Een vergelijking van de drie methodes}
