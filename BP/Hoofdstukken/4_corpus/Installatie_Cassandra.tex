@@ -5,10 +5,12 @@
 Om te beginnen aan het opzetten van de van de clusters werd geopteerd om gebruik te maken van virtuele machines, die geconfigureerd werden met Vagrant.
 
 In een eerste poging om een werkende Cassandra cluster te bekomen werd er op elke Vagrant machine Cassandra 3.3, op moment van schrijven de meest recente versie, geïnstalleerd.
-Nadat dit was gebeurd dienden nog enkele stappen te voltooid worden \citep{DataStax2016}.
-Deze configuratie op deze manier gaf echter veel problemen, Cassandra werd telkens na enkele bewerkingen onbruikbaar met de foutboodschap "could not access pidfile for Cassandra".
+Nadat dit was gebeurd dienden nog enkele stappen te voltooid worden om een werkende cluster te bekomen \citep{DataStax2016}.
+De configuratie op deze manier gaf echter veel problemen, Cassandra werd telkens na enkele bewerkingen onbruikbaar met de foutboodschap "could not access pidfile for Cassandra".
 Een eerste oplossing voor dit probleem was om te zorgen dat de user cassandra toegang had tot de pidfile, want namelijk niet het geval was doordat de installatie van Cassandra werd uitgevoerd door de vagrant setup.
 Maar ook dit leverde weinig resultaat op.
+Wel dient opgemerkte te worden dat deze installatie van Cassandra zelf geen problemen met zich meebracht.
+Voor het aanpassen van de configuratie file van Cassandra werkte deze perfect op iedere node.
 
 \section{DataStax OpsCenter}
 
