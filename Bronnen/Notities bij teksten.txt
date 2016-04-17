@@ -1,0 +1,21 @@
+Cassandra Data Modeling and Analysis
+  Architectuur:       p17-26
+  Data Modeling:      p26-17, p117-123
+  Gedrag bij uitval:  p139-141
+  Performance tuning: p155-158
+
+Cassandra Design Patterns
+  Architectuur:       p5-12
+  Data Modeling:      p5-12
+  Patterns:           Rest boek
+
+Cassandra The definitive guide
+  Data Model          Hoofdstuk 3
+  Architectuur        Hoofdstuk 5
+  Configuratie        Hoofdstuk 6
+   veschil in replicatie strategieën
+   partitionering
+   replicatie factor
+   snitches
+  Maintenance         Hoofdstuk 10
+  Performance tuning: Hoofdstuk 11
