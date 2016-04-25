@@ -35,6 +35,9 @@ Een volgende restrictie die wordt opgelegd door de partitie sleutel is het feit 
 Tot Cassandra 2.2 kon zelfs de IN operator enkel op de laatste kolom van de partitie sleutel.
 
 De laatste restrictie die wordt opgelegd door de partitie sleutels heeft te maken met de >, >=, < en <= operators.
+Deze zijn enkel rechtstreeks toepasbaar als de partitioner ingesteld op ByteOrderedPartitioner.
+Indien dit niet het geval is moet men een omweg maken via de token functie.
+Op het eerste zicht lijkt het gebruik van de token functie minder efficiënt voor het selecteren van data, maar dit weegt niet op tegen de nadelen die ByteOrderedPartitioner heeft op gebied van de distributie van de data, zoals reeds eerder werd vermeld.
 
 \subsection{Restricties opgelegd door de clustering sleutels}
 % Unrestricted clustering columns
