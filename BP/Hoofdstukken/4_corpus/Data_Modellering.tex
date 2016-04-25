@@ -1,3 +1,49 @@
 \chapter{Data modellering in Cassandra}
 \label{ch:cassandra_modelling}
 
+\section{Partitie sleutel}
+Het doel van de partitie sleutel is om de data gebalanceerd over alle nodes te spreiden.
+
+Bij het kiezen van de partitie sleutel dient er met een aantal zaken rekening gehouden te worden om de data evenwichtig over alle nodes te spreiden, maar er is slechts één fysische restrictie.
+In iedere rij kan slechts 2 miljard kolommen bevatten \citep{McFadin2013Timeseries}.
+In de meeste gevallen is dit ruim voldoende.
+Tijdsreeksen vormen hier een uitzondering op.
+Deze reeksen kunnen al gauw miljarden entries bevatten.
+Hier is het dus zeer belangrijk om een goede partitie sleutel te kiezen of men komt hier al snel in de problemen.
+
+\section{Clustering sleutel}
+
+\section{Primaire sleutel}
+De primaire sleutel in Cassandra tabellen wordt bepaald door de partitie sleutels en de clustering sleutels.
+
+Als een tabel slechts één kolom heeft als primaire sleutel dan is deze kolom meteen ook de partitie sleutel.
+
+\section{De WHERE clausule}
+Zoals \cite{Lerer2015Where} aanhaalt is een van de grootste verschillen tussen CQL en SQL de WHERE clausule.
+In SQL kent de WHERE clausule geen restricties.
+Bij CQL is dit anders.
+Hier worden restricties opgelegd door de partitie en clustering sleutel.
+
+\subsection{Restricties opgelegd door de partitie sleutels}
+
+Een eerste restrictie die wordt opgelegd door de partitie sleutel is dat ofwel alle partitie sleutels worden opgenomen in de WHERE clausule ofwel geen enkel.
+Indien er te weinig 
+Dit is nodig omdat Cassandra anders de hash niet kan berekenen.
+Deze hash is echter nodig om te weten op welke node de data zich bevind.
+
+Een volgende restrictie die wordt opgelegd door de partitie sleutel is het feit dat enkel de '=' en IN operator rechtstreeks gebruikt kunnen worden.
+Tot Cassandra 2.2 kon zelfs de IN operator enkel op de laatste kolom van de partitie sleutel.
+
+De laatste restrictie die wordt opgelegd door de partitie sleutels heeft te maken met de >, >=, < en <= operators.
+
+\subsection{Restricties opgelegd door de clustering sleutels}
+% Unrestricted clustering columns
+% IN restrictions
+
+\subsection{Andere restricties}
+% CONTAINS and CONTAINS KEY restrictions
+% Regular column restrictions
+% Secondary indices queries
+% Secondary indices filtering
+% Partition key restrictions and Secondary indices
+% Clustering column restrictions and Secondary indices
