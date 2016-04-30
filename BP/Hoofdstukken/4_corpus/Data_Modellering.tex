@@ -5,13 +5,14 @@
 Het doel van de partitie sleutel is om de data gebalanceerd over alle nodes te spreiden.
 
 Bij het kiezen van de partitie sleutel dient er met een aantal zaken rekening gehouden te worden om de data evenwichtig over alle nodes te spreiden, maar er is slechts één fysische restrictie.
-In iedere rij kan slechts 2 miljard kolommen bevatten \citep{McFadin2013Timeseries}.
+Iedere rij kan slechts 2 miljard kolommen bevatten \citep{McFadin2013Timeseries}.
 In de meeste gevallen is dit ruim voldoende.
 Tijdsreeksen vormen hier een uitzondering op.
 Deze reeksen kunnen al gauw miljarden entries bevatten.
 Hier is het dus zeer belangrijk om een goede partitie sleutel te kiezen of men komt hier al snel in de problemen.
 
 \section{Clustering sleutel}
+Het doel van clustering sleutels is om de data te clusteren binnen een partitie.
 
 \section{Primaire sleutel}
 De primaire sleutel in Cassandra tabellen wordt bepaald door de partitie sleutels en de clustering sleutels.
@@ -40,13 +41,36 @@ Indien dit niet het geval is moet men een omweg maken via de token functie.
 Op het eerste zicht lijkt het gebruik van de token functie minder efficiënt voor het selecteren van data, maar dit weegt niet op tegen de nadelen die ByteOrderedPartitioner heeft op gebied van de distributie van de data, zoals reeds eerder werd vermeld.
 
 \subsection{Restricties opgelegd door de clustering sleutels}
-% Unrestricted clustering columns
-% IN restrictions
+Voor de restricties op de clustering sleutel uitgelegd kunnen worden moet eerst uitgelegd worden hoe de data in Cassandra binnen een partitie opgeslagen wordt.
+Dit zal nu aan de hand van een voorbeeld uitgelegd worden \cite{Lerer2015Where}.
+Neem de onderstaande tabel:
 
-\subsection{Andere restricties}
-% CONTAINS and CONTAINS KEY restrictions
-% Regular column restrictions
-% Secondary indices queries
-% Secondary indices filtering
-% Partition key restrictions and Secondary indices
-% Clustering column restrictions and Secondary indices
+\begin{lstlisting}
+CREATE TABLE NumberOfTwitterMessages (
+  userid bigint, date text, hour int, minute int,
+  nrOfTweets int,
+  PRIMARY KEY  ((userid, date), hour, minute)
+);
+\end{lstlisting}
+
+Hier wordt de data nu als volgt opgeslagen binnen de partitie: 
+
+\begin{lstlisting}
+{hour: 20 
+  {minute: 4 {nrOfTweets: 6}} 
+  {minute: 7 {nrOfTweets: 1}}
+  {minute: 21 {nrOfTweets: 16}}
+  ...
+}
+\end{lstlisting}
+
+De eerste restrictie wordt hier opgelegd door de manier waarop de data opgeslagen zit.
+Als men een voorwaarde wil vastleggen voor een clustering kolom, dan dienen de clustering kolommen die voor deze komen in de primaire sleutel ook vastgelegd te worden.
+Dit is nodig omdat Cassandra de data anders niet efficiënt kan terugvinden.
+
+Tot Cassandra 2.2 was de IN operator enkel toegelaten op de laatste clustering kolom.
+Sinds Cassandra 2.2 is deze restrictie vervallen en kan men nu zelf multi-kolom IN restricties opleggen.
+
+De >, >=, < en <= operators ook enkel toegestaan op de laatste clustering kolom waar een restrictie is aan opgelegd.
+Toch is hier een oplossing voor aangezien men deze operators kan toepassen over meerdere kolommen.
+Bij deze multi-column slices is het echter wel belangrijk dat de restrictie van de WHERE clausule met dezelfde kolom start.
