@@ -84,3 +84,25 @@ Sinds Cassandra 2.2 is deze restrictie vervallen en kan men nu zelf multi-kolom 
 De >, >=, < en <= operators ook enkel toegestaan op de laatste clustering kolom waar een restrictie is aan opgelegd.
 Toch is hier een oplossing voor aangezien men deze operators kan toepassen over meerdere kolommen.
 Bij deze multi-column slices is het echter wel belangrijk dat de restrictie van de WHERE clausule met dezelfde kolom start.
+
+\section{Doelen bij datamodellering in Cassandra}
+Zoals in bovenstaande sectie duidelijk werd, dient er bij Cassandra met heel wat rekening gehouden te worden als men een datamodel creëert.
+\cite{Hobbs2015Datamodelling} definieerde wat de doelen zijn bij het opstellen van een datamodel in Cassandra.
+Zoals door Hobbs aangegeven wordt, lijkt de querytaal van Cassandra CQL sterk op SQL, maar kan het gebruik ervan zeer verschillend zijn.
+
+Een eerste doel bij het opstellen van een datamodel in Cassandra is om de data evenwichtig over alle nodes te verspreiden.
+Dit kan bekomen worden door de partitie kolommen goeed te kiezen.
+Zoals eerder vermeld is, worden de partitie kolommen bepaald door het eerste deel van de primaire sleutel.
+
+Een tweede doel is om zo weinig mogelijk partitie reads te moeten doen.
+Doordat iedere partitie op een andere node kan staan is dit belangrijk.
+Als de partities effectief op verschillende nodes staan moet de afzonderlijke commando's naar elke node apart verstuurd worden en dit zorgt voor overhead.
+Het is zelfs zo dat als de data op dezelfde node staat, de partitie reads nog steeds inefficiënt zijn.
+Dit komt door de manier waarop Cassandra de rijen opslaat.
+
+Zaken die bij relationele databanken belangrijk zijn zoals het aantal writes en data duplicatie minimaliseren zijn binnen Cassandra geen doelen.
+In Cassandra zijn write goedkoop omdat Cassandra hiervoor geoptimaliseerd is.
+Denormalisatie en duplicatie van data zijn ook zeer normaal binnen Cassandra.
+Dit komt door de architectuur van Cassandra.
+Hierbij gaat men ervan uit dat schijfruimte goedkoop is in vergelijking met andere resources zoals CPU, geheugen, netwerk \ldots
+Ook geeft Cassandra geen JOIN waardoor het ook hoogst inefficiënt en onpraktisch zou zijn om geen duplicate data te hebben.
