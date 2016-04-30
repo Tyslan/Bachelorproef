@@ -1,54 +1,57 @@
-\chapter{Data modellering in Cassandra}
+\chapter{Datamodellering in Cassandra}
 \label{ch:cassandra_modelling}
 \section{Primaire sleutel}
-Binnen de primaire sleutel in Cassandra worden de partitie (\ref{partition_key}) en clustering (\ref{partition_key}) sleutels vastgelegd voor een tabel.
+Binnen de primaire sleutel in Cassandra worden de partitie (\ref{partition_key}) en clustering (\ref{partition_key}) kolommen vastgelegd voor een tabel.
 In tegenstelling tot relationele databases dient de primaire sleutel hier niet als unieke sleutel voor de rij maar om snel te weten te komen waar de data zich bevindt \citep{kan2014cassandra}.
-Als een tabel slechts één kolom heeft als primaire sleutel dan is deze kolom meteen ook de partitie sleutel en zijn er geen clustering kolommen.
+Als een tabel slechts één kolom heeft als primaire sleutel dan is deze kolom meteen ook de partitie kolom en zijn er geen clustering kolommen.
 
 Door het feit dat de primaire sleutel in Cassandra niet uniek hoeft te zijn gedragen het INSERT commando en het UPDATE commando zich op een identieke wijze.
 Een nadeel hierbij is dat er geen waarschuwing wordt gegeven als er rij overschreven wordt.
 Omdat dit veelal ongewenst gedrag is binnen applicaties komt men al snel terecht bij een samengestelde primaire sleutel, een primaire sleutel uit verschillende kolommen.
 
-\section{Partitie sleutel}
+\section{Partitie kolom}
 \label{partition_key}
-Het doel van de partitie sleutel is om de data gebalanceerd over alle nodes te spreiden.
+Het eerste deel van de primaire sleutel bestaat uit de partitie kolommen.
+Het doel van de partitie kolommen is om de data gebalanceerd over alle nodes te spreiden.
 Op deze manier kan de fysieke locatie van de data ook snel achterhaalt worden \citep{kan2014cassandra}.
-De partitie sleutel kan eveneens meerdere kolommen omvatten.
 
-Bij het kiezen van de partitie sleutel dient er met een aantal zaken rekening gehouden te worden om de data evenwichtig over alle nodes te spreiden, maar er is slechts één fysische restrictie.
+Bij het kiezen van de partitie kolommen dient er met een aantal zaken rekening gehouden te worden om de data evenwichtig over alle nodes te spreiden, maar er is slechts één fysische restrictie.
 Iedere rij kan slechts 2 miljard kolommen bevatten \citep{McFadin2013Timeseries}.
 In de meeste gevallen is dit ruim voldoende.
 Tijdsreeksen vormen hier een uitzondering op.
 Deze reeksen kunnen al gauw miljarden entries bevatten.
-Hier is het dus zeer belangrijk om een goede partitie sleutel te kiezen of men komt hier al snel in de problemen.
+Hier is het dus zeer belangrijk om  goede partitie kolommen te kiezen of men komt hier al snel in de problemen.
 
-\section{Clustering sleutel}
+\section{Clustering kolom}
 \label{clustering_key}
-Het doel van clustering sleutels is om de data te clusteren binnen een partitie.
+Het laatste deel van de primaire sleutel bestaat uit de clustering kolommen.
+Deze bepalen de volgorde van de data op de fysieke media \citep{strickland2014availability}.
+De clustering kolommen hebben echter geen invloed over op welke node de data wordt opgeslagen.
+Toch zullen ze een belangrijke invloed hebben op welke query's er uitgevoerd kunnen worden.
 
 \section{De WHERE clausule}
 Zoals \cite{Lerer2015Where} aanhaalt is een van de grootste verschillen tussen CQL en SQL de WHERE clausule.
 In SQL kent de WHERE clausule geen restricties.
 Bij CQL is dit anders.
-Hier worden restricties opgelegd door de partitie en clustering sleutel.
+Hier worden restricties opgelegd door de partitie en clustering kolommen.
+Eveneens kan er enkel op de partitie en clustering kolommen gefilterd worden.
 
-\subsection{Restricties opgelegd door de partitie sleutels}
+\subsection{Restricties opgelegd door de partitie kolommen}
 
-Een eerste restrictie die wordt opgelegd door de partitie sleutel is dat ofwel alle partitie sleutels worden opgenomen in de WHERE clausule ofwel geen enkel.
-Indien er te weinig 
+Een eerste restrictie die wordt opgelegd door de partitie kolommen is dat ofwel alle partitie kolommen worden opgenomen in de WHERE clausule ofwel geen enkel.
 Dit is nodig omdat Cassandra anders de hash niet kan berekenen.
 Deze hash is echter nodig om te weten op welke node de data zich bevind.
 
-Een volgende restrictie die wordt opgelegd door de partitie sleutel is het feit dat enkel de '=' en IN operator rechtstreeks gebruikt kunnen worden.
-Tot Cassandra 2.2 kon zelfs de IN operator enkel op de laatste kolom van de partitie sleutel.
+Een volgende restrictie die wordt opgelegd door de partitie kolommen is het feit dat enkel de '=' en IN operator rechtstreeks gebruikt kunnen worden.
+Tot Cassandra 2.2 kon zelfs de IN operator enkel op de laatste gedefinieerde partitie kolom.
 
-De laatste restrictie die wordt opgelegd door de partitie sleutels heeft te maken met de >, >=, < en <= operators.
+De laatste restrictie die wordt opgelegd door de partitie kolommen heeft te maken met de >, >=, < en <= operators.
 Deze zijn enkel rechtstreeks toepasbaar als de partitioner ingesteld op ByteOrderedPartitioner.
 Indien dit niet het geval is moet men een omweg maken via de token functie.
 Op het eerste zicht lijkt het gebruik van de token functie minder efficiënt voor het selecteren van data, maar dit weegt niet op tegen de nadelen die ByteOrderedPartitioner heeft op gebied van de distributie van de data, zoals reeds eerder werd vermeld.
 
-\subsection{Restricties opgelegd door de clustering sleutels}
-Voor de restricties op de clustering sleutel uitgelegd kunnen worden moet eerst uitgelegd worden hoe de data in Cassandra binnen een partitie opgeslagen wordt.
+\subsection{Restricties opgelegd door de clustering kolommen}
+Voor de restricties op de clustering kollomen uitgelegd kunnen worden, moet eerst uitgelegd worden hoe de data in Cassandra binnen een partitie opgeslagen wordt.
 Dit zal nu aan de hand van een voorbeeld uitgelegd worden \citep{Lerer2015Where}.
 Neem de onderstaande tabel:
 
