@@ -181,10 +181,6 @@
 \tableofcontents
 
 \appendix
-
-\chapter{Opzetten vagrant cluster}
-\label{ch:vagrant_cluster}
-
 % Automatisch invoegen van al je Java broncode:
 % % 1/ maak een link naar je broncodedirectory naar subdirectory source
 % %      ln -s /path/to/java/src/ ./source
@@ -194,5 +190,22 @@
 % %      ./source.sh
 % % 3/ Haal volgende regel uit commentaar
 % %\input{source.tex}
+\chapter{Opzetten vagrant cluster}
+\label{ch:vagrant_cluster}
 
+\section{/etc/hosts}
+\lstinputlisting{./code/vagrant/hosts.txt}
+\clearpage
+
+\section{Vagrantfile}
+\lstinputlisting[language=Ruby]{./code/vagrant/Vagrantfile.rb}
+\clearpage
+
+\section{Setup cluster manager }
+\lstinputlisting[language=Bash, breaklines=true]{./code/vagrant/setup_dse.sh}
+\clearpage
+
+\section{Setup slaves }
+\lstinputlisting[language=Bash, breaklines=true]{./code/vagrant/setup_slave.sh}
+\clearpage
 \end{document}
