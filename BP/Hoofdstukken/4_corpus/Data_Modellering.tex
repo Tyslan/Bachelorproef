@@ -1,8 +1,19 @@
 \chapter{Data modellering in Cassandra}
 \label{ch:cassandra_modelling}
+\section{Primaire sleutel}
+Binnen de primaire sleutel in Cassandra worden de partitie (\ref{partition_key}) en clustering (\ref{partition_key}) sleutels vastgelegd voor een tabel.
+In tegenstelling tot relationele databases dient de primaire sleutel hier niet als unieke sleutel voor de rij maar om snel te weten te komen waar de data zich bevindt \citep{kan2014cassandra}.
+Als een tabel slechts één kolom heeft als primaire sleutel dan is deze kolom meteen ook de partitie sleutel en zijn er geen clustering kolommen.
+
+Door het feit dat de primaire sleutel in Cassandra niet uniek hoeft te zijn gedragen het INSERT commando en het UPDATE commando zich op een identieke wijze.
+Een nadeel hierbij is dat er geen waarschuwing wordt gegeven als er rij overschreven wordt.
+Omdat dit veelal ongewenst gedrag is binnen applicaties komt men al snel terecht bij een samengestelde primaire sleutel, een primaire sleutel uit verschillende kolommen.
 
 \section{Partitie sleutel}
+\label{partition_key}
 Het doel van de partitie sleutel is om de data gebalanceerd over alle nodes te spreiden.
+Op deze manier kan de fysieke locatie van de data ook snel achterhaalt worden \citep{kan2014cassandra}.
+De partitie sleutel kan eveneens meerdere kolommen omvatten.
 
 Bij het kiezen van de partitie sleutel dient er met een aantal zaken rekening gehouden te worden om de data evenwichtig over alle nodes te spreiden, maar er is slechts één fysische restrictie.
 Iedere rij kan slechts 2 miljard kolommen bevatten \citep{McFadin2013Timeseries}.
@@ -12,12 +23,8 @@ Deze reeksen kunnen al gauw miljarden entries bevatten.
 Hier is het dus zeer belangrijk om een goede partitie sleutel te kiezen of men komt hier al snel in de problemen.
 
 \section{Clustering sleutel}
+\label{clustering_key}
 Het doel van clustering sleutels is om de data te clusteren binnen een partitie.
-
-\section{Primaire sleutel}
-De primaire sleutel in Cassandra tabellen wordt bepaald door de partitie sleutels en de clustering sleutels.
-
-Als een tabel slechts één kolom heeft als primaire sleutel dan is deze kolom meteen ook de partitie sleutel.
 
 \section{De WHERE clausule}
 Zoals \cite{Lerer2015Where} aanhaalt is een van de grootste verschillen tussen CQL en SQL de WHERE clausule.
@@ -42,7 +49,7 @@ Op het eerste zicht lijkt het gebruik van de token functie minder efficiënt voo
 
 \subsection{Restricties opgelegd door de clustering sleutels}
 Voor de restricties op de clustering sleutel uitgelegd kunnen worden moet eerst uitgelegd worden hoe de data in Cassandra binnen een partitie opgeslagen wordt.
-Dit zal nu aan de hand van een voorbeeld uitgelegd worden \cite{Lerer2015Where}.
+Dit zal nu aan de hand van een voorbeeld uitgelegd worden \citep{Lerer2015Where}.
 Neem de onderstaande tabel:
 
 \begin{lstlisting}
