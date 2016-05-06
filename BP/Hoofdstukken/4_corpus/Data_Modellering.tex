@@ -1,7 +1,7 @@
 \chapter{Datamodellering in Cassandra}
 \label{ch:cassandra_modelling}
 \section{Primaire sleutel}
-Binnen de primaire sleutel in Cassandra worden de partitie (\ref{partition_key}) en clustering (\ref{partition_key}) kolommen vastgelegd voor een tabel.
+Binnen de primaire sleutel in Cassandra worden de partitie (\ref{partition_key}) en clustering (\ref{clustering_key}) kolommen vastgelegd voor een tabel.
 In tegenstelling tot relationele databases dient de primaire sleutel hier niet als unieke sleutel voor de rij maar om snel te weten te komen waar de data zich bevindt \citep{kan2014cassandra}.
 Als een tabel slechts één kolom heeft als primaire sleutel dan is deze kolom meteen ook de partitie kolom en zijn er geen clustering kolommen.
 
