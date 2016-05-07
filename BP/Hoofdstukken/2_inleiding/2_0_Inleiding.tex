@@ -11,7 +11,7 @@
 Sinds de term voor het eerst in 1998 gebruikt werd door Carlo Strozzi, is er veel te doen rond NoSQL databanken.
 Toen hij deze term de wereld instuurde bedoelde Strozzi dat de databank die op dat moment besproken werd geen SQL interface aanbood.
 In 2009 werd de term NoSQL opnieuw gebruikt oor Johan Oskarsson als hashtag voor een meetup waar de problemen met relationele databanken het de huidige manier van programmeren besproken gingen worden.
-Nu wordt NoSQL begrepen als not only SQL, wat erop wijst dat er meerdere manieren zijn om data op te slaan. \citep{GOTO2013Introduction}
+Nu wordt NoSQL begrepen als not only SQL, wat erop wijst dat er meerdere manieren zijn om data op te slaan. \citep{Fowler2013Introduction}
 
 NoSQL databanken vinden hun oorsprong in de verschillen tussen een relationeel model en het object georiënteerd programmeren, het zogenoemde "impedance mismatch", het feit dat relationele databanken vaak niet goed werken op een cluster of met grote hoeveelheden realtime data\dots
 Hierdoor maken NoSQL databanken vaak geen gebruik van een relationeel model, zijn gemaakt om op clusters te werken, zijn ze schema-less\dots
@@ -26,16 +26,30 @@ Zelf binnen de verschillende types zijn er nog verschillende use cases.
 In het vervolg van deze bachelorproef wordt de focus gelegd op de NoSQL databank Cassandra.
 Cassandra is een NoSQL database die focust op schaalbaarheid en beschikbaarheid, zonder aan performantie in te boeten.
 Cassandra is op dit moment een productiewaardige database.
-Enkele bekende gebruikers van Cassandra zijn Facebook, Apple, Netflix, GitHub, Instagram, GoDaddy\dots 
+Enkele bekende gebruikers van Cassandra zijn Facebook, Apple, Netflix, GitHub, Instagram, GoDaddy\dots
 
-% Wat geschiedenis van Cassandra.
+Cassandra is een project dat zijn oorsprong vond bij Facebook.
+In 2008 was Cassandra de oplossing, bedacht door Lakshman en Malik, voor het Inbox Search probleem van Facebook.
+De moeilijkheid bij hier was dat er een systeem nodig was die een hoge throughput nodig heeft, miljarden write operaties per dag moet aankunnen en kan mee schalen met het aantal gebruiker \citep{lakshman2010cassandra}.
+Om tot deze oplossing te komen baseerden Lakshman en Malik zich op twee andere projecten.
 
+Een eerste project waarop gebaseerd is, is Google BigTable.
+Google BigTable had namelijk al een oplossing voor een eerste probleem dat Lakman en Malik moesten oplossen: een schaalbare database zonder realtime antwoorden op te offeren \citep{chang2008bigtable}.
+Lakhmeshs vorige project, Amazon Dynamo, was de tweede inspiratiebron voor Cassandra.
+Dynamo loste eerder al voor een hoge betrouwbaarheid bij een schaalbare database \citep{decandia2007dynamo}.
+
+Hoewel er nu nog steeds voldaan wordt aan de voorwaarden om een oplossing te zijn voor het oorspronkelijk probleem van Facebook, is Cassandra verder blijven groeien sinds 2008.
+Zo kan Cassandra nu bijvoorbeeld ook overweg met gestructureerde, semi-gestructureerde en ongestructureerde data \citep{kan2014cassandra}.
 
 \section{Probleemstelling en Onderzoeksvragen}
 \label{sec:onderzoeksvragen}
 
-Cassandra belooft een groot aantal zaken en binnen deze bachelorproef is het de bedoeling om na te gaan 
-
 % TODO: Wees zo concreet mogelijk bij het formuleren van je
 % onderzoeksvra(a)g(en). Een onderzoeksvraag is trouwens iets waar nog
 % niemand op dit moment een antwoord heeft (voor zover je kan nagaan).
+
+Cassandra belooft een groot aantal zaken en binnen deze bachelorproef is het de bedoeling om na te gaan.
+Eerst en vooral wil de schaalbaarheid van Cassandra gecontroleerd worden.
+Is het werkelijk eenvoudig om de database op verschillende eenvoudige servers te installeren?
+Een tweede punt dat nagegaan wordt is de betrouwbaarheid van Cassandra.
+Is er werkelijk geen single point of failure en in hoever zijn backups nodig binnen deze omgeving.
