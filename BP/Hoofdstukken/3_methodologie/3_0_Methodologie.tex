@@ -9,27 +9,34 @@
 
 Om een antwoord te bieden op alle onderzoeksvragen werd deze bachelorproef opgesplitst in twee luiken.
 Het eerste luik omvat het eerder theoretisch gedeelte, waar een literatuurstudie aan te pas kwam.
-Het tweede luik omvat het praktisch gedeelte die nodig was om op een aantal vragen een antwoord te krijgen.
+Het tweede luik omvat het praktisch gedeelte die nodig was om op een aantal vragen een antwoord te bieden.
 
 In het theoretisch gedeelte komt zoals eerder vermeld de literatuurstudie aan bod.
-Hierin wordt dieper in gegaan op de architectuur, hoe data opgeslagen wordt binnen Cassandra, wat er juist bedoeld wordt met het meervoudig opslaan van data, hoe belangrijk back-ups zijn binnen dit systeem en voor welke problemen Cassandra een oplossing biedt\dots
+Hierin wordt dieper ingegaan op: 
+\begin{itemize} 
+	\item Hoe wordt de data fysiek opgeslagen binnen Cassandra?
+	\item Hoe wordt de data logisch opgeslagen binnen Cassandra?
+	\item Wat wordt er juist bedoeld met het meervoudig opslaan van data?
+	\item Hoe belangrijk zijn back-ups binnen dit systeem?
+	\item Voor welke problemen biedt Cassandra een oplossing?
+\end{itemize}
 
-Om dit alles te kunnen nagaan werd het praktisch gedeelte opgezet.
+Om dit alles na te kunnen gaan werd het praktisch gedeelte opgezet.
 Eerst moest er een Cassandra cluster opgezet worden.
 Dit gebeurde aan de hand van Vagrant virtuele machines.
 Er werd geopteerd voor Vagrant omdat dit een snelle manier is om verschillende identieke virtuele machines op te zetten.
 Ook kon aan de hand van één enkel script de volledige omgeving gecontroleerd worden.
-Voor de installatie van Cassandra werd eerst gekozen om met de apache versie te werken.
+Voor de installatie van Cassandra werd eerst gekozen om met de Apache versie te werken.
 Het idee hiervan was om met de meest recente versie te werken.
-Om praktische reden werd later verkozen om via het OpsCenter Community Edition van Datastax te werken.
-Deze tool maakte het mogelijk om via een webinterface de databank Cassandra te beheren en te monitoren.
-Door gebruik te maken van deze opzet konden snel nodes toegevoegd of verwijderd worden binnen de cluster, via deze opzet kon de schaalbaarheid makkelijk getest worden.
+Om praktische redenen werd later gekozen om via het OpsCenter Community Edition van DataStax te werken.
+Deze tool maakte het mogelijk om via een webinterface de databank Cassandra te beheren en te observeren.
+Door gebruik te maken van deze opzet konden binnen de cluster snel nodes toegevoegd of verwijderd worden en via deze opzet kon de schaalbaarheid makkelijk getest worden.
 
-Toen deze cluster opgezet was, werd de data die voorzien werd door de Universiteit van Gent ingeladen in deze virtuele cluster.
-Voor deze data ingeladen kon worden moest eerst stilgestaan worden bij het datamodel van deze data.
+Toen deze cluster opgezet was, werd de data die aangeboden werd door de Universiteit van Gent ingeladen in deze virtuele cluster.
+Voor deze data kan ingeladen worden, moest er eerst stilgestaan worden bij het datamodel van deze data.
 Deze data werd dus ook gebruikt om uit te leggen hoe je het best een datamodel opstelt binnen Cassandra.
 Hier werd eveneens kort stil gestaan bij het verschil tussen datamodellering binnen een relationele databank en Cassandra. 
 
 In een laatste deel moest ook nog de betrouwbaarheid van Cassandra getest worden.
-Hier werd doelbewust een van de virtuele machines, een van de nodes van de databank, uitgeschakeld om te zien hoe Cassandra hierop reageert.
+Hier werd doelbewust één van de virtuele machines (een van de nodes van de databank) uitgeschakeld om te zien hoe Cassandra hierop reageert.
 Doordat dit in een virtuele omgeving gebeurde is er geen risico op verlies van kritieke data.
