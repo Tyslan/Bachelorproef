@@ -10,25 +10,31 @@
 \section{NoSQL}
 Sinds de term voor het eerst in 1998 gebruikt werd door Carlo Strozzi, is er veel te doen rond NoSQL databanken.
 Toen hij deze term de wereld instuurde bedoelde Strozzi dat de databank die op dat moment besproken werd geen SQL interface aanbood.
-Dit wijkt af van wat nu onder NoSQL verstaan wordt.
-NoSQL wordt nu begrepen als not only SQL, wat erop wijst dat er meerdere manieren zijn om data op te slaan.
-Deze familie databanken maken 
+In 2009 werd de term NoSQL opnieuw gebruikt oor Johan Oskarsson als hashtag voor een meetup waar de problemen met relationele databanken het de huidige manier van programmeren besproken gingen worden.
+Nu wordt NoSQL begrepen als not only SQL, wat erop wijst dat er meerdere manieren zijn om data op te slaan. \citep{GOTO2013Introduction}
 
-NoSQL databanken vinden hun oorsprong in de verschillen tussen een relationeel model en het object geörienteerd programmeren, het zogenoemde "impedance mismatch", het feit dat relationele databanken vaak niet goed werken op een cluster of met grote hoeveelheden realtime data\dots
-Hierdoor maken NoSQL databanken vaak geen gebruik van een relationeel model, zijn gemaakt om op clusters te werken.
-Kortom ze zijn aangepast om de problemen die zich nu voordoen binnen de Informatica aan te pakken. \citep{Sadalage2014OverviewNoSQL}
+NoSQL databanken vinden hun oorsprong in de verschillen tussen een relationeel model en het object georiënteerd programmeren, het zogenoemde "impedance mismatch", het feit dat relationele databanken vaak niet goed werken op een cluster of met grote hoeveelheden realtime data\dots
+Hierdoor maken NoSQL databanken vaak geen gebruik van een relationeel model, zijn gemaakt om op clusters te werken, zijn ze schema-less\dots
+Kortom databanken onder de noemer NoSQL zijn aangepast om de problemen die zich nu voordoen binnen de Informatica aan te pakken. \citep{Fowler2012NoSQLDef}
 
-Met de opkomst van NoSQL databanken zijn er 4 grote types naar voor gekomen, namelijk key-value stores (Riak, Redis...), document stores (MongoDB, CouchDB...), Column Family Stores (Cassandra, HBase...) en Graph databases (Neo4J, Infinite Graph...). 
-Deze NoSQL databanken kwamen er in reactie op de problemen die men ondervond met relationele databanken. 
+\cite{Sadalage2014OverviewNoSQL} zegt dat binnen de NoSQL databanken vier grote types naar voor zijn gekomen, namelijk key-value stores (Riak, Redis\dots), document stores (MongoDB, CouchDB\dots), Column Family Stores (Cassandra, HBase\dots) en Graph databases (Neo4J, Infinite Graph\dots).
+Elk van deze types heeft zijn eigen specifieke use cases.
+Zelf binnen de verschillende types zijn er nog verschillende use cases.
 
 \section{Cassandra}
 
 In het vervolg van deze bachelorproef wordt de focus gelegd op de NoSQL databank Cassandra.
+Cassandra is een NoSQL database die focust op schaalbaarheid en beschikbaarheid, zonder aan performantie in te boeten.
+Cassandra is op dit moment een productiewaardige database.
+Enkele bekende gebruikers van Cassandra zijn Facebook, Apple, Netflix, GitHub, Instagram, GoDaddy\dots 
+
 % Wat geschiedenis van Cassandra.
 
 
 \section{Probleemstelling en Onderzoeksvragen}
 \label{sec:onderzoeksvragen}
+
+Cassandra belooft een groot aantal zaken en binnen deze bachelorproef is het de bedoeling om na te gaan 
 
 % TODO: Wees zo concreet mogelijk bij het formuleren van je
 % onderzoeksvra(a)g(en). Een onderzoeksvraag is trouwens iets waar nog
