@@ -4,19 +4,19 @@
 \section{Importeren via cqlsh}
 Om de data via cqlsh te kunnen importeren dient eerst een keyspace aangemaakt te worden.
 Bij het aanmaken van deze keyspace dient de replicatie strategie en de replicatie factor meegegeven te worden.
-Na het aanmaken dient de tabel waarin de data zal worden geïmporteerd worden aangemaakt te worden.
+Na het aanmaken van de keyspace, dient hierin de tabel waarin de data geïmporteerd zal  worden aangemaakt te worden.
 
-Nu kunnen we via het "COPY" commando, dat binnen cql voorzien is om data importeren in Cassandra \citep{Cannon2012Import}.
-Een aantal zaken dient hierbij opgemerkte te worden.
+Nu kunnen we via het 'COPY' commando, dat binnen cql voorzien is om data te importeren in Cassandra \citep{Cannon2012Import}.
+Een aantal zaken dienen hierbij opgemerkt te worden.
 
 \begin{enumerate}
 	\item De volgorde van de kolommen kan gespecificeerd worden aangezien Cassandra de kolommen automatisch alfabetisch sorteert en dit niet noodzakelijk het geval is bij het csv bestand.
-	\item De scheidingsteken van de velden in het csv bestand kan gespecificeerd worden evenals de encapsulering van de velden.
+	\item Het scheidingsteken van de velden in het csv bestand kan gespecificeerd worden evenals de encapsulering van de velden.
 	\item Er kan specifiek meegegeven worden wat Cassandra moet aanvangen met de null waarde.
 \end{enumerate}
 
 Dit is een zeer eenvoudige manier om data te importeren in Cassandra.
-Toch wordt dit deze methode niet aangeraden om te gebruiken bij het importeren van grote hoeveelheden data.
+Toch wordt deze methode niet aangeraden om te gebruiken bij het importeren van grote hoeveelheden data.
 Bij ca. 1 miljoen rijen, afhankelijk van het aantal kolommen, kan het zijn dat deze methode vast loopt.
 Dit kan men op een aantal manieren oplossen.
 De drie meest voorkomende zijn:
