@@ -2,33 +2,35 @@
 \label{ch:cassandra_cluster}
 
 \section{Apache Cassandra}
-Om te beginnen aan het opzetten van de van de clusters werd geopteerd om gebruik te maken van virtuele machines, die geconfigureerd werden met Vagrant.
+Om de cluster op te zetten werd geopteerd om gebruik te maken van virtuele machines, die geconfigureerd werden met Vagrant.
 
-In een eerste poging om een werkende Cassandra cluster te bekomen werd er op elke Vagrant machine Cassandra 3.3, op moment van schrijven de meest recente versie, geïnstalleerd.
-Nadat dit was gebeurd dienden nog enkele stappen te voltooid worden om een werkende cluster te bekomen \citep{DataStax2016}.
-De configuratie op deze manier gaf echter veel problemen, Cassandra werd telkens na enkele bewerkingen onbruikbaar met de foutboodschap "could not access pidfile for Cassandra".
-Een eerste oplossing voor dit probleem was om te zorgen dat de user cassandra toegang had tot de pidfile, want namelijk niet het geval was doordat de installatie van Cassandra werd uitgevoerd door de vagrant setup.
+In een eerste poging om een werkende Cassandra cluster te bekomen werd op elke Vagrant machine Cassandra 3.3, op het moment van dit onderzoek de meest recente versie, geïnstalleerd.
+Nadat dit gebeurd was, dienden nog enkele stappen voltooid te worden om een werkende cluster te bekomen \citep{DataStax2016}.
+Deze configuratie gaf echter veel problemen.
+Cassandra werd na enkele bewerkingen telkens onbruikbaar en gaf de volgende foutmelding weer: "could not access pidfile for Cassandra".
+Een eerste oplossing voor dit probleem was om ervoor te zorgen dat de user 'cassandra' toegang had tot de pidfile, wat namelijk niet het geval was doordat de installatie van Cassandra werd uitgevoerd door de Vagrant setup.
 Maar ook dit leverde weinig resultaat op.
-Wel dient opgemerkte te worden dat deze installatie van Cassandra zelf geen problemen met zich meebracht.
-Voor het aanpassen van de configuratie file van Cassandra werkte deze perfect op iedere node.
+Wel moet opgemerkt worden dat de installatie van Cassandra zelf geen problemen met zich meebracht.
+Voor de aanpassing van de configuratie file van Cassandra werkte deze perfect op iedere node.
 
 \section{DataStax OpsCenter}
 
-Uiteindelijk werd er geopteerd om gebruik te maken van OpsCenter omdat dit een gemakkelijke manier is om snel een Cassandra cluster te bekomen en omdat dit ook goede mogelijkheden tot monitoren van de database voorziet.
-Van het OpsCenter werd er voor de community edition 5.2.4 gekozen.
-Hiermee komt Cassandra 2.1.11 geïnstalleerd \citep{Cantoni2016}.
+Uiteindelijk werd er geopteerd om gebruik te maken van OpsCenter omdat dit een gemakkelijke manier is om snel een Cassandra cluster te bekomen en omdat er ook goede mogelijkheden tot observeren van de database aanwezig zijn.
+Er werd voor OpsCenter community edition 5.2.4 gekozen.
+Bij deze versie diende Cassandra 2.1.11 gebruikt te worden \citep{Cantoni2016}.
 
-De setup bestaat uit 1 master node waarop het OpsCenter runt en dan 3 slave nodes waar de uiteindelijke Cassandra database op komt te runnen.
-Na de NAT router van Oracle Virtual Box werd een privaat netwerk opgezet zodanig deze machines met elkaar konden communiceren.
-Hiervoor moest elke machine een ip-adres krijgen binnen het netwerk en ook de /etc/hosts aangepast worden.
-In bijlage A kunnen de scripts hiervoor teruggevonden worden.
+De setup bestaat uit één master node waarop het OpsCenter runt en verder uit drie slave nodes waarop de uiteindelijke Cassandra database komt te runnen.
+Na de NAT router van Oracle Virtual Box werd een privaat netwerk opgezet opdat deze machines met elkaar zouden kunnen communiceren.
+Hiervoor moest iedere machine een uniek ip-adres krijgen binnen het netwerk en moest de file /etc/hosts op iedere node aangepast worden.
+De scripts hiervoor kunnen in bijlage A teruggevonden worden.
 
-Eenmaal de virtuele machines correct geconfigureerd waren, werd er overgegaan tot de eigenlijke installatie van Cassandra.
-Zoals eerder vermeld werd hiervoor gebruik gemaakt van het OpsCenter.
-Hiervoor werd op de master node naar de localhost:8888 gesurft om de installatie te starten. Op de pagina dit te voorschijn komt werd voor de optie 'brand new cluster gekozen'.
+Eenmaal de virtuele machines correct geconfigureerd waren, kon overgegaan worden tot de eigenlijke installatie van Cassandra.
+Zoals eerder vermeld werd, werd hiervoor gebruik gemaakt van het OpsCenter.
+Daarom werd op de master node naar 'localhost:8888' gesurft om de installatie te kunnen  starten.
+Op de pagina werden verschillende opties aangeboden en hier werd voor de optie 'brand new cluster' gekozen.
 
 In het volgende venster wordt er om verschillende zaken gevraagd.
-Tabel \ref{tab:cas_conf} en figuur \ref{fig:cas_conf_1} geven weer hoe dit venster ingevuld werd.
+Tabel \ref{tab:cas_conf} en figuur \ref{fig:cas_conf_1} geven weer hoe dit venster werd ingevuld.
 
 \begin{table}[H]
   \begin{tabular}{|l|l|}
@@ -60,8 +62,8 @@ Tabel \ref{tab:cas_conf} en figuur \ref{fig:cas_conf_1} geven weer hoe dit venst
     \label{fig:cas_conf_1}
 \end{figure}
 
-Hier dient een datacenter toegevoegd te worden.
-Hierbij wordt de naam van het datacenter vrij gekozen en zijn de node properties het ip-adres van de slave nodes (Figuur: \ref{fig:cas_conf_2}).
+Hier moest een datacenter toegevoegd worden.
+Hierbij is er een vrije keuze voor de naam van het datacenter en zijn de node properties het ip-adres van de slave nodes (Figuur: \ref{fig:cas_conf_2}).
 
 \begin{figure}[H]
   	\centering
@@ -70,14 +72,14 @@ Hierbij wordt de naam van het datacenter vrij gekozen en zijn de node properties
     \label{fig:cas_conf_2}
 \end{figure}
 
-Eenmaal de datacenters zijn toegevoegd kan men verdergaan.
-Bij het drukken op de knop 'build cluster word nog gevraagd om de fingerprints van de nodes te accepteren.
+Eenmaal de datacenters toegevoegd zijn, kan er verder gegaan worden.
+Bij het drukken op de knop 'build cluster' wordt verder nog gevraagd om de fingerprints van de nodes te accepteren.
 
 Hierna begint OpsCenter met de installatie van de Cassandra cluster (Figuur: \ref{fig:cas_install}).
-Deze installatie neemt enkele ogenblikken in beslag.
-Als hier fouten voorkomen ligt dit veelal aan het feit dat er onvoldoende werkgeheugen aanwezig is op de slave nodes.
-In de setup die hier gebruikt werd het minimum aanvaarde geheugen geven aan de slave nodes, nl 2GB.
-Samen met Cassandra wordt ook de DataStax agent meegeïnstalleerd zodat het OpsCenter kan communiceren met iedere node.
+Deze installatie nam enige ogenblikken in beslag.
+De eerste keer kwam er een fout voor omdat er niet genoeg werkgeheugen was toegekend aan de slave nodes.
+In de setup die hier gebruikt werd, werd het minimum aanvaarde geheugen, nl 2GB, gegeven aan de slave nodes.
+Samen met Cassandra wordt ook de DataStax agent meegeïnstalleerd opdat het OpsCenter zou kunnen communiceren met iedere node.
 
 \begin{figure}[H]
 	\centering
@@ -101,10 +103,10 @@ Samen met Cassandra wordt ook de DataStax agent meegeïnstalleerd zodat het OpsC
 \end{figure}
 
 Na de installatie komt men terecht in het Dashboard van OpsCenter (Figuur \ref{fig:cas_opscenter_tour_dashboard}).
-Hierin worden een aantal zaken weergegeven zoals de gezondheid van de cluster, het aantal write requests, de write request latency, \ldots
-Hier kunnen nog meer grafieken aan toegevoegd worden via de knop "add graph".
-In het tabblad nodes kan gezondheid van de cluster bekeken worden evenals hoe de data verdeeld zit over de cluster.
-Deze informatie kan in ringvorm zoals op figuur \ref{fig:cas_opscenter_tour_nodes} weergegeven worden of in een lijst.
+Hierin worden een aantal zaken weergegeven zoals: de gezondheid van de cluster, het aantal write requests, de write request latency\ldot
+Hier kunnen nog meer grafieken aan toegevoegd worden door de knop 'add graph' te gebruiken.
+In het tabblad 'nodes' kan de gezondheid van de cluster bekeken worden net zoals gezien kan worden hoe de data verdeeld zit over de cluster.
+Deze informatie kan in ringvorm, zoals in figuur \ref{fig:cas_opscenter_tour_nodes} weergegeven wordt, of in een lijst weergegeven worden.
 
 \begin{figure}[H]
 	\centering
@@ -124,26 +126,26 @@ Deze informatie kan in ringvorm zoals op figuur \ref{fig:cas_opscenter_tour_node
 	\label{fig:cas_opscenter_tour}
 \end{figure}
 
-Cassandra voorziet zelf ook een tool die deze monitoring voorziet, nodetool.
-Om te bekijken of de installatie gelukt is kan men via ssh inloggen op een van de nodes van de cluster en hier nodetool laten lopen (Figuur \ref{fig:cas_nodetool}).
-Als men met nodetool de status opvraagt dan krijgt men eveneens alle nodes in de cluster te zien, samen het de hoeveelheid data die ze bevatten en hoeveel dit percentueel is van de data die aanwezig is in de cluster.
+Cassandra biedt zelf ook een tool aan die deze monitoring uitvoert: 'nodetool'.
+Om te bekijken of de installatie goed gelukt is, kan men via ssh inloggen op een van de nodes van de cluster en hier 'nodetool status' laten lopen (Figuur \ref{fig:cas_nodetool}).
+Als men met nodetool de status opvraagt, krijgt men eveneens alle nodes in de cluster te zien, samen met de hoeveelheid data die ze bevatten en hoeveel procent deze data voorstelt van alle data die op de cluster aanwezig is.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\textwidth]{img/4_installatie_cassandra/3_Node_setup}
-	\caption{Nodetool}
+	\caption{nodetool}
 	\label{fig:cas_nodetool}
 \end{figure}
 
 \section{Toevoegen van een node}
-Het proces van het toevoegen van een node is zeer gelijkaardig aan het opzetten van de cluster.
-Hierbij dient men in het OpsCenter bij het menu "cluster actions" voor de optie "add node" kiezen (Figuur \ref{fig:cas_add_node_1}).
+Het proces voor de toevoeging van een node is quasi gelijk aan het opzetten van de cluster.
+Hierbij dient men in het OpsCenter bij het menu 'cluster actions' voor de optie 'add node' te kiezen (Figuur \ref{fig:cas_add_node_1}).
 Hier wordt een vierde node toegevoegd aan de cluster.
-Net zoals bij de installatie van de cluster wordt opnieuw het scherm getoond waarin de aanmeld gegevens voor de gegeven node gevraagd worden (Figuur \ref{fig:cas_add_node_2}).
-Via de knop "Add/Expand Datacenter" kan men op dezelfde manier nodes toevoegen aan het bestaande datacenter die tijdens de installatie werd aangemaakt.
-Bij het bevestigen wordt opnieuw gevraagd om de fingerprint van de node te accepteren.
-Hierna begint de installatie van de software op de node, de agent en cassandra worden geïnstalleerd en geconfigureerd.
-Na dit alles kan men in het tabblad nodes, deze maal als een lijst, zien dat de nieuwe node is toegevoegd aan de cluster (Figuur: \ref{fig:cas_add_node_3}).
+Net zoals bij de installatie van de cluster wordt opnieuw het scherm getoond waarin de aanmeldgegevens voor de gegeven node gevraagd worden (Figuur \ref{fig:cas_add_node_2}).
+Via de knop 'Add/Expand Datacenter' kan men op dezelfde manier nodes toevoegen aan het bestaande datacenter die tijdens de installatie werd aangemaakt.
+Bij het bevestigen wordt opnieuw gevraagd om de fingerprint van de node te accepteren en hierna begint de installatie van de software op de node.
+Waardoor de agent en Cassandra geïnstalleerd en geconfigureerd worden.
+Na dit alles kan men in het tabblad 'nodes', nu in een lijstvorm, zien dat de nieuwe node is toegevoegd aan de cluster (Figuur: \ref{fig:cas_add_node_3}).
 
 \begin{figure}[H]
 	\centering
