@@ -1,21 +1,21 @@
 \chapter{Datamodellering in Cassandra}
 \label{ch:cassandra_modelling}
 \section{Primaire sleutel}
-Binnen de primaire sleutel in Cassandra worden de partitie (\ref{partition_key}) en clustering (\ref{clustering_key}) kolommen vastgelegd voor een tabel.
-In tegenstelling tot relationele databases dient de primaire sleutel hier niet als unieke sleutel voor de rij maar om snel te weten te komen waar de data zich bevindt \citep{kan2014cassandra}.
-Als een tabel slechts één kolom heeft als primaire sleutel dan is deze kolom meteen ook de partitie kolom en zijn er geen clustering kolommen.
+Binnen de primaire sleutel in Cassandra worden de partitie kolommen (\ref{partition_key}) en clustering kolommen (\ref{clustering_key}) vastgelegd voor een tabel.
+In tegenstelling tot relationele databases wordt de primaire sleutel hier niet gebruikt als unieke sleutel voor de rij, maar om snel te weten te komen waar de data zich binnen de cluster bevindt \citep{kan2014cassandra}.
+Als een tabel slechts één kolom heeft als primaire sleutel, dan is deze kolom meteen ook de partitie kolom en zijn er geen clustering kolommen.
 
-Door het feit dat de primaire sleutel in Cassandra niet uniek hoeft te zijn gedragen het INSERT commando en het UPDATE commando zich op een identieke wijze.
-Een nadeel hierbij is dat er geen waarschuwing wordt gegeven als er rij overschreven wordt.
+Door het feit dat de primaire sleutel in Cassandra niet uniek hoeft te zijn, gedragen het INSERT commando en het UPDATE commando zich op een identieke wijze.
+Een nadeel hiervan is dat er geen waarschuwing weergegeven wordt als een rij overschreven zou worden.
 Omdat dit veelal ongewenst gedrag is binnen applicaties komt men al snel terecht bij een samengestelde primaire sleutel, een primaire sleutel uit verschillende kolommen.
 
 \section{Partitie kolom}
 \label{partition_key}
 Het eerste deel van de primaire sleutel bestaat uit de partitie kolommen.
-Het doel van de partitie kolommen is om de data gebalanceerd over alle nodes te spreiden.
-Op deze manier kan de fysieke locatie van de data ook snel achterhaalt worden \citep{kan2014cassandra}.
+Het doel van deze partitie kolommen is om de data gebalanceerd over alle nodes te spreiden.
+Op deze manier kan de fysieke locatie van de data ook snel achterhaald worden \citep{kan2014cassandra}.
 
-Bij het kiezen van de partitie kolommen dient er met een aantal zaken rekening gehouden te worden om de data evenwichtig over alle nodes te spreiden, maar er is slechts één fysische restrictie.
+Bij het kiezen van de partitie kolommen dient men met een aantal zaken rekening te houden om de data evenwichtig over alle nodes te spreiden, maar er is slechts één fysische restrictie.
 Iedere rij kan slechts 2 miljard kolommen bevatten \citep{McFadin2013Timeseries}.
 In de meeste gevallen is dit ruim voldoende.
 Tijdsreeksen vormen hier een uitzondering op.
@@ -26,11 +26,11 @@ Hier is het dus zeer belangrijk om  goede partitie kolommen te kiezen of men kom
 \label{clustering_key}
 Het laatste deel van de primaire sleutel bestaat uit de clustering kolommen.
 Deze bepalen de volgorde van de data op de fysieke media \citep{strickland2014availability}.
-De clustering kolommen hebben echter geen invloed over op welke node de data wordt opgeslagen.
-Toch zullen ze een belangrijke invloed hebben op welke query's er uitgevoerd kunnen worden.
+De clustering kolommen hebben echter geen invloed op de fysieke locatie van de data binnen de cluster.
+Toch zullen ze een belangrijke invloed hebben op welke query's uitgevoerd kunnen worden.
 
 \section{De WHERE clausule}
-Zoals \cite{Lerer2015Where} aanhaalt is een van de grootste verschillen tussen CQL en SQL de WHERE clausule.
+Zoals \cite{Lerer2015Where} aanhaalt is één van de grootste verschillen tussen CQL en SQL de WHERE clausule.
 In SQL kent de WHERE clausule geen restricties.
 Bij CQL is dit anders.
 Hier worden restricties opgelegd door de partitie en clustering kolommen.
@@ -40,15 +40,17 @@ Eveneens kan er enkel op de partitie en clustering kolommen gefilterd worden.
 
 Een eerste restrictie die wordt opgelegd door de partitie kolommen is dat ofwel alle partitie kolommen worden opgenomen in de WHERE clausule ofwel geen enkel.
 Dit is nodig omdat Cassandra anders de hash niet kan berekenen.
-Deze hash is echter nodig om te weten op welke node de data zich bevind.
+Deze hash is echter nodig om te weten op welke node de data zich bevindt.
 
 Een volgende restrictie die wordt opgelegd door de partitie kolommen is het feit dat enkel de '=' en IN operator rechtstreeks gebruikt kunnen worden.
-Tot Cassandra 2.2 kon zelfs de IN operator enkel op de laatste gedefinieerde partitie kolom.
+Tot Cassandra 2.2 kon de IN operator enkel op de laatste gedefinieerde partitie kolom toegepast worden.
 
 De laatste restrictie die wordt opgelegd door de partitie kolommen heeft te maken met de >, >=, < en <= operators.
-Deze zijn enkel rechtstreeks toepasbaar als de partitioner ingesteld op ByteOrderedPartitioner.
+Deze zijn enkel rechtstreeks toepasbaar als de partitioner ingesteld is op ByteOrderedPartitioner.
 Indien dit niet het geval is moet men een omweg maken via de token functie.
-Op het eerste zicht lijkt het gebruik van de token functie minder efficiënt voor het selecteren van data, maar dit weegt niet op tegen de nadelen die ByteOrderedPartitioner heeft op gebied van de distributie van de data, zoals reeds eerder werd vermeld.
+Op het eerste zicht lijkt het gebruik van de token functie minder efficiënt voor het selecteren van data, maar dit weegt niet op tegen de nadelen die ByteOrderedPartitioner heeft op het gebied van de distributie van de data, zoals eerder vermeld werd.
+Wel dient hiermee opgepast te worden omdat de operators dan uitgevoerd worden op de tokens en niet rechtstreeks op de data.
+Dit levert niet altijd het gewenste resultaat op.
 
 \subsection{Restricties opgelegd door de clustering kolommen}
 Voor de restricties op de clustering kollomen uitgelegd kunnen worden, moet eerst uitgelegd worden hoe de data in Cassandra binnen een partitie opgeslagen wordt.
@@ -74,14 +76,14 @@ Hier wordt de data nu als volgt opgeslagen binnen de partitie:
 }
 \end{lstlisting}
 
-De eerste restrictie wordt hier opgelegd door de manier waarop de data opgeslagen zit.
+De eerste restrictie wordt hier opgelegd door de manier waarop de data opgeslagen is.
 Als men een voorwaarde wil vastleggen voor een clustering kolom, dan dienen de clustering kolommen die voor deze komen in de primaire sleutel ook vastgelegd te worden.
 Dit is nodig omdat Cassandra de data anders niet efficiënt kan terugvinden.
 
 Tot Cassandra 2.2 was de IN operator enkel toegelaten op de laatste clustering kolom.
-Sinds Cassandra 2.2 is deze restrictie vervallen en kan men nu zelf multi-kolom IN restricties opleggen.
+Sinds Cassandra 2.2 is deze restrictie vervallen en kan men zelfs multi-kolom IN restricties opleggen.
 
-De >, >=, < en <= operators ook enkel toegestaan op de laatste clustering kolom waar een restrictie is aan opgelegd.
+De >, >=, < en <= operators zijn ook enkel toegestaan op de laatste clustering kolom waar een restrictie aan opgelegd is.
 Toch is hier een oplossing voor aangezien men deze operators kan toepassen over meerdere kolommen.
 Bij deze multi-column slices is het echter wel belangrijk dat de restrictie van de WHERE clausule met dezelfde kolom start.
 
@@ -91,34 +93,34 @@ Zoals in bovenstaande sectie duidelijk werd, dient er bij Cassandra met heel wat
 Zoals door Hobbs aangegeven wordt, lijkt de querytaal van Cassandra CQL sterk op SQL, maar kan het gebruik ervan zeer verschillend zijn.
 
 Een eerste doel bij het opstellen van een datamodel in Cassandra is om de data evenwichtig over alle nodes te verspreiden.
-Dit kan bekomen worden door de partitie kolommen goeed te kiezen.
+Dit kan bekomen worden door de partitie kolommen goed te kiezen.
 Zoals eerder vermeld is, worden de partitie kolommen bepaald door het eerste deel van de primaire sleutel.
 
 Een tweede doel is om zo weinig mogelijk partitie reads te moeten doen.
 Doordat iedere partitie op een andere node kan staan is dit belangrijk.
-Als de partities effectief op verschillende nodes staan moet de afzonderlijke commando's naar elke node apart verstuurd worden en dit zorgt voor overhead.
+Als de partities effectief op verschillende nodes staan moeten de afzonderlijke commando's naar elke node apart verstuurd worden en dit zorgt voor overhead.
 Het is zelfs zo dat als de data op dezelfde node staat, de partitie reads nog steeds inefficiënt zijn.
 Dit komt door de manier waarop Cassandra de rijen opslaat.
 
-Zaken die bij relationele databanken belangrijk zijn zoals het aantal writes en data duplicatie minimaliseren zijn binnen Cassandra geen doelen.
-In Cassandra zijn write goedkoop omdat Cassandra hiervoor geoptimaliseerd is.
+Zaken die bij relationele databanken belangrijk zijn zoals het aantal writes en data duplicatie minimaliseren, zijn binnen Cassandra geen doelen.
+In Cassandra zijn write operaties goedkoop omdat Cassandra hiervoor geoptimaliseerd is.
 Denormalisatie en duplicatie van data zijn ook zeer normaal binnen Cassandra.
 Dit komt door de architectuur van Cassandra.
-Hierbij gaat men ervan uit dat schijfruimte goedkoop is in vergelijking met andere resources zoals CPU, geheugen, netwerk \ldots
-Ook geeft Cassandra geen JOIN waardoor het ook hoogst inefficiënt en onpraktisch zou zijn om geen duplicate data te hebben.
+Hierbij gaat men ervan uit dat schijfruimte goedkoop is in vergelijking met andere resources zoals CPU, geheugen, netwerk\dots
+Verder heeft Cassandra geen JOIN waardoor het ook hoogst inefficiënt en onpraktisch zou zijn om geen duplicate data te hebben.
 
 \section{Datamodel opstellen voor Cassandra}
 \cite{Hobbs2015Datamodelling} definieerde niet enkel de doelen van een datamodel in Cassandra, maar haalt ook aan hoe deze bekomen kunnen worden.
-Voor men begint aan het opstellen van een datamodel moet al nagedacht worden over de query's die ondersteunt moeten worden.
+Voor men begint aan het opstellen van een datamodel moet al nagedacht worden over de query's die ondersteund moeten worden.
 Dit staat in schril contrast met relationele databanken waar het datamodel wordt bepaald door de objecten en hun relaties.
 
-Door na te denken over de te ondersteunen query's kan het aantal partitie read al drastisch verminderd worden.
-Ook dient men rekening te houden met de restricties die de partitie en clustering kolommen opleggen aan de where clausule.
+Door na te denken over de te ondersteunen query's kan het aantal partitie reads al drastisch verminderd worden.
+Ook dient men rekening te houden met de restricties die de partitie en clustering kolommen opleggen aan de WHERE clausule.
 
 Voor iedere query zou er slechts één partitie read uitgevoerd mogen worden.
 Hiervoor is het belangrijk dat de tabellen geoptimaliseerd zijn voor de reads die uitgevoerd gaan worden.
 
-Een goed voorbeeld wordt ook gegeven door \cite{Hobbs2015Datamodelling} waar alle zaken meteen duidelijk worden.
+Een goed voorbeeld waarin alle zaken meteen duidelijk worden, wordt ook gegeven door \cite{Hobbs2015Datamodelling} .
 In dit voorbeeld is het de bedoeling om users op het halen volgens hun email of username.
 De oplossing voor Cassandra zijn de volgende twee tabellen:
 
@@ -136,9 +138,9 @@ CREATE TABLE users_by_email (
 )
 \end{lstlisting}
 
-Bij dit datamodel is de krijg iedere user zijn eigen partitie.
+Bij dit datamodel krijgt iedere user zijn eigen partitie.
 Cassandra kan zo de data evenwichtig verdelen over de nodes.
-Ook dient om een user op te zoeken via een email of username slechts één partitie gelezen te worden.
+Om een user op te zoeken via een email of username dient slechts één partitie gelezen te worden.
 
 Stel dat men nu zou proberen om redundante data te verminderen, wat in Cassandra geen doel mag zijn, met de volgende tabellen:
 
