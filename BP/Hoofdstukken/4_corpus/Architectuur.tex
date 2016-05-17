@@ -52,17 +52,44 @@ Ondanks dit feit zijn er toch een aantal problemen met deze partitioner.
 \end{itemize}
 
 \section{Replicatie}
-% p19
-% High availability p39 en p63
 Om de hoge beschikbaarheid te verkrijgen maakt Cassandra gebruik van data replicatie.
 Door de replicatie wordt de kans op een "Single point of Failure" enorm ingeperkt.
 Cassandra voorziet een methode om de replicatie factor blijft behouden zelfs als bepaalde nodes uitgevallen zijn.
 Deze replicatie factor wordt ingesteld op keyspace niveau.
-Op basis van de partitioner wordt hier bepaalt waar de replicata's opgeslagen worden.
-Om deze replicatie in goede banen te leiden zijn er een aantal strategieën voorzien.
+De replicatie factor bepaald hoeveel replica's er van de data worden bijgehouden.
+Op basis van de partitioner en de replicatie strategie wordt  bepaalt waar de replica's opgeslagen worden.
+Om deze replicatie in goede banen te leiden zijn er een aantal strategieën voorzien \citep{kan2014cassandra}.
 
 \subsection{Replicatie strategieën}
 % p63
+De replicatie strategie bepaald hoe de data precies op de cluster geplaatst wordt.
+Hierbij zijn twee strategieën:
+
+\subsubsection{SimpleStrategy}
+Deze SimpleStrategy wordt meestal gebruikt als er maar één datacenter aanwezig is.
+Wanneer men over meerdere datacenters beschikt is het beter om naar de andere strategie te kijken.
+Wanneer de standaard partitioner, Murmer3Partitioner, gebruikt wordt gaat de partitioner de locatie bepalen a.d.h.v. de hash van de primaire sleutel.
+De replica's van de data geplaatst op de volgende nodes in de ring met de richting van de klok mee.
+	
+Op figuur \ref{fig:simple_strategy} wordt een voorbeeld gegeven waarbij de replicatie factor 3 is.
+De zwarte namen zijn de originele date en de grijze de replica's.
+	
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\textwidth]{img/4_architectuur/SimpleStrategy}
+	\caption{Illustratie SimpleStrategy \citep{strickland2014availability}}
+	\label{fig:simple_strategy}
+\end{figure}
+	
+	
+\subsubsection{NetworkTopologyStrategy}
+Op productie clusters wordt er vaak NetworkTopologyStragegy toegepast.
+Hierbij gaat men ervan uit dat een productie cluster uit meerdere datacenters bestaat of in de toekomst meerdere datacenters zal bevatten.
+
+Het grote voordeel van deze strategie is dat er rack awareness is en dat de snitches ingesteld kunnen worden.
+Rack awareness zorgt ervoor dat de replica's op verschillende racks worden opgeslagen.
+Dit is niet mogelijk bij simple strategy.
+Ook kan men via deze strategy voor ieder datacenter een andere replicatie factor instellen.
 
 \section{Snitches}
 % p20
