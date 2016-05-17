@@ -20,13 +20,24 @@ Er zijn drie soorten partitioners in Cassandra:
 
 \begin{enumerate}
 	% p81
-	\item \textbf{Murmur3Partitioner}:
-	
+	\item \textbf{RandomPartitioner}:
+	Dit was de standaard partitioner tot Cassandra 1.2.
+	Via de MD5 hash van de rijsleutel probeert deze partitioner de data evenwichtig over alle nodes te verspreiden.
+	Omdat de MD5 Hash functie vrij traag is, werd er een andere partitioner als standaard aangesteld.
 	
 	% p81
-	\item \textbf{RandomPartitioner}:
+	\item \textbf{Murmur3Partitioner}:
+	Sinds Cassandra 1.2 is dit de standaard partitioner van Cassandra.
+	Deze partitioner maakt gebruik van de MurmurHash functie.
+	De hash wordt op deze manier een 64-bit hashwaarde van de rijsleutel.
+	
 	% p82
 	\item \textbf{ByteOrderedPartitioner}:
+	Zoals de naam doet vermoeden wordt deze partitioner gebruikt voor geordende partitionering.
+	Deze partitioner ordent de rijen volgens de bytes van de rijsleutel.
+	De tokens worden berekend a.d.h.v. hexadecimale representatie van de leidende tekens van de rijsleutel.
+	Op deze manier kan men, net zoals men met een cursor in een SQL onmgeving zou doen, de tabel geordend overlopen op primaire sleutel.
+	
 \end{enumerate}
 
 \section{Replicatie}
