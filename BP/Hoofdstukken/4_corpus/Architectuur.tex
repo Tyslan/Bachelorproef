@@ -7,15 +7,31 @@
 
 %Structuur van Cassandra Data Modeling and Analysis
 \section{Partitionering}
-% p18
-\subsection{Murmur3Partitioner}
-% p81
-\subsection{RandomPartitioner}
-% p81
-\subsection{ByteOrderedPartitioner}
-% p82
+% DM p18 -- desc 5.1 -- HA p57
+Een van de belangrijkste zaken bij Cassandra is het horizontaal schalen.
+Om dit te kunnen doen moet de data dynamisch gepartitioneerd worden over de nodes van een cluster.
+Dit wordt bij Cassandra voor elkaar gekregen door het gebruik van partitioners.
+Deze partitioners maken gebruik van hash functies om te bepalen op welke node de data moet geplaatst worden.
+Bij consistente hashing bij Cassandra wordt de output behandeld als een "ring".
+Elke node in de cluster krijgt een willekeurige waarde toegewezen en deze waarde bepaald dan de plaats in de ring \citep{lakshman2010cassandra}.
+
+
+Er zijn drie soorten partitioners in Cassandra:
+
+\begin{enumerate}
+	% p81
+	\item \textbf{Murmur3Partitioner}:
+	
+	
+	% p81
+	\item \textbf{RandomPartitioner}:
+	% p82
+	\item \textbf{ByteOrderedPartitioner}:
+\end{enumerate}
+
 \section{Replicatie}
 % p19
+% High availability p63
 \section{Snitches}
 % p20
 \section{Seed node}
