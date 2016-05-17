@@ -2,12 +2,9 @@
 \label{ch:cassandra_architectuur}
 % Peer to peer
 % Cluster en snitches en partitioners
-% Partitioneren via hashing (Lakhman 5.1)
-%% Strong case against ByteOrderedPartitioner
 
 %Structuur van Cassandra Data Modeling and Analysis
 \section{Partitionering}
-% DM p18 -- desc 5.1 -- HA p57
 Een van de belangrijkste zaken bij Cassandra is het horizontaal schalen.
 Om dit te kunnen doen moet de data dynamisch gepartitioneerd worden over de nodes van een cluster.
 Dit wordt bij Cassandra voor elkaar gekregen door het gebruik van partitioners.
@@ -56,7 +53,17 @@ Ondanks dit feit zijn er toch een aantal problemen met deze partitioner.
 
 \section{Replicatie}
 % p19
-% High availability p63
+% High availability p39 en p63
+Om de hoge beschikbaarheid te verkrijgen maakt Cassandra gebruik van data replicatie.
+Door de replicatie wordt de kans op een "Single point of Failure" enorm ingeperkt.
+Cassandra voorziet een methode om de replicatie factor blijft behouden zelfs als bepaalde nodes uitgevallen zijn.
+Deze replicatie factor wordt ingesteld op keyspace niveau.
+Op basis van de partitioner wordt hier bepaalt waar de replicata's opgeslagen worden.
+Om deze replicatie in goede banen te leiden zijn er een aantal strategieën voorzien.
+
+\subsection{Replicatie strategieën}
+% p63
+
 \section{Snitches}
 % p20
 \section{Seed node}
