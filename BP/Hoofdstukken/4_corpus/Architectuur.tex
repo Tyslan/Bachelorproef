@@ -11,6 +11,7 @@
 Een van de belangrijkste zaken bij Cassandra is het horizontaal schalen.
 Om dit te kunnen doen moet de data dynamisch gepartitioneerd worden over de nodes van een cluster.
 Dit wordt bij Cassandra voor elkaar gekregen door het gebruik van partitioners.
+De partitioner wordt ingesteld op cluster niveau.
 Deze partitioners maken gebruik van hash functies om te bepalen op welke node de data moet geplaatst worden.
 Bij consistente hashing bij Cassandra wordt de output behandeld als een "ring".
 Elke node in de cluster krijgt een willekeurige waarde toegewezen en deze waarde bepaald dan de plaats in de ring \citep{lakshman2010cassandra}.
@@ -19,19 +20,16 @@ Elke node in de cluster krijgt een willekeurige waarde toegewezen en deze waarde
 Er zijn drie soorten partitioners in Cassandra:
 
 \begin{enumerate}
-	% p81
 	\item \textbf{RandomPartitioner}:
 	Dit was de standaard partitioner tot Cassandra 1.2.
 	Via de MD5 hash van de rijsleutel probeert deze partitioner de data evenwichtig over alle nodes te verspreiden.
 	Omdat de MD5 Hash functie vrij traag is, werd er een andere partitioner als standaard aangesteld.
 	
-	% p81
 	\item \textbf{Murmur3Partitioner}:
 	Sinds Cassandra 1.2 is dit de standaard partitioner van Cassandra.
 	Deze partitioner maakt gebruik van de MurmurHash functie.
 	De hash wordt op deze manier een 64-bit hashwaarde van de rijsleutel.
 	
-	% p82
 	\item \textbf{ByteOrderedPartitioner}:
 	Zoals de naam doet vermoeden wordt deze partitioner gebruikt voor geordende partitionering.
 	Deze partitioner ordent de rijen volgens de bytes van de rijsleutel.
@@ -39,6 +37,22 @@ Er zijn drie soorten partitioners in Cassandra:
 	Op deze manier kan men, net zoals men met een cursor in een SQL onmgeving zou doen, de tabel geordend overlopen op primaire sleutel.
 	
 \end{enumerate}
+
+\subsection{Problemen met de ByteOrderedPartitioner}
+De ByteOrderedPartitioner blijkt een oplossing te bieden om tabellen te verkrijgen die gesorteerd zijn op de primaire sleutel.
+Ondanks dit feit zijn er toch een aantal problemen met deze partitioner.
+
+\begin{itemize}
+	\item Sequentiële writes kunnen voor "hot spots" zorgen.
+	Als een aantal rijen ongeveer gelijktijdig toevoegt of updatet, dan worden deze quasi zeker op dezelfde node weggeschreven.
+	Dit is zeker een probleem voor tijdreeksen \citep{kan2014cassandra}.
+	
+	\item Met de ByteOrderedPartitioner is het zeer moeilijk om een gebalanceerde cluster te krijgen.
+	De enige manier waarop dit verkregen kan worden is om dit manueel te doen.
+	Als men dit echter niet doet is de kans vrij groot dat de data op slechts enkele nodes van de cluster opgeslagen word.
+	Als men dan nog eens verschillende types zijn voor de primaire sleutels dan is het zo goed als onmogelijk om een gebalanceerde cluster te krijgen
+	\citep{Bauer2013CaseAgainstByteOrder}.
+\end{itemize}
 
 \section{Replicatie}
 % p19
