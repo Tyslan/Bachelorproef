@@ -2,8 +2,17 @@
 \label{ch:cassandra_uitval}
 
 \section{Gossip en foutdetectie}
-% DM p21
-% HA p70
+De nodes van Cassandra communiceren ongeveer iedere seconde met elkaar om informatie over hun eigen status en over de status van andere nodes waarmee ze in contact staan.
+Hiervoor maakt Cassandra gebruik van een peer-to-peer protocol.
+Op deze manier kunnen nodes snel de status van andere nodes weten.
+Deze informatie wordt ook lokaal opgeslagen.
+
+Cassandra gebruikt het "Phi Accrual Failure Detection Algoritm" voor het detecteren van het uitvallen van nodes \citep{kan2014cassandra}.
+Het idee bij dit algoritme is dat de status niet weergegeven wordt door een booleaanse waarde, dood of levend, maar door een waarde die aangeeft hoe groot de kans is dat een node dood of leven is.
+Als een node op deze manier dood verklaard wordt, blijven de andere nodes toch nog communiceren met deze node om ze te bepalen wanneer deze terug levend is.
+
 \section{Herstelmechanisme}
 % DM p24
-% HA p74
+% HA p70 p74
+
+\section{Ondervindingen bij het uitzetten van een node}
