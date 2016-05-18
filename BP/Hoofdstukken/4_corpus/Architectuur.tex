@@ -92,8 +92,6 @@ Dit is niet mogelijk bij simple strategy.
 Ook kan men via deze strategy voor ieder datacenter een andere replicatie factor instellen.
 
 \section{Snitches}
-% p20
-% p68 High Availability
 Een snitch is verantwoordelijk om de data snel en efficiënt op te halen binnen de cluster.
 Een andere verantwoordelijkheid van een snitch is om mee te helpen bepalen waar de replica's fysiek opgeslagen worden.
 Er zijn acht soorten snitches beschikbaar op Cassandra \citep{strickland2014availability}.
@@ -139,7 +137,11 @@ Voor productie omgevingen is GossipingPropertyFileSnitch meestal de beste keuze 
 Als men in de cloud werkt kiest men best voor de bijhorende snitch.
 
 \section{Seed node}
-% p20
+Sommige nodes in de Cassandra cluster zijn seed nodes.
+De configuratie van deze seed node wordt gebruikt bij het bootstrapping proces als er nieuwe nodes aan de cluster toegevoegd worden.
+De nieuwe node zal eerst communiceren met de seed node om zo informatie over de andere nodes in de cluster te bekomen.
+Hoewel er technisch gezien maar één seed node nodig is per cluster, is het toch sterk aangeraden om meerdere seed nodes per datacenter te voorzien \citep{kan2014cassandra}.
+
 \section{Gossip en foutdetectie}
 % p21
 \section{Herstelmechanisme}
