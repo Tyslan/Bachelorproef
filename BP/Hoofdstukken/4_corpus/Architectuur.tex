@@ -93,6 +93,51 @@ Ook kan men via deze strategy voor ieder datacenter een andere replicatie factor
 
 \section{Snitches}
 % p20
+% p68 High Availability
+Een snitch is verantwoordelijk om de data snel en efficiënt op te halen binnen de cluster.
+Een andere verantwoordelijkheid van een snitch is om mee te helpen bepalen waar de replica's fysiek opgeslagen worden.
+Er zijn acht soorten snitches beschikbaar op Cassandra \citep{strickland2014availability}.
+
+\begin{enumerate}
+	\item \textbf{SimpleSnitch}:
+	Deze snitch gaat altijd samen met SimpleStrategy en is speciaal ontworpen voor eenvoudige datacenters.
+	
+	\item \textbf{RackInferringSnitch}:
+	Deze snitch probeert de netwerk topologie van de cluster te achterhalen.
+	Het gebruik van deze snitch wordt echter sterk afgeraden.
+	Het probleem is hier dat ervan uitgegaan wordt dat het ip-adres de structuur van het datacenters en de racks reflecteert.
+	
+	\item \textbf{PropertyFileSnitch}:
+	Met deze snitch kan de administrator zelf instellen welke nodes tot welke rack en datacenter behoren.
+	Als men deze snitch gebruikt moet men dus de ganse topologie uitschrijven. 
+	Iedere node moet ook precies op dezelfde manier geconfigureerd worden.
+	Dit alles heeft veel overhead als er nodes toegevoegd of verwijderd moeten worden.
+	
+	\item \textbf{GossipingPropertyFileSnitch}:
+	De GossipingPropertyFileSnitch lijkt zeer sterk op de PropertyFileSnitch.
+	Het grote verschil is dat men per rack en datacenter maar één node hoeft te configureren.
+	Daarna verspreidt de snitch de configuratie van deze node naar alle andere nodes.
+	
+	\item \textbf{CloudStackSnitch}:
+	Deze snitch de datacenters en racks op volgens CloudStack's land, locatie en beschikbaarheid zones.
+	
+	\item \textbf{GoogleCloudSnitch}:
+	De GoogleCloudSnitch is speciaal gemaakt voor Cassandra binnen Google Cloud.
+	Hierbij zet deze snitch de locatie als datacenter en de beschikbaarheidszone als rack.
+	
+	\item \textbf{EC2Snitch}:
+	Deze snitch is zeer gelijkaardig aan de GoogleCloudSnitch.
+	Net zoals bij de vorige snitch wordt de regio als datacenter ingesteld en de beschikbaarheidszone als rack.
+	
+	\item \textbf{EC2MultiRegionSnitch}:
+	Deze snitch werkt op identiek dezelfde manier als de EC2Snitch.
+	Het enige verschil hier is dat deze snitch publieke ip-adressen toestaat voor communicatie tussen verschillende datacenters.
+	
+\end{enumerate}
+
+Voor productie omgevingen is GossipingPropertyFileSnitch meestal de beste keuze als er met fysieke datacenters wordt gewerkt.
+Als men in de cloud werkt kiest men best voor de bijhorende snitch.
+
 \section{Seed node}
 % p20
 \section{Gossip en foutdetectie}
