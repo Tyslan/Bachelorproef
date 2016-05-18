@@ -12,7 +12,68 @@ Het idee bij dit algoritme is dat de status niet weergegeven wordt door een bool
 Als een node op deze manier dood verklaard wordt, blijven de andere nodes toch nog communiceren met deze node om ze te bepalen wanneer deze terug levend is.
 
 \section{Herstelmechanisme}
-% DM p24
-% HA p70 p74
+% HA p74
+Cassandra voorziet drie built-in herstelmechanismes:
+
+\begin{enumerate}
+	\item Hinted handoff
+	\item Anti-entropy node repair
+	\item Read repair
+\end{enumerate}
+
+\subsection{Hinted handoff}
+Het doel van hinted handoff is om de tijd die nodig is om node te herstellen na het uitvallen, te minimaliseren.
+Hierbij wordt er wat lees consistentie opgeofferd om de schrijf beschikbaarheid te verhogen.
+
+In het geval een node offline is houdt een andere gezonde node een hint bij als er data geschreven wordt.
+Wanneer in het slechtste geval alle nodes offline zijn, houdt de coördinator deze hint bij.
+Als de node dan online komt wordt eerst gezorgd dat deze writes uitgevoerd worden en kan in de tijd die hiervoor nodig is geen reads uitgevoerd worden.
+Als in deze periode toch reads uitvoerd zouden worden kan dit leiden tot inconsistente reads.
+
+Standaard houdt Cassandra deze hints drie uur bij.
+Dit limiet is om te voorkomen dat deze hint wachtlijst niet te lang wordt.
+Na dit limiet is het nodig om handmatig een herstel te doen om de consistentie te garanderen \citep{strickland2014availability}.
+
+\subsection{Anti-entropy repair}
+Dit algoritme staat in voor de synchronisatie van replica's en zorgt dat deze allen up-to-date zijn op alle nodes.
+Dit proces gebeurt asynchroon.
+Binnen anti-entropy repair word gebruik gemaakt van de manuele read repair (\ref{sec:read_repair}) \citep{strickland2014availability}.
+
+\subsection{Read repair}
+\label{sec:read_repair}
+Deze repairs worden vaak opgeroepen door de anti-entropy repair.
+In latere versies van Cassandra wordt de anti-entropy continue gecontroleerd.
+Anti-entropie betekend dat alle replica's vergeleken worden en dat deze ook geüpdatet worden naar de meest recente versie \citep{Kunz2013Entropy}.
+
+Bij Cassandra staan alle nodes constant in communicatie met elkaar.
+Wanneer data opgehaald wordt, dan is er een kans dat deze vergeleken wordt met de andere replica's.
+Wanneer hier verschillen opgemerkt worden dan gaat Cassandra de data herstellen naar een consistente staat.
+Hiervoor zijn drie soorten read repairs \citep{strickland2014availability}:
+
+\begin{enumerate}
+	\item \textbf{Synchronous read repair}:
+	Wanneer de data vergeleken wordt gebeurt dit op basis van de checksum die aan de andere nodes gevraagd wordt.
+	Als deze checksum niet overeenkomt dan wordt de volledige replica doorgestuurd.
+	Vervolgens wordt dan naar de timestamp gekeken van de data en wordt de oudste geüpdatet.
+	Dit betekend dat de oude replica's geüpdatet worden als ze opgevraagd worden.
+	
+	\item \textbf{Asynchronous read repair}:
+	Cassandra heeft ook een systeem voor data die niet gecontroleerd wordt bij de reads.
+	Hierbij wordt een kans ingesteld wanneer de data gecontroleerd wordt.
+	Deze kans is standaard tien procent.
+	Dit wil zeggen dat de replica's tien procent van de tijd gecontroleerd worden.
+	Als hier verschillen opgemerkt worden dan wordt de data tijdens de read hersteld.
+	
+	\item \textbf{Manuele repair}:
+	Dit is een volledige repair en zou ook regelmatig uitgevoerd moeten worden.
+	Men kan deze repair forceren via "nodetool repair", maar Cassandra voorziet ook een veld in de instellingen om dit op regelmatige basis uit te voeren.
+	De standaard waarde om een manueel herstel door te voeren is tien dagen.
+\end{enumerate}
+
+Bij manuele herstelling kan de opmerking gemaakt worden dat hier problemen kunnen optreden als men een record verwijderd heeft.
+Dit is echter niet het geval doordat Cassandra wacht om een record effectief te verwijderen.
+In plaats van een record meteen te verwijderen, wordt hier een tombstone marker aan mee gegeven zodat Cassandra weet dat dit record niet teruggegeven mag worden.
+Deze records worden uiteindelijk wel verwijderd via de garbage collection van Cassandra.
+Op basis van de tombstone bepaald de garbage collection dan of het record effectief effectief verwijderd mag worden \citep{strickland2014availability}.
 
 \section{Ondervindingen bij het uitzetten van een node}
