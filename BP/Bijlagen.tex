@@ -7,7 +7,7 @@
 %% Preamble
 %%========================================================================
 
-\documentclass[pdftex,a4paper,12pt,twoside]{report}
+\documentclass[pdftex,a4paper,12pt]{report}
 
 % XXX: Let op: dit sjabloon is gemaakt om dubbelzijdig af te drukken
 % Voor enkelzijdig, verwijder ``twoside'' hierboven.
@@ -190,22 +190,32 @@
 % %      ./source.sh
 % % 3/ Haal volgende regel uit commentaar
 % %\input{source.tex}
-\chapter{Opzetten vagrant cluster}
+\chapter{Opzetten vagrant Cassandra single node}
+\label{ch:vagrant_single}
+\section{Vagrantfile}
+\lstinputlisting[language=Ruby]{./code/vagrant-single/Vagrantfile.rb}
+\clearpage
+
+\section{Setup}
+\lstinputlisting[language=Bash, breaklines=true]{./code/vagrant-single/setup.sh}
+\clearpage
+
+\chapter{Opzetten vagrant Cassandra cluster}
 \label{ch:vagrant_cluster}
 
 \section{/etc/hosts}
-\lstinputlisting{./code/vagrant/hosts.txt}
+\lstinputlisting{./code/vagrant-multi/hosts.txt}
 \clearpage
 
 \section{Vagrantfile}
-\lstinputlisting[language=Ruby]{./code/vagrant/Vagrantfile.rb}
+\lstinputlisting[language=Ruby]{./code/vagrant-multi/Vagrantfile.rb}
 \clearpage
 
 \section{Setup cluster manager }
-\lstinputlisting[language=Bash, breaklines=true]{./code/vagrant/setup_dse.sh}
+\lstinputlisting[language=Bash, breaklines=true]{./code/vagrant-multi/setup_dse.sh}
 \clearpage
 
 \section{Setup slaves }
-\lstinputlisting[language=Bash, breaklines=true]{./code/vagrant/setup_slave.sh}
+\lstinputlisting[language=Bash, breaklines=true]{./code/vagrant-multi/setup_slave.sh}
 \clearpage
 \end{document}
