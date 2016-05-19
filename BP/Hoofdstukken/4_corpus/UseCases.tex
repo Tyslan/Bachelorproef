@@ -3,15 +3,38 @@
 
 \section{Messaging}
 % http://www.planetcassandra.org/blog/functional_use_cases/messaging/
+Voor messaging systemen is het zeer belangrijk dat er 100\% uptime is.
+Door de peer-to-peer architectuur van Cassandra is er geen single point of failure.
+Als hier ook nog eens multi-datacenter replicatie aan toegevoegd wordt is het bijna onmogelijk dat het systeem downtime kent \citep{Chan2014Messaging}.
+
+Binnen deze use case zijn de belangrijkste gebruikers Instagram, New York Times, ComCast \dots
 
 \section{Fraude bestrijding}
 % http://www.planetcassandra.org/blog/functional_use_cases/fraud_detection/
+Cassandra voorziet real-time monitoring.
+Hiervoor kan nodetool of een ander tools zoals Datastax OpsCenter.
+Op deze manier kan verdacht gedrag snel opgespoord worden.
+Toch hoeft de fraude bestrijding niet enkel op deze manier te gebeuren.
+
+\cite{Nguyen2014Fraud} geeft een mooi voorbeeld om spam mail op te sporen bij Nextgate.
+Binnen de database wordt de data zo gemodelleerd dat alle berichten met eenzelfde inhoud in dezelfde rij terecht komen.
+Door een simpele count uit te voeren op de rijen kan men nagaan hoe vaak eenzelfde bericht verstuurd is.
+Als de count een bepaald getal overschrijdt dan wordt het bericht als spam beschouwd.
+
+Naast Nextgate zijn er ook nog andere belangrijkste gebruikers zoals Barracuda Networks, ZoneFox, Iovation \dots
 
 \section{Product catalogi en afspeellijsten}
 % http://www.planetcassandra.org/blog/functional_use_cases/product-catalogs-playlists/
+Door de enorme schaalbaarheid, de hoge performantie en de hoge beschikbaarheid is Cassandra uitstekend geschikt om product catalogi en afspeellijsten bij te houden.
+Zowel product catalogi als afspeellijsten kunnen exponentieel groeien.
+
+De bekenste gebruikers binnen deze use case zijn SoundCloud, Spotify, Reddit \dots
+
+Bij Reddit wordt Cassandra in veel zaken gebruikt maar de belangrijkste toepassingen zijn  het voting systeem, gelikete pagina's en gelikete subreddits \citep{Harvey2013Reddit}.
 
 \section{Internet Of Things en sensor data}
 % http://www.planetcassandra.org/blog/functional_use_cases/internet-of-things-sensor-data/
+
 
 \section{Aanbevelingen en personalisatie}
 % http://www.planetcassandra.org/blog/functional_use_cases/recommendation-engine-personalization/
