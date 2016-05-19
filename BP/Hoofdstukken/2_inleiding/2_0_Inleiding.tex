@@ -1,12 +1,6 @@
 \chapter{Inleiding}
 \label{ch:inleiding}
 
-% De inleiding moet de lezer alle nodige informatie verschaffen om het onderwerp te begrijpen zonder nog externe werken te moeten raadplegen \citep{Pollefliet2011}. Dit is een doorlopende tekst die gebaseerd is op al wat je over het onderwerp gelezen hebt (literatuuronderzoek).
-
-%Je verwijst bij elke bewering die je doet, vakterm die je introduceert, enz. naar je bronnen. In \LaTeX{} kan dat met het commando \texttt{$\backslash${cite\{\}}} of \texttt{$\backslash${citep\{\}}}. Als argument van het commando geef je de ``sleutel'' van een ``record'' in een bibliografische databank in het Bib\TeX{}-formaat (een tekstbestand). Als je expliciet naar de auteur verwijst in de zin, gebruik je \texttt{$\backslash${}cite\{\}}.
-% Soms wil je de auteur niet expliciet vernoemen, dan gebruik je \texttt{$\backslash${}citep\{\}}. Hieronder een voorbeeld van elk.
-
-%\cite{Knuth1998} schreef een van de standaardwerken over sorteer- en zoekalgoritmen. Experten zijn het erover eens dat cloud computing een interessante opportuniteit vormen, zowel voor gebruikers als voor dienstverleners op vlak van informatietechnologie~\citep{Creeger2009}.
 \section{NoSQL}
 Sinds de term in 1998 voor het eerst gebruikt werd door Carlo Strozzi, ging een grote bal aan het rollen rond NoSQL databanken.
 Toen hij deze term de wereld instuurde, bedoelde Strozzi dat de databank die op dat moment besproken werd geen SQL interface aanbood.
@@ -20,6 +14,16 @@ Kortom databanken onder de noemer NoSQL zijn aangepast om de problemen, die zich
 \cite{Sadalage2014OverviewNoSQL} zegt dat binnen de NoSQL databanken vier grote types naar voor geschoven zijn, namelijk key-value stores (Riak, Redis\dots), document stores (MongoDB, CouchDB\dots), Column Family Stores (Cassandra, HBase\dots) en Graph databases (Neo4J, Infinite Graph\dots).
 Elk van deze types heeft zijn eigen specifieke use cases.
 Zelf binnen de verschillende types komen er nog verschillende use cases voor.
+
+Binnen NoSQL telt het CAP theorema.
+\begin{itemize}
+	\item \textbf{Consistency}: De date is op ieder moment op alle nodes gelijk
+	\item \textbf{Availability}: Als een node uitvalt, dan beïnvloed dit de andere nodes niet.
+	\item \textbf{Partition Tolerance}: Het systeem blijft werken ook al zijn er netwerkfouten.
+\end{itemize}
+
+\cite{brewer2000towards} stelde dat het onmogelijk was om binnen een gedistribueerd systeem deze drie zaken samen te verzorgen.
+Hij gaf hiermee de aanzet dat er slecht twee van de drie punten in het CAP theorema verkregen konden worden.
 
 \section{Cassandra}
 
@@ -40,6 +44,13 @@ Dynamo zorgde eerder al voor een hoge betrouwbaarheid bij een schaalbare databas
 
 Hoewel Cassandra niet verder uitgebreid moest worden omdat het nog steeds voldeed aan de voorwaarden om het probleem van Facebook op te lossen, is Cassandra verder blijven groeien sinds 2008.
 Zo kan Cassandra nu bijvoorbeeld ook overweg met gestructureerde, semi-gestructureerde en ongestructureerde data \citep{kan2014cassandra}.
+
+Als men Cassandra binnen het CAP theorema moet gaan classificeren, dan kan men stellen dat de focus hier ligt op beschikbaarheid en partitie tolerantie.
+Binnen Cassandra kan er toch een tradeoff gemaakt worden tussen snelheid en consistentie.
+Hiermee kan een zeer hoge consistentie verkregen worden en ook een aanvaardbare snelheid \citep{ellis2009cassandra}.
+Met het oorspronkelijk CAP theorema is dit echter niet mogelijk.
+\cite{brewer2012cap} herformuleerde echter het CAP theorema omdat hij vond dat het twee uit drie concept misleidend was.
+Hier stelde hij dat er een trade-off van alle drie mogelijk was als er goed nagedacht werd over de partities.
 
 \section{Probleemstelling en Onderzoeksvragen}
 \label{sec:onderzoeksvragen}
