@@ -48,10 +48,19 @@ Op die manier wordt data die niet meer relevant is automatisch verwijderd.
 De hoge schrijfsnelheid is voor NASA ook belangrijk omdat deze organisatie dag en nacht veel verschillende feeds ontvangt.
 
 \section{Aanbevelingen en personalisatie}
-% http://www.planetcassandra.org/blog/functional_use_cases/recommendation-engine-personalization/
-% http://planetcassandra.org/blog/interview/ebay-chooses-apache-cassandra-to-power-next-generation-recommendation-engine/
-% http://planetcassandra.org/blog/interview/gaming-dev-platform-unity-powers-up-with-cassandra-migrates-away-from-mongodb-for-a-scalable-low-latency-solution/
-% http://planetcassandra.org/blog/yahoo-goes-woohoo-for-apache-cassandra-cassandra-wins-yahoo-japan-nosql-evaluation-with-lowest-latency-and-highest-scalability/
+Het grote probleem bij aanbevelingen is dat de data op een persoon afgesteld moet zijn en dat een grote hoeveelheid data real time verwerkt moet worden.
+Dit is echter geen probleem voor Cassandra want hier is de database voor geoptimaliseerd.
+
+Enkele bekende bedrijven zoals ebay, Yahoo, Eventbite\dots  gebruiken Cassandra om deze problemen op te lossen.
+
+Binnen Unity wordt ook Cassandra gebruikt.
+\cite{Makinen2015Cassandra} legt uit dat hiervoor overgestapt werd van MongoDB naar Cassandra.
+Dit was omdat er behoefte was aan een sneller systeem.
+Met meer dan 500 miljoen documenten in MongoDB was het niet meer efficiënt om hier data in op te zoeken.
+De hogere snelheid was vooral nodig bij Unity Ads, hiermee kunnen game developers advertenties toevoegen aan hun games.
+Dit slaat op wie op welke moment welke advertentie te zien krijgt.
+Hierdoor zijn er veel writes en wordt de time-to-live gebruikt om ervoor te zorgen dat oude records verwijderd worden.
+De data die hier weggeschreven wordt, wordt dan gebruikt om te bepalen welke advertenties aan welke gebruiker getoond worden.
 
 \section{Markten voor Cassandra}
 Door de geschiktheid voor aanbevelingssystemen kan Cassandra eindgebruikers persoonlijke suggesties geven.
@@ -64,3 +73,9 @@ Een andere markt voor Cassandra is de financiële sector.
 Hier wordt immens veel data verstuurd en opgeslagen, hier hoeft men enkel nog maar aan transacties te denken.
 Cassandra biedt ook uitstekende mogelijkheden om fraude tegen te gaan wat toch ook een groot pluspunt is in deze sector.
 Cassandra heeft in deze markt al enkele gebruikers zoals ING, UBS, Xoom\dots
+Een relatief nieuwe trend is dat verzekeraars, zoals Corona en AXA, sensoren in bijvoorbeeld een auto laten plaatsen en dat op basis hiervan dan een verzekeringspolis wordt opgesteld.
+Hiervoor wordt veel data opgeslagen om deze polis correct te kunnen bepalen.
+Zoals hierboven vermeld is Cassandra ook voor deze job uitstekend geschikt.
+
+De hierboven vermelde markten zijn markten waar Cassandra bijna kant en klare oplossingen voor aanbied.
+Natuur kan Cassandra ook in andere markten gebruikt worden, maar hier zal waarschijnlijk meer aandacht moeten besteed worden aan het datamodel en zal er samen gewerkt moeten worden met andere technologieën.
