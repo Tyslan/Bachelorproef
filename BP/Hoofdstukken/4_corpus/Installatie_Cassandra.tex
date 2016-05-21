@@ -7,7 +7,7 @@ Om de cluster op te zetten werd geopteerd om gebruik te maken van virtuele machi
 In een eerste poging om een werkende Cassandra cluster te bekomen werd op elke Vagrant machine Cassandra 3.3, op het moment van dit onderzoek de meest recente versie, geïnstalleerd.
 Nadat dit gebeurd was, dienden nog enkele stappen voltooid te worden om een werkende cluster te bekomen \citep{DataStax2016}.
 Deze configuratie gaf echter veel problemen.
-Cassandra werd na enkele bewerkingen telkens onbruikbaar en gaf de volgende foutmelding weer: "could not access pidfile for Cassandra".
+Cassandra werd na enkele bewerkingen telkens onbruikbaar en gaf de volgende foutmelding weer: ''could not access pidfile for Cassandra''.
 Een eerste oplossing voor dit probleem was om ervoor te zorgen dat de user 'cassandra' toegang had tot de pidfile, wat namelijk niet het geval was doordat de installatie van Cassandra werd uitgevoerd door de Vagrant setup.
 Maar ook dit leverde weinig resultaat op.
 Wel moet opgemerkt worden dat de installatie van Cassandra zelf geen problemen met zich meebracht.

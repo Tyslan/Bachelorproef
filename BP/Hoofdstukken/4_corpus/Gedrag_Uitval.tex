@@ -7,7 +7,7 @@ Hiervoor maakt Cassandra gebruik van een peer-to-peer protocol.
 Op deze manier kunnen nodes snel de status van andere nodes weten.
 Deze informatie wordt ook lokaal opgeslagen.
 
-Cassandra gebruikt het "Phi Accrual Failure Detection Algoritm" voor het detecteren van het uitvallen van nodes \citep{kan2014cassandra}.
+Cassandra gebruikt het ''Phi Accrual Failure Detection Algoritm'' voor het detecteren van het uitvallen van nodes \citep{kan2014cassandra}.
 Het idee bij dit algoritme is dat de status niet weergegeven wordt door een booleaanse waarde, dood of levend, maar door een waarde die aangeeft hoe groot de kans is dat een node dood of leven is.
 Als een node op deze manier dood verklaard wordt, blijven de andere nodes toch nog communiceren met deze node om ze te bepalen wanneer deze terug levend is.
 
@@ -66,7 +66,7 @@ Hiervoor zijn drie soorten read repairs \citep{strickland2014availability}:
 	
 	\item \textbf{Manuele repair}:
 	Dit is een volledige repair en zou ook regelmatig uitgevoerd moeten worden.
-	Men kan deze repair forceren via "nodetool repair", maar Cassandra voorziet ook een veld in de instellingen om dit op regelmatige basis uit te voeren.
+	Men kan deze repair forceren via ''nodetool repair'', maar Cassandra voorziet ook een veld in de instellingen om dit op regelmatige basis uit te voeren.
 	De standaard waarde om een manueel herstel door te voeren is tien dagen.
 \end{enumerate}
 

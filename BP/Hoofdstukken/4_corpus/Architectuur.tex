@@ -10,7 +10,7 @@ Om dit te kunnen doen moet de data dynamisch gepartitioneerd worden over de node
 Dit wordt bij Cassandra voor elkaar gekregen door het gebruik van partitioners.
 De partitioner wordt ingesteld op cluster niveau.
 Deze partitioners maken gebruik van hash functies om te bepalen op welke node de data moet geplaatst worden.
-Bij consistente hashing bij Cassandra wordt de output behandeld als een "ring".
+Bij consistente hashing bij Cassandra wordt de output behandeld als een ''ring''.
 Elke node in de cluster krijgt een willekeurige waarde toegewezen en deze waarde bepaald dan de plaats in de ring \citep{lakshman2010cassandra}.
 
 
@@ -40,7 +40,7 @@ De ByteOrderedPartitioner blijkt een oplossing te bieden om tabellen te verkrijg
 Ondanks dit feit zijn er toch een aantal problemen met deze partitioner.
 
 \begin{itemize}
-	\item Sequentiële writes kunnen voor "hot spots" zorgen.
+	\item Sequentiële writes kunnen voor ''hot spots'' zorgen.
 	Als een aantal rijen ongeveer gelijktijdig toevoegt of updatet, dan worden deze quasi zeker op dezelfde node weggeschreven.
 	Dit is zeker een probleem voor tijdreeksen \citep{kan2014cassandra}.
 	
@@ -53,7 +53,7 @@ Ondanks dit feit zijn er toch een aantal problemen met deze partitioner.
 
 \section{Replicatie}
 Om de hoge beschikbaarheid te verkrijgen maakt Cassandra gebruik van data replicatie.
-Door de replicatie wordt de kans op een "Single point of Failure" enorm ingeperkt.
+Door de replicatie wordt de kans op een ''Single point of Failure'' enorm ingeperkt.
 Cassandra voorziet een methode om de replicatie factor blijft behouden zelfs als bepaalde nodes uitgevallen zijn.
 Deze replicatie factor wordt ingesteld op keyspace niveau.
 De replicatie factor bepaald hoeveel replica's er van de data worden bijgehouden.
