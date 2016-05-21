@@ -6,5 +6,31 @@
 % zaken die nog niet duidelijk zijn? Heeft het ondezoek geleid tot nieuwe
 % vragen die uitnodigen tot verder onderzoek?
 
-Cassandra can be simply described in a single phrase: a massively scalable, highly
-available open source NoSQL database that is based on peer-to-peer architecture. \citep{kan2014cassandra}
+De schaalbaarheid van Cassandra werd nagegaan door nodes toe te voegen aan de cluster en het verwijderen hiervan.
+Via de configuratie files van Cassandra is dit een heel karwei om te doen.
+Verder werd er ook niet in geslaagd om op deze manier een werkende cluster te verkrijgen binnen deze bachelorproef.
+Toen werd overgestapt naar het OpsCenter van DataStax was dit echter een ander verhaal.
+Via deze weg was het zeer eenvoudig om een cluster te beheren en hier nodes aan toe te voegen of nodes te verwijderen.
+
+Na de schaalbaarheid werd de betrouwbaarheid van de database getest.
+Dit werd gedaan a.d.h.v. het uitschakelen van de nodes en zo af te toetsen of de theorie wel strookt met de werkelijkheid.
+Bij uitvallen van de nodes kon telkens vastgesteld worden dat de data beschikbaar bleef.
+Het hinting systeem van Cassandra bleek ook uitstekend te werken in deze test.
+Toen enkel één node online was werden hier toch updates van records op uitgevoerd en bij het opnieuw opstarten van een node kon via OpsCenter vastgesteld worden dat er data uitgewisseld werd tussen de nodes.
+Als men vervolgens de node, die eerst online was, uitschakelt, kan men toch de geüpdatete data terugvinden op de node die juist terug online komt.
+Met het onderzoek dat in deze bachelorproef gedaan is, kan besloten worden dat Cassandra geen last heeft van ''single points of failure''.
+
+Voor de back-ups kan besloten worden dat deze nog altijd nodig zijn.
+De replica's zijn hier geen volwaardige vervangers voor.
+Door het gebruik van replica's wordt de beschikbaarheid van de data gegarandeerd, maar dit is geen garantie tegen corrupte data.
+
+Eén opmerking die bij dit alles moet gemaakt worden is dat alle test op virtuele machines zijn uitgevoerd en waarbij er slechts één datacenter beschikbaar was.
+Door het gebruik van virtuele machines zijn de absolute tijdsgegevens in deze bachelorproef niet representatief voor een echte cluster waar de machines voor Cassandra alleen zijn voorbehouden.
+
+\cite{kan2014cassandra} maakte reeds een mooie verwoording van wat Cassandra nu precies inhoud.
+Niets in deze bachelorproef heeft het tegendeel kunnen bewijzen.
+
+\emph{
+	''Cassandra can be simply described in a single phrase: a massively scalable, highly available open source NoSQL database that is based on peer-to-peer architecture.''
+}
+\citep{kan2014cassandra}
