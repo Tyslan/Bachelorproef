@@ -30,3 +30,23 @@ Tot slot start men de node opnieuw op en voert men het commando ''nodetool repai
 Op deze manier is node hersteld a.d.h.v. een snapshot \citep{DataStax2016Snapshot}.
 
 \section{Nood aan back-ups in Cassandra}
+Door met replica's te werken en de manier waarop dit gebeurt in Cassandra zou men zich kunnen afvragen of het wel nodig is om back-ups te nemen.
+Voor deze vraag beantwoord kan worden moet eerst duidelijk het verschil tussen replica's en snapshots uitgelegd worden.
+
+Een snapshot neemt als het ware een foto van de databank op een bepaald tijdstip, vandaar ook de term snapshot.
+In deze snapshot worden de referenties naar de data bij gehouden.
+Verder wordt er ook voor gezorgd dat verwijderde records niet echt verwijderd worden (\ref{sec:read_repair}).
+Op die manier wordt er gegarandeerd dat de snapshot volledig blijft.
+Door deze manier van werken is de snapshot binnen Cassandra dan ook een volwaardige back-up.
+
+Bij replica's wordt vaak verkeerdelijk aangenomen dat dit een synoniem is voor back-ups.
+Zoals eerder uitgelegd (\ref{sec_replication}) werd, worden replica's op een andere node opgeslagen op de beschikbaarheid van de data te garanderen.
+Hierbij wordt de historische data, zoals aanpassingen aan de data, niet gekopieerd naar de andere nodes.
+Dit is al een eerste aanwijzing waarom dit niet als een volwaardige back-up beschouw mag worden.
+Een andere, belangrijkere reden is dat door de manier waarop gerepliceerd wordt binnen Cassandra, de replica's binnen enkele seconden de nieuwe waarden bevatten.
+Stel dat hier een wijziging of verwijdering gebeurt, wordt dit onmiddellijk doorgegeven aan de andere nodes.
+Als deze handeling verkeerdelijk gebeurd is, dan kan men met replica's de originele data niet meer terugzetten.
+
+Nu de verschillen tussen snapshots en replica's duidelijk zijn is het ook veilig om te stellen dat binnen Cassandra nog altijd back-ups nodig zijn.
+Hierbij gaat het dan vooral om verlies van data tegen te gaan die verkeerdelijk gewijzigd of verwijderd wordt.
+Via replica's kan deze niet meer hersteld worden.
