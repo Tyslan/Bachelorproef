@@ -13,17 +13,17 @@ Kortom databanken onder de noemer NoSQL zijn aangepast om de problemen, die zich
 
 \cite{Sadalage2014OverviewNoSQL} zegt dat binnen de NoSQL databanken vier grote types naar voor geschoven zijn, namelijk key-value stores (Riak, Redis\dots), document stores (MongoDB, CouchDB\dots), Column Family Stores (Cassandra, HBase\dots) en Graph databases (Neo4J, Infinite Graph\dots).
 Elk van deze types heeft zijn eigen specifieke use cases.
-Zelf binnen de verschillende types komen er nog verschillende use cases voor.
+Zelfs binnen de verschillende types NoSQL databanken komen er nog verschillende specifieke use cases voor.
 
-Binnen NoSQL telt het CAP theorema.
+Binnen NoSQL geldt het CAP theorema.
 \begin{itemize}
-	\item \textbf{Consistency}: De date is op ieder moment op alle nodes gelijk
+	\item \textbf{Consistency}: De data is op ieder moment op alle nodes gelijk
 	\item \textbf{Availability}: Als een node uitvalt, dan beïnvloed dit de andere nodes niet.
 	\item \textbf{Partition Tolerance}: Het systeem blijft werken ook al zijn er netwerkfouten.
 \end{itemize}
 
-\cite{brewer2000towards} stelde dat het onmogelijk was om binnen een gedistribueerd systeem deze drie zaken samen te verzorgen.
-Hij gaf hiermee de aanzet dat er slecht twee van de drie punten in het CAP theorema verkregen konden worden.
+\cite{brewer2000towards} stelde dat het onmogelijk was om binnen een gedistribueerd systeem deze drie zaken samen te bekomen.
+Hij gaf hiermee de aanzet dat er slechts twee van de drie punten in het CAP theorema verkregen konden worden.
 
 \section{Cassandra}
 
@@ -45,12 +45,12 @@ Dynamo zorgde eerder al voor een hoge betrouwbaarheid bij een schaalbare databas
 Hoewel Cassandra niet verder uitgebreid moest worden omdat het nog steeds voldeed aan de voorwaarden om het probleem van Facebook op te lossen, is Cassandra verder blijven groeien sinds 2008.
 Zo kan Cassandra nu bijvoorbeeld ook overweg met gestructureerde, semi-gestructureerde en ongestructureerde data \citep{kan2014cassandra}.
 
-Als men Cassandra binnen het CAP theorema moet gaan classificeren, dan kan men stellen dat de focus hier ligt op beschikbaarheid en partitie tolerantie.
-Binnen Cassandra kan er toch een tradeoff gemaakt worden tussen snelheid en consistentie.
-Hiermee kan een zeer hoge consistentie verkregen worden en ook een aanvaardbare snelheid \citep{ellis2009cassandra}.
+Als men Cassandra binnen het CAP theorema moet gaan classificeren, kan men stellen dat de focus hier ligt op beschikbaarheid en partitie tolerantie.
+Binnen Cassandra kan er toch een keuze gemaakt worden tussen snelheid en consistentie.
+Hiermee kan een zeer hoge consistentie en ook een aanvaardbare snelheid verkregen worden \citep{ellis2009cassandra}.
 Met het oorspronkelijk CAP theorema is dit echter niet mogelijk.
-\cite{brewer2012cap} herformuleerde echter het CAP theorema omdat hij vond dat het twee uit drie concept misleidend was.
-Hier stelde hij dat er een trade-off van alle drie mogelijk was als er goed nagedacht werd over de partities.
+\cite{brewer2012cap} herformuleerde echter het CAP theorema omdat hij vond dat het twee-uit-drie-concept misleidend was.
+Hier stelde hij dat een keuze tussen de drie mogelijkheden mogelijk was als er goed nagedacht werd over de partities.
 
 \section{Probleemstelling en Onderzoeksvragen}
 \label{sec:onderzoeksvragen}
@@ -63,5 +63,5 @@ Cassandra belooft een groot aantal zaken en binnen deze bachelorproef is het de 
 Eerst en vooral zal de schaalbaarheid van Cassandra gecontroleerd worden.
 Is het werkelijk eenvoudig om de database op verschillende eenvoudige servers te installeren?
 Een tweede punt dat nagegaan wordt is de betrouwbaarheid van Cassandra.
-Is er werkelijk geen single point of failure en in hoeverre zijn back-ups nodig binnen deze omgeving?
+Is er werkelijk geen ''single point of failure'' en in hoeverre zijn back-ups nodig binnen deze NoSQL omgeving?
 Ook zal er stilgestaan worden bij de data modellering in Cassandra.
