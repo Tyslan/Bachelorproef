@@ -1,2 +1,16 @@
 \chapter{Back-ups in Cassandra}
 \label{ch:cassandra_backups}
+
+\section{Snapshots}
+Om back-ups te maken voorziet Cassandra snapshots.
+Men kan zowel van alle keyspaces, één keyspace of één tabel een snapshot nemen zolang het Cassandra nodes heeft die online zijn.
+Ook van een ganse cluster kan een snapshot genomen worden, maar hier kan het wel zijn dat de data in verschillende nodes niet consistent is.
+De snapshots telkens in een nieuwe file opgeslagen worden, maar kunnen ook incrementeel groeien \citep{DataStax2016Snapshot}.
+
+Snapshots worden via nodetool genomen.
+De enige voorwaarde die opgelegd wordt bij het maken van snapshots is dat er voldoende plaats aanwezig is op de node waar de snapshot geplaatst wordt.
+Het command om een snapshot te nemen ziet er als volgt uit:
+
+\begin{lstlisting}[language=Bash, breaklines=true]
+$ nodetool -h host -p JMXport snapshot mykeyspace
+\end{lstlisting}
