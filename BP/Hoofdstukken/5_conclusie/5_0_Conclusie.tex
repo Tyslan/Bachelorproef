@@ -20,6 +20,12 @@ Toen enkel één node online was werden hier toch updates van records op uitgevo
 Als men vervolgens de node, die eerst online was, uitschakelt, kan men toch de geüpdatete data terugvinden op de node die juist terug online komt.
 Met het onderzoek dat in deze bachelorproef gedaan is, kan besloten worden dat Cassandra geen last heeft van ''single points of failure''.
 
+Bij de data modellering van Cassandra zijn er toch een aantal eigenaardigheden als men vanuit een SQL omgeving komt.
+Zo is het principe van modelleren naar de query's die uitgevoerd zullen worden bijzonder.
+Het is echter wel nodig om hierbij stil te staan aangezien de primaire sleutel, die bestaat uit de partitie en clustering sleutel, restricties oplegt aan de WHERE clausule.
+Toch is de reden waarom Cassandra deze restricties oplegt goed te begrijpen.
+Want op deze manier kan de data zeer snel opgehaald worden.
+
 Voor de back-ups kan besloten worden dat deze nog altijd nodig zijn.
 De replica's zijn hier geen volwaardige vervangers voor.
 Door het gebruik van replica's wordt de beschikbaarheid van de data gegarandeerd, maar dit is geen garantie tegen corrupte data.
