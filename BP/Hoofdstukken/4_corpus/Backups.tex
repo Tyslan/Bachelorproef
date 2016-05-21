@@ -3,6 +3,7 @@
 
 \section{Snapshots}
 Om back-ups te maken voorziet Cassandra snapshots.
+Een snapshot is een verzameling van pointers die naar de data in de database verwijzen.
 Men kan zowel van alle keyspaces, één keyspace of één tabel een snapshot nemen zolang het Cassandra nodes heeft die online zijn.
 Ook van een ganse cluster kan een snapshot genomen worden, maar hier kan het wel zijn dat de data in verschillende nodes niet consistent is.
 De snapshots telkens in een nieuwe file opgeslagen worden, maar kunnen ook incrementeel groeien \citep{DataStax2016Snapshot}.
@@ -14,3 +15,18 @@ Het command om een snapshot te nemen ziet er als volgt uit:
 \begin{lstlisting}[language=Bash, breaklines=true]
 $ nodetool -h host -p JMXport snapshot mykeyspace
 \end{lstlisting}
+
+Het gebruik van snapshots heeft wel een nadeel.
+Het verhinderd het verwijderen van oude, overbodige records \citep{DataStax2016Snapshot}.
+
+Om een snapshot te herstellen moet men er eerst voor zorgen dat de tabellen die hersteld moeten worden aangemaakt zijn en ook leeg zijn.
+Daarna kan men de snapshot inladen via de sstableloader tool.
+Hierna sluit men de node die hersteld moet worden en daarna voert men het commando ''nodetool drain'' uit.
+Vervolgens moet de commitlog map leeg gemaakt worden.
+Een andere map die leeg gemaakt moet worden, met uitzondering van de submappen snapshots en backups, is data map van de keyspace.
+Hierna zoekt men de meest recente snapshot en plaatst deze in de keyspace map.
+Als er incrementele back-ups zijn genomen dan moet men deze ook in deze map plaatsen.
+Tot slot start men de node opnieuw op en voert men het commando ''nodetool repair'' uit.
+Op deze manier is node hersteld a.d.h.v. een snapshot \citep{DataStax2016Snapshot}.
+
+\section{Nood aan back-ups in Cassandra}
