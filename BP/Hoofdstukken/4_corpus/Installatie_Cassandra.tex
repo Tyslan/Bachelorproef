@@ -170,3 +170,34 @@ Na dit alles kan men in het tabblad 'nodes', nu in een lijstvorm, zien dat de ni
 	\caption{Toevoegen van een node via OpsCenter}
 	\label{fig:cas_add_node}
 \end{figure}
+
+\section{Verwijderen van een node}
+Het verwijderen van een node van een Cassandra cluster is net zoals het toevoegen van een node zeer eenvoudig.
+Binnen het OpsCenter gaat men naar het tabblad nodes en hier selecteert men de node die men wil verwijderen (figuur \ref{fig:cas_rem_1}).
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{img/4_installatie_cassandra/5_Remove_Node_1}
+	\caption{Verwijderen van een node: Selecteer de node}
+	\label{fig:cas_rem_1}
+\end{figure}
+
+Daarna komt men op een volgend scherm terecht (figuur \ref{fig:cas_rem_2}).
+Hier kiest men bij de acties voor ''Decommision''.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\textwidth]{img/4_installatie_cassandra/5_Remove_Node_2}
+	\caption{Verwijderen van een node: Selecteer de node}
+	\label{fig:cas_rem_2}
+\end{figure}
+
+Voor de node effectief verwijderd wordt, wordt er nog om bevestiging gevraagd.
+Hier wordt ook nog meegedeeld dat alle data van de te verwijderen node overgeplaatst zal worden op de andere nodes (figuur \ref{fig:cas_rem_3})
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{img/4_installatie_cassandra/5_Remove_Node_3}
+	\caption{Verwijderen van een node: Selecteer de node}
+	\label{fig:cas_rem_3}
+\end{figure}
