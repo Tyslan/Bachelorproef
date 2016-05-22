@@ -4,12 +4,12 @@
 \section{Snapshots}
 Om back-ups te maken voorziet Cassandra snapshots.
 Een snapshot is een verzameling van pointers die naar de data in de database verwijzen.
-Men kan zowel van alle keyspaces, één keyspace of één tabel een snapshot nemen zolang het Cassandra nodes heeft die online zijn.
-Ook van een ganse cluster kan een snapshot genomen worden, maar hier kan het wel zijn dat de data in verschillende nodes niet consistent is.
-De snapshots telkens in een nieuwe file opgeslagen worden, maar kunnen ook incrementeel groeien \citep{DataStax2016Snapshot}.
+Men kan zowel van alle keyspaces, één enkele keyspace of één enkele tabel een snapshot nemen, zolang Cassandra nodes heeft die online zijn.
+Ook van een ganse cluster kan een snapshot genomen worden, maar hier kan het wel voorkomen dat de data in verschillende nodes niet consistent is.
+De snapshots worden telkens in een nieuwe file opgeslagen, maar kunnen ook incrementeel groeien \citep{DataStax2016Snapshot}.
 
 Snapshots worden via nodetool genomen.
-De enige voorwaarde die opgelegd wordt bij het maken van snapshots is dat er voldoende plaats aanwezig is op de node waar de snapshot geplaatst wordt.
+De enige voorwaarde die opgelegd wordt bij het maken van snapshots is dat er voldoende plaats aanwezig is op de node waar de snapshot geplaatst zal worden.
 Het command om een snapshot te nemen ziet er als volgt uit:
 
 \begin{lstlisting}[language=Bash, breaklines=true]
@@ -17,36 +17,37 @@ $ nodetool -h host -p JMXport snapshot mykeyspace
 \end{lstlisting}
 
 Het gebruik van snapshots heeft wel een nadeel.
-Het verhinderd het verwijderen van oude, overbodige records \citep{DataStax2016Snapshot}.
+Het verhindert de verwijdering van oude, overbodige records \citep{DataStax2016Snapshot}.
+%TODO meer uitleg
 
-Om een snapshot te herstellen moet men er eerst voor zorgen dat de tabellen die hersteld moeten worden aangemaakt zijn en ook leeg zijn.
-Daarna kan men de snapshot inladen via de sstableloader tool.
-Hierna sluit men de node die hersteld moet worden en daarna voert men het commando ''nodetool drain'' uit.
-Vervolgens moet de commitlog map leeg gemaakt worden.
-Een andere map die leeg gemaakt moet worden, met uitzondering van de submappen snapshots en backups, is data map van de keyspace.
+Om een snapshot te gebruiken bij de herstelling van een database, moet men er eerst voor zorgen dat de tabellen die hersteld moeten worden, aangemaakt en ook leeg zijn.
+Daarna kan men de snapshot inladen met de sstableloader tool.
+Hierna sluit men de node die hersteld moet worden af en voert men vervolgens het commando ''nodetool drain'' uit.
+Vervolgens moet de commitlog map leeggemaakt worden.
+Een andere map die leeggemaakt moet worden, met uitzondering van de submappen snapshots en backups, is de data-map van de keyspace.
 Hierna zoekt men de meest recente snapshot en plaatst deze in de keyspace map.
-Als er incrementele back-ups zijn genomen dan moet men deze ook in deze map plaatsen.
-Tot slot start men de node opnieuw op en voert men het commando ''nodetool repair'' uit.
-Op deze manier is node hersteld a.d.h.v. een snapshot \citep{DataStax2016Snapshot}.
+Wanneer er incrementele back-ups genomen zijn, moet men deze ook in deze map plaatsen.
+Als laatste stap start men de node opnieuw op en voert men het commando ''nodetool repair'' uit.
+Op deze manier is node hersteld aan de hand van een snapshot \citep{DataStax2016Snapshot}.
 
 \section{Nood aan back-ups in Cassandra}
-Door met replica's te werken en de manier waarop dit gebeurt in Cassandra zou men zich kunnen afvragen of het wel nodig is om back-ups te nemen.
-Voor deze vraag beantwoord kan worden moet eerst duidelijk het verschil tussen replica's en snapshots uitgelegd worden.
+Door met replica's te werken en de manier waarop dit gebeurt in Cassandra, zou men zich kunnen afvragen of het wel nodig is om back-ups te nemen.
+Vóór deze vraag beantwoord kan worden, moet het verschil tussen replica's en snapshots eerst duidelijk uitgelegd worden.
 
 Een snapshot neemt als het ware een foto van de databank op een bepaald tijdstip, vandaar ook de term snapshot.
-In deze snapshot worden de referenties naar de data bij gehouden.
-Verder wordt er ook voor gezorgd dat verwijderde records niet echt verwijderd worden (\ref{sec:read_repair}).
-Op die manier wordt er gegarandeerd dat de snapshot volledig blijft.
-Door deze manier van werken is de snapshot binnen Cassandra dan ook een volwaardige back-up.
+In deze snapshot worden de referenties naar de data bijgehouden.
+Verder wordt er ook voor gezorgd dat de verwijderde records niet echt verwijderd worden (\ref{sec:read_repair}).
+Op deze manier wordt gegarandeerd dat de snapshots volledig blijven.
+Door deze manier van werken, zijn de snapshots binnen Cassandra dan ook een volwaardige back-up.
 
-Bij replica's wordt vaak verkeerdelijk aangenomen dat dit een synoniem is voor back-ups.
-Zoals eerder uitgelegd (\ref{sec_replication}) werd, worden replica's op een andere node opgeslagen op de beschikbaarheid van de data te garanderen.
+Bij replica's wordt vaak foutief aangenomen dat deze een synoniem zijn voor back-ups.
+Zoals eerder uitgelegd (\ref{sec_replication}) werd, worden replica's op een andere node opgeslagen om de beschikbaarheid van de data te garanderen.
 Hierbij wordt de historische data, zoals aanpassingen aan de data, niet gekopieerd naar de andere nodes.
 Dit is al een eerste aanwijzing waarom dit niet als een volwaardige back-up beschouw mag worden.
 Een andere, belangrijkere reden is dat door de manier waarop gerepliceerd wordt binnen Cassandra, de replica's binnen enkele seconden de nieuwe waarden bevatten.
-Stel dat hier een wijziging of verwijdering gebeurt, wordt dit onmiddellijk doorgegeven aan de andere nodes.
-Als deze handeling verkeerdelijk gebeurd is, dan kan men met replica's de originele data niet meer terugzetten.
+Indien hier een wijziging of verwijdering gebeurt, wordt dit onmiddellijk doorgegeven aan de andere nodes.
+Wanneer deze handeling foutief uitgevoerd werd, kan men met replica's de originele data niet meer terugzetten.
 
-Nu de verschillen tussen snapshots en replica's duidelijk zijn is het ook veilig om te stellen dat binnen Cassandra nog altijd back-ups nodig zijn.
-Hierbij gaat het dan vooral om verlies van data tegen te gaan die verkeerdelijk gewijzigd of verwijderd wordt.
-Via replica's kan deze niet meer hersteld worden.
+Nu de verschillen tussen snapshots en replica's duidelijk zijn, is het ook veilig om te stellen dat er binnen Cassandra nog altijd back-ups nodig zijn.
+Hierbij gaat het dan vooral om verlies van data, die foutief gewijzigd of verwijderd wordt, tegen te gaan.
+Deze kunnen niet meer hersteld worden door middel van replica's.
