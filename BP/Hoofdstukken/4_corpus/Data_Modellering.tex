@@ -57,12 +57,13 @@ Voor de restricties op de clusteringkolommen uitgelegd kunnen worden, moet eerst
 Dit zal nu aan de hand van een voorbeeld uitgelegd worden \citep{Lerer2015Where}.
 Neem de onderstaande tabel:
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Layout van de tabel NumberOfTwitterMessages}, label={lst:twitter_messages}]
 CREATE TABLE NumberOfTwitterMessages (
   userid bigint, date text, hour int, minute int,
   nrOfTweets int,
   PRIMARY KEY  ((userid, date), hour, minute)
 );
+
 \end{lstlisting}
 
 Hier wordt de data nu als volgt opgeslagen binnen de partitie: 
@@ -86,9 +87,27 @@ Sinds Cassandra 2.2 is deze restrictie vervallen en kan men zelfs multi-kolom IN
 De >, >=, < en <= operators zijn ook enkel toegestaan op de laatste clusteringkolom waar een restrictie aan opgelegd is.
 Toch is hier een oplossing voor aangezien men deze operators kan toepassen over meerdere kolommen.
 Bij deze multi-column slices is het echter wel belangrijk dat de restrictie van de WHERE clausule met dezelfde kolom start.
+Zo is query \ref{lst:query1} perfect mogelijk.
+Query \ref{lst:query2} is equivalent aan de vorige query, maar hier wordt ook aangetoond dat de multi-column slice met dezelfde kolom moet beginnen.
 
 %TODO
 %!!!VOORBEELD!!!
+
+\begin{lstlisting}[caption={Multi-column slice restrictie}, label={lst:query1}, language=SQL]
+SELECT * FROM NumberOfTwitterMessages
+WHERE userid = 2222
+AND date = '2016-04-25'
+AND (hour, minute) >= (12, 30) AND (hour, minute) <= (14, 0)
+);
+\end{lstlisting}
+
+\begin{lstlisting}[caption={De restrictie moet starten met dezelfde kolom}, label={lst:query2}, language=SQL]
+SELECT * FROM NumberOfTwitterMessages
+WHERE userid = 2222
+AND date = '2016-04-25'
+AND (hour, minute) >= (12, 30) AND (hour) <= (14)
+);
+\end{lstlisting}
 
 \section{Doelen bij datamodellering in Cassandra}
 Zoals in bovenstaande sectie duidelijk werd, dient er bij Cassandra met heel wat rekening gehouden te worden als men een datamodel creëert.
