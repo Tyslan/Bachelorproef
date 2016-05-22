@@ -80,13 +80,13 @@ Op basis van de tombstone bepaalt de garbage collection dan of het record effect
 \section{Ondervindingen bij het uitzetten van een node}
 Om het gedrag bij het uitvallen van een node te verifiëren, werd gebruik gemaakt van de cluster die eerder opgezet was (\ref{ch:cassandra_cluster}).
 In deze cluster zijn vier nodes aanwezig.
-Om het gedrag te testen werd hier een keyspace aangemaakt met replicatie factor vier.
+Om het gedrag te testen werd hier een keyspace aangemaakt met replicatiefactor vier.
 Zo zou de data op iedere node aanwezig horen te zijn.
-De replicatie strategie is hier SimpleStrategy omdat er maar één datacenter in deze cluster aanwezig is. Vervolgens werd er data in de cluster geïmporteerd.
+De replicatiestrategie is hier SimpleStrategy omdat er maar één datacenter in deze cluster aanwezig is. Vervolgens werd er data in de cluster geïmporteerd.
 Na het importeren werd gewacht tot de data over alle nodes verspreid was, wat in OpsCenter waargenomen kon worden.
 Toen alle replica's aangemaakt waren, kon het testen beginnen.
 
-Door de uitgekozen strategie en replicatie factor zou op iedere node een replica van de data aanwezig moeten zijn.
+Door de uitgekozen strategie en replicatiefactor zou op iedere node een replica van de data aanwezig moeten zijn.
 Om dit na te gaan, werden alle nodes alleen opgestart en daarna werd gekeken of er een specifieke record aanwezig was.
 Deze manier van werken werd voor een aantal records herhaald om toevalligheden te vermijden.
 Hier kon telkens vastgesteld worden dat de data op de node aanwezig was.

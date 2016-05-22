@@ -9,7 +9,7 @@ Door het feit dat de primaire sleutel in Cassandra niet uniek hoeft te zijn, ged
 Een nadeel hiervan is dat er geen waarschuwing weergegeven wordt als een rij overschreven zou worden.
 Omdat dit veelal ongewenst gedrag is binnen applicaties komt men al snel terecht bij een samengestelde primaire sleutel, een primaire sleutel uit verschillende kolommen.
 
-\section{Partitie kolom}
+\section{Partitiekolom}
 \label{partition_key}
 Het eerste deel van de primaire sleutel bestaat uit de partitiekolommen.
 Het doel van deze partitiekolommen is om de data gebalanceerd over alle nodes te spreiden.
@@ -22,7 +22,7 @@ Tijdsreeksen vormen hier een uitzondering op.
 Deze reeksen kunnen al gauw miljarden entries bevatten.
 Hier is het dus zeer belangrijk om  goede partitiekolommen te kiezen of men komt hier al snel in de problemen.
 
-\section{Clustering kolom}
+\section{Clusteringkolom}
 \label{clustering_key}
 Het laatste deel van de primaire sleutel bestaat uit de clusteringkolommen.
 Deze bepalen de volgorde van de data op de fysieke media \citep{strickland2014availability}.
