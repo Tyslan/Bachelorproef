@@ -16,9 +16,13 @@ Een aantal zaken dienen hierbij opgemerkt te worden.
 \end{enumerate}
 
 Dit is een zeer eenvoudige manier om data te importeren in Cassandra.
+Alle inserts gebeuren asynchroon, wat uiteraard goed is.
 Toch wordt deze methode niet aangeraden om te gebruiken bij het importeren van grote hoeveelheden data.
+Een eerste reden is dat er maar met één node connectie gemaakt wordt.
+Hierdoor wordt de werklast niet evenwichtig verdeeld over alle nodes.
 Bij ca. 1 miljoen rijen, afhankelijk van het aantal kolommen, kan het zijn dat deze methode vast loopt.
-Dit kan men op een aantal manieren oplossen.
+
+De bovenstaande problemen kan men op een aantal manieren oplossen.
 De drie meest voorkomende zijn:
 
 \begin{enumerate}
@@ -29,19 +33,66 @@ De drie meest voorkomende zijn:
 
 \section{Importeren via sstableloader}
 
-Het importeren van data via sstableloader is eveneens een eenvoudig proces.
-Hier zijn reeds verschillende implementaties van, zoals cassandra bulkloader.
+Het importeren van data via sstableloader is eveneens een eenvoudig proces, maar hier komt wat meer werk aan te pas.
 
 Enkele belangrijke nadelen van deze manier zijn:
 \begin{itemize}
 	\item Men moet een aangepaste applicatie schrijven om dit te kunnen gebruiken.
 	\item Om sstableloader te kunnen gebruiken dienen alle nodes van de cluster online te zijn.
-	\item De SSTable dient aangemaakt te zijn vooraleer men deze methode kan gebruiken.
+	\item De sstable dient aangemaakt te zijn vooraleer men deze methode kan gebruiken.
 \end{itemize}
+
+De reden waarom alle nodes online moeten zijn is omdat de hash van het record meteen bepaald wordt en dan doorgestuurd wordt naar de node waar het hoort te staan.
 
 \section{Importeren via cassandra-loader}
 Dit is een Java programma van Brain Hess.
-Dit programma maakt gebruik van de CQL driver die voorzien is door DataStax.
-Het ganse principe van dit programma is om asynchroon cql inserts te doen.
+Dit programma maakt gebruik van de CQL driver die beschikbaar gesteld wordt door DataStax.
+Het ganse principe van dit programma is om asynchroon te werken en om met iedere node in de cluster te verbinden om zo het werk evenwichtig te verdelen.
+Dit laatste was een van de struikelblokken bij het importeren van data via cqlsh.
 
-\section{Een vergelijking van de drie methodes}
+\section{Testen van de verschillende loaders}
+In dit stuk is het de bedoeling om de verschillende manieren van data import te vergelijken.
+In deze vergelijking werd altijd dezelfde data gebruikt.
+Enkel de hoeveelheid data die ingeladen werd was verschillend.
+
+Eerst was de meest eenvoudige manier aan de beurt, het COPY commando via cqlsh.
+Hier werden verschillende bestanden met dezelfde data, maar met een ander aantal rijen ingeladen.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|r|r|}
+		\hline
+		Aantal rijen & Tijd (s) \\
+		\hline
+		\hline
+		1 000 & 0.388 \\
+		\hline
+		10 000 & 2.068 \\
+		\hline
+		100 000 & 23.635 \\
+		\hline
+		1 000 000 & 195.742 \\
+		\hline
+		10 000 000 & 2 150.821\\
+		\hline
+	\end{tabular}
+	\caption{Importeren van data met cqlsh}
+	\label{tab:cas_cqlsh}
+\end{table}
+
+Als men tabel \ref{tab:cas_cqlsh} bekijkt ziet men hier dat er een lineair verband is tussen het aantal rijen en de tijd die nodig is om alle rijen te importeren.
+Dit is ook wat verwacht werd.
+
+Het testen met sstableloader werd niet gedaan omwille van de reden dat alle nodes online moeten zijn.
+In een systeem waar alles ingezet wordt op een hoge beschikbaarheid, is het dan ook niet aangeraden om een methode te gebruiken waar import crasht als er een node offline gaat.
+
+Het gebruik van cassandra-loader leverde veel problemen op.
+Dit kwam deels door het gebruik van de virtuele machines.
+De cassandra-loader verwacht 8 GB werkgeheugen.
+Dit was oorspronkelijk niet beschikbaar op de virtuele machine.
+Hierdoor moest het originele script aangepast worden.
+Echter na de aanpassing van het virtueel geheugen dat toegewezen wordt aan de Java virtuele machine crashte het programma.
+
+Doordat het inladen via cassandra-loader niet werkte kan er geen vergelijking gemaakt worden.
+Toch moet er opgemerkt worden dat de manier van cassandra-loader voor het importeren en het importeren via cqlsh niet zo veel verschilt in theorie.
+Cassandra-loader gaat er enkel nog voor zorgen dat het werk over alle online nodes evenwichtig verdeeld wordt.
