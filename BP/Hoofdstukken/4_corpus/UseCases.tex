@@ -4,78 +4,79 @@
 \section{Messaging}
 % http://www.planetcassandra.org/blog/functional_use_cases/messaging/
 Voor messaging systemen is het zeer belangrijk dat er 100\% uptime is.
-Door de peer-to-peer architectuur van Cassandra is er geen single point of failure.
-Als hier ook nog eens multi-datacenter replicatie aan toegevoegd wordt is het bijna onmogelijk dat het systeem downtime kent \citep{Chan2014Messaging}.
+Door de peer-to-peer architectuur van Cassandra is er geen ''single point of failure''.
+Als hier ook nog eens multi-datacenter replicatie aan toegevoegd wordt, is het bijna onmogelijk dat het systeem downtime kent \citep{Chan2014Messaging}.
 
-Binnen deze use case zijn de belangrijkste gebruikers Instagram, New York Times, ComCast\dots
+De belangrijkste gebruikers binnen deze use case zijn Instagram, New York Times, ComCast\dots
 
-\section{Fraude bestrijding}
+\section{Fraudebestrijding}
 % http://www.planetcassandra.org/blog/functional_use_cases/fraud_detection/
-Cassandra voorziet real-time monitoring.
-Hiervoor kan nodetool of een ander tools zoals Datastax OpsCenter.
+Cassandra biedt real time monitoring aan.
+Hiervoor kan nodetool of andere tools zoals DataStax' OpsCenter gebruikt worden.
 Op deze manier kan verdacht gedrag snel opgespoord worden.
-Toch hoeft de fraude bestrijding niet enkel op deze manier te gebeuren.
+Toch hoeft de fraudebestrijding niet enkel op deze manier te gebeuren.
 
 \cite{Nguyen2014Fraud} geeft een mooi voorbeeld om spam mail op te sporen bij Nextgate.
-Binnen de database wordt de data zo gemodelleerd dat alle berichten met eenzelfde inhoud in dezelfde rij terecht komen.
-Door een simpele count uit te voeren op de rijen kan men nagaan hoe vaak eenzelfde bericht verstuurd is.
-Als de count een bepaald getal overschrijdt dan wordt het bericht als spam beschouwd.
+Binnen de database wordt de data op deze manier gemodelleerd zodat alle berichten met dezelfde inhoud in één rij terecht komen.
+Door een simpele count uit te voeren op de rijen kan men nagaan hoe vaak eenzelfde bericht verstuurd geworden is.
+Wanneer de count een bepaald getal overschrijdt, wordt het bericht als spam beschouwd.
 
-Naast Nextgate zijn er ook nog andere belangrijkste gebruikers zoals Barracuda Networks, ZoneFox, Iovation\dots
+Naast Nextgate zijn er ook nog andere belangrijke gebruikers zoals Barracuda Networks, ZoneFox, Iovation\dots
 
-\section{Product catalogi en afspeellijsten}
+\section{Productcatalogi en afspeellijsten}
 % http://www.planetcassandra.org/blog/functional_use_cases/product-catalogs-playlists/
-Door de enorme schaalbaarheid, de hoge performantie en de hoge beschikbaarheid is Cassandra uitstekend geschikt om product catalogi en afspeellijsten bij te houden.
-Zowel product catalogi als afspeellijsten kunnen exponentieel groeien.
+Door de enorme schaalbaarheid, de hoge performantie en de hoge beschikbaarheid is Cassandra uitstekend geschikt om productcatalogi en afspeellijsten bij te houden.
+Zowel productcatalogi als afspeellijsten kunnen exponentieel groeien.
 
-De bekenste gebruikers binnen deze use case zijn SoundCloud, Spotify, Reddit, Netflix\dots
+De bekendste gebruikers binnen deze use case zijn SoundCloud, Spotify, Reddit, Netflix\dots
 
-Bij Reddit wordt Cassandra in veel zaken gebruikt maar de belangrijkste toepassingen zijn  het voting systeem, gelikete pagina's en gelikete subreddits \citep{Harvey2013Reddit}.
+Bij Reddit wordt Cassandra in veel zaken gebruikt, maar de belangrijkste toepassingen zijn het voting systeem, gelikete pagina's en gelikete subreddits \citep{Harvey2013Reddit}.
 
 \section{Internet Of Things en sensor data}
 % http://www.planetcassandra.org/blog/functional_use_cases/internet-of-things-sensor-data/
-Door de hoge doorvoersnelheid is Cassandra uitermate geschikt voor het opslaan van sensor gegevens.
-Het is dan ook vooral deze eigenschap die vaak de doorslag geeft om voor Cassandra te kiezen als men bij deze use case terecht komt.
+Door de hoge doorvoersnelheid is Cassandra uitermate geschikt voor het opslaan van sensorgegevens.
+Het is dan ook vooral deze eigenschap die vaak de doorslag geeft om voor Cassandra te kiezen als men in deze use case terecht komt.
 
-Bij deze use case zijn de bekendste gebruikers Aeris, i2O, CERN, NASA\dots
+De bekendste gebruikers binnen deze use case zijn Aeris, i2O, CERN, NASA\dots
 
 \cite{Keller2013Nasa} legt uit waarom er binnen NASA met Cassandra gewerkt wordt.
-Cassandra laat volgens hem toe om de data op een veel natuurlijker manier in te geven.
-Ook is het mogelijk met Cassandra om zeer snel de resultaten van een query te zien.
-Hier heeft hij het voorbeeld dat zeer snel alle informatie over een specifiek ip-adres op een specifieke tijd kan opvragen.
+Cassandra laat volgens hem toe om data op een meer natuurlijke manier in te geven.
+Ook is het mogelijk om met Cassandra zeer snel de resultaten van een query te zien.
+Hier geeft hij het voorbeeld dat alle informatie over een specifiek ip-adres op een specifieke tijd zeer snel opgevraagd kan worden.
 Een ander groot pluspunt voor Cassandra is de ingebouwde time-to-live.
-Op die manier wordt data die niet meer relevant is automatisch verwijderd.
-De hoge schrijfsnelheid is voor NASA ook belangrijk omdat deze organisatie dag en nacht veel verschillende feeds ontvangt.
+Op deze manier wordt de data die niet meer relevant is automatisch verwijderd.
+De hoge schrijfsnelheid is voor NASA ook belangrijk omdat deze organisatie over dag en nacht veel verschillende feeds ontvangt.
 
 \section{Aanbevelingen en personalisatie}
-Het grote probleem bij aanbevelingen is dat de data op een persoon afgesteld moet zijn en dat een grote hoeveelheid data real time verwerkt moet worden.
-Dit is echter geen probleem voor Cassandra want hier is de database voor geoptimaliseerd.
+Het grote probleem bij aanbevelingen is dat de data persoonlijk afgesteld moet worden en dat een grote hoeveelheid data tezelfdertijd verwerkt moet worden.
+Dit is echter geen probleem voor Cassandra want hiervoor werd de database geoptimaliseerd.
 
 Enkele bekende bedrijven zoals ebay, Yahoo, Eventbite\dots  gebruiken Cassandra om deze problemen op te lossen.
 
-Binnen Unity wordt ook Cassandra gebruikt.
+Ook binnen Unity wordt Cassandra gebruikt.
 \cite{Makinen2015Cassandra} legt uit dat hiervoor overgestapt werd van MongoDB naar Cassandra.
-Dit was omdat er behoefte was aan een sneller systeem.
+Dit was omdat er nood was aan een sneller systeem.
 Met meer dan 500 miljoen documenten in MongoDB was het niet meer efficiënt om hier data in op te zoeken.
-De hogere snelheid was vooral nodig bij Unity Ads, hiermee kunnen game developers advertenties toevoegen aan hun games.
-Dit slaat op wie op welke moment welke advertentie te zien krijgt.
+De hogere snelheid was vooral nodig bij Unity Ads, hierdoor kunnen game developers advertenties toevoegen aan hun games.
+Dit wil zeggen: Wie ziet welke advertentie op welk moment?
 Hierdoor zijn er veel writes en wordt de time-to-live gebruikt om ervoor te zorgen dat oude records verwijderd worden.
-De data die hier weggeschreven wordt, wordt dan gebruikt om te bepalen welke advertenties aan welke gebruiker getoond worden.
+De data die hier weggeschreven wordt, gebruikt men dan om te bepalen welke advertentie aan welke gebruiker getoond wordt.
 
 \section{Markten voor Cassandra}
 Door de geschiktheid voor aanbevelingssystemen kan Cassandra eindgebruikers persoonlijke suggesties geven.
 Door de hoge doorvoersnelheid van Cassandra kan dit real time gebeuren.
-Op dezelfde manier als een product catalogus gemaakt kan worden kan een boodschappen wagentje gecreëerd worden.
-Doordat Cassandra ook uitstekend geschikt is voor messaging is het mogelijk om dit in te zetten voor notificaties voor de eindgebruiker.
-Met al deze zaken in het gedachten kan besloten worden dat Cassandra een goede keuze is voor retailers en aanbieders van digitale media.
+Op dezelfde manier als een productcatalogus gemaakt kan worden, kan een boodschappenwagentje gecreëerd worden.
+Doordat Cassandra ook uitstekend geschikt is voor messaging, is het mogelijk om dit in te zetten bij notificaties voor de eindgebruiker.
+Met al deze zaken in het achterhoofd kan besloten worden dat Cassandra een goede keuze is voor retailers en aanbieders van digitale media.
 
 Een andere markt voor Cassandra is de financiële sector.
-Hier wordt immens veel data verstuurd en opgeslagen, hier hoeft men enkel nog maar aan transacties te denken.
+Hier wordt immens veel data verstuurd en opgeslagen.
+Hier hoeft men enkel nog maar aan transacties te denken.
+% TODO cassandra transacties bron
 Cassandra biedt ook uitstekende mogelijkheden om fraude tegen te gaan wat toch ook een groot pluspunt is in deze sector.
-Cassandra heeft in deze markt al enkele gebruikers zoals ING, UBS, Xoom\dots
-Een relatief nieuwe trend is dat verzekeraars, zoals Corona en AXA, sensoren in bijvoorbeeld een auto laten plaatsen en dat op basis hiervan dan een verzekeringspolis wordt opgesteld.
-Hiervoor wordt veel data opgeslagen om deze polis correct te kunnen bepalen.
-Zoals hierboven vermeld is Cassandra ook voor deze job uitstekend geschikt.
+Cassandra heeft op deze markt al enkele gebruikers zoals ING, UBS, Xoom\dots
+Een relatief nieuwe trend is dat verzekeraars, zoals Corona en AXA, bijvoorbeeld sensoren in een auto laten plaatsen en dat op basis van deze sensorgegevens een verzekeringspolis opgesteld wordt.
+Zoals hierboven vermeld, is Cassandra ook voor deze toepassing uitstekend geschikt.
 
-De hierboven vermelde markten zijn markten waar Cassandra bijna kant en klare oplossingen voor aanbied.
-Natuur kan Cassandra ook in andere markten gebruikt worden, maar hier zal waarschijnlijk meer aandacht moeten besteed worden aan het datamodel en zal er samen gewerkt moeten worden met andere technologieën.
+De hierboven vermelde markten zijn markten waarvoor Cassandra bijna kant-en-klare oplossingen aanbiedt.
+Natuurlijk kan Cassandra ook voor andere markten gebruikt worden, maar hier zal waarschijnlijk meer aandacht besteed moeten worden aan het datamodel en zal er met andere technologieën samengewerkt moeten worden.
