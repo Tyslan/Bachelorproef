@@ -27,7 +27,7 @@ Er zijn drie soorten partitioners in Cassandra:
 	Deze partitioner maakt gebruik van de MurmurHash functie, waardoor de hash een 64-bit hashwaarde van de rijsleutel wordt.
 	
 	\item \textbf{ByteOrderedPartitioner}:
-	Zoals de naam doet vermoeden wordt deze partitioner gebruikt voor geordende partitionering.
+	Zoals de naam doet vermoeden, wordt deze partitioner gebruikt voor geordende partitionering.
 	Deze partitioner ordent de rijen volgens de bytes van de rijsleutel.
 	De tokens worden berekend aan de hand van de hexadecimale representatie van de leidende tekens van de rijsleutel.
 	Op deze manier kan men, net zoals men met een cursor in een SQL omgeving zou doen, de tabel geordend overlopen, gesorteerd op de primaire sleutel.
@@ -45,7 +45,7 @@ Ondanks dit feit zijn er toch een aantal problemen met deze partitioner:
 	
 	\item Met de ByteOrderedPartitioner is het zeer moeilijk om een gebalanceerde cluster te krijgen.
 	De enige manier waarop dit verkregen kan worden is door dit manueel te doen.
-	Als men dit echter niet doet is de kans vrij groot dat de data op slechts enkele nodes van de cluster opgeslagen wordt.
+	Als men dit echter niet doet, is de kans vrij groot dat de data op slechts enkele nodes van de cluster opgeslagen wordt.
 	Als men dan nog eens verschillende types voor de primaire sleutels definieert, is het zo goed als onmogelijk om een gebalanceerde cluster te krijgen
 	\citep{Bauer2013CaseAgainstByteOrder}.
 \end{itemize}
@@ -54,9 +54,9 @@ Ondanks dit feit zijn er toch een aantal problemen met deze partitioner:
 \label{sec_replication}
 Om de hoge beschikbaarheid te verkrijgen maakt Cassandra gebruik van data replicatie.
 Door de replicatie wordt de kans op een ''Single point of Failure'' enorm beperkt.
-Cassandra biedt een methode aan om de replicatie factor te blijven behouden zelfs indien bepaalde nodes uitgevallen zouden zijn.
-Deze replicatie factor wordt ingesteld op keyspace niveau.
-De replicatie factor bepaalt hoeveel replica's van de data bijgehouden worden.
+Cassandra biedt een methode aan om de replicatiefactor te blijven behouden zelfs indien bepaalde nodes uitgevallen zouden zijn.
+Deze replicatiefactor wordt ingesteld op keyspace niveau.
+De replicatiefactor bepaalt hoeveel replica's van de data bijgehouden worden.
 Op basis van de partitioner en de replicatie strategie wordt  bepaald waar de replica's opgeslagen worden.
 Om deze replicatie in goede banen te leiden zijn er een aantal strategieën uitgewerkt \citep{kan2014cassandra}.
 
@@ -67,11 +67,11 @@ Hierbij zijn er twee strategieën:
 
 \subsubsection{SimpleStrategy}
 Deze SimpleStrategy wordt meestal gebruikt als er maar één datacenter aanwezig is.
-Wanneer men over meerdere datacenters beschikt is het beter om de andere strategie te gebruiken.
-Wanneer de standaard partitioner, de Murmer3Partitioner, gebruikt wordt gaat de partitioner de locatie bepalen aan de hand van de hash van de primaire sleutel.
+Wanneer men over meerdere datacenters beschikt, is het beter om de andere strategie te gebruiken.
+Wanneer de standaard partitioner, de Murmer3Partitioner, gebruikt wordt, zal de partitioner de locatie bepalen aan de hand van de hash van de primaire sleutel.
 De replica's van de data worden geplaatst op de volgende nodes in de ring met de richting van de klok mee.
 	
-Op figuur \ref{fig:simple_strategy} wordt een voorbeeld gegeven waarbij de replicatie factor 3 is.
+Op figuur \ref{fig:simple_strategy} wordt een voorbeeld gegeven waarbij de replicatiefactor 3 is.
 De zwarte namen zijn de originele data en de grijze zijn replica's.
 	
 \begin{figure}[H]
@@ -90,7 +90,7 @@ Het grote voordeel van deze strategie is dat er rack awareness is en dat de snit
 Snitches worden verder toegelicht (\ref{sec_snitch}).
 Rack awareness zorgt ervoor dat de replica's op verschillende racks worden opgeslagen.
 Dit is echter niet mogelijk bij SimpleStrategy.
-Ook kan men door het gebruik van deze strategie voor ieder datacenter een andere replicatie factor instellen.
+Ook kan men door het gebruik van deze strategie voor ieder datacenter een andere replicatiefactor instellen.
 
 \section{Snitches}
 \label{sec_snitch}
@@ -109,7 +109,7 @@ Er zijn acht soorten snitches beschikbaar op Cassandra \citep{strickland2014avai
 	
 	\item \textbf{PropertyFileSnitch}:
 	Met deze snitch kan de administrator zelf instellen welke nodes tot welke rack en datacenter behoren.
-	Als men deze snitch gebruikt moet men dus de ganse topologie uitschrijven. 
+	Als men deze snitch gebruikt moet men dus de hele topologie uitschrijven. 
 	Iedere node moet ook op precies dezelfde manier geconfigureerd worden.
 	Dit alles geeft veel overhead als er nodes toegevoegd of verwijderd moeten worden.
 	
@@ -136,7 +136,7 @@ Er zijn acht soorten snitches beschikbaar op Cassandra \citep{strickland2014avai
 \end{enumerate}
 
 Voor productieomgevingen is de GossipingPropertyFileSnitch meestal de beste keuze wanneer er met fysieke datacenters wordt gewerkt.
-Als men in de cloud werkt kiest men best voor de bijhorende snitch.
+Als men in de cloud werkt, kiest men best voor de bijhorende snitch.
 
 \section{Seed node}
 Sommige nodes in de Cassandra cluster zijn seed nodes.

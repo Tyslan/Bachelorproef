@@ -11,11 +11,11 @@ Cassandra werd na enkele bewerkingen telkens onbruikbaar en gaf de volgende fout
 Een eerste oplossing voor dit probleem was om ervoor te zorgen dat de user 'cassandra' toegang had tot de pidfile, wat namelijk niet het geval was doordat de installatie van Cassandra werd uitgevoerd door de Vagrant setup.
 Maar ook dit leverde weinig resultaat op.
 Wel moet opgemerkt worden dat de installatie van Cassandra zelf geen problemen met zich meebracht.
-Voor de aanpassing van de configuratie file van Cassandra werkte deze perfect op iedere node.
+Voor de aanpassing van de configuratiefile van Cassandra werkte deze perfect op iedere node.
 
 \section{DataStax OpsCenter}
 
-Uiteindelijk werd er geopteerd om gebruik te maken van OpsCenter omdat dit een gemakkelijke manier is om snel een Cassandra cluster te bekomen en omdat er ook goede mogelijkheden tot observeren van de database aanwezig zijn.
+Uiteindelijk werd ervoor geopteerd om gebruik te maken van OpsCenter omdat dit een gemakkelijke manier is om snel een Cassandra cluster te bekomen en omdat er ook goede mogelijkheden tot observeren van de database aanwezig zijn.
 Er werd voor OpsCenter community edition 5.2.4 gekozen.
 Bij deze versie diende Cassandra 2.1.11 gebruikt te worden \citep{Cantoni2016}.
 

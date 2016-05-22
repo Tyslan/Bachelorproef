@@ -9,7 +9,7 @@ Binnen deze twee implementaties worden vaak termen hergebruikt \citep{Ahmed2015T
 De structuren die hieronder besproken worden zijn allemaal onderdeel van de CQL implementatie.
 
 \section{Column}
-Binnen Cassandra is een kolom de kleinste data structuur die er bestaat.
+Binnen Cassandra is een kolom de kleinste datastructuur die er bestaat.
 De kolom van een relationele database kan niet vergeleken worden met een kolom in Cassandra.
 Hun functie is volledig anders.
 
@@ -22,7 +22,7 @@ Een kolom in Cassandra bevat drie of vier elementen:
 \end{enumerate}
 
 Voor de gebruiker zijn hier de naam van de kolom en de waarde van het grootste belang.
-Met deze velden gaat er uiteindelijk gewerkt worden.
+Met deze velden zal er uiteindelijk gewerkt worden.
 De naam en waarde worden opgeslagen als byte arrays.
 Toch voorziet Cassandra een resem built-in types.
 De timestamp is er om conflicten op te lossen.
@@ -48,7 +48,7 @@ Door het feit dat men hier alle rijen groepeert is het belangrijk dat de rijen e
 
 \section{Keyspace}
 Een keyspace kan vergeleken worden met een database of schema in relationele databases.
-De keyspace bevat de replicatie strategie en replicatie factor.
+De keyspace bevat de replicatiestrategie en replicatiefactor.
 
 \begin{figure}[H]
 	\centering

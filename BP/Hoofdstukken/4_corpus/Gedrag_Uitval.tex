@@ -9,7 +9,7 @@ Deze informatie wordt ook lokaal opgeslagen.
 
 Cassandra gebruikt het ''Phi Accrual Failure Detection Algorithm'' voor het detecteren van het uitvallen van nodes \citep{kan2014cassandra}.
 Het idee bij dit algoritme is dat de status niet weergegeven wordt door een booleaanse waarde, dood of levend, maar door een waarde die aangeeft hoe groot de kans is dat een node dood of levend is.
-Als een node op deze manier dood verklaard wordt, blijven de andere nodes toch nog communiceren met deze node om te bepalen wanneer deze terug online is.
+Als een node op deze manier dood verklaard wordt, blijven de andere nodes toch nog communiceren met deze node om te bepalen wanneer deze weer online is.
 
 \section{Herstelmechanisme}
 % HA p74
@@ -29,7 +29,7 @@ Hierbij wordt er wat leesconsistentie opgeofferd om de schrijfbeschikbaarheid te
 In het geval een node offline is, houdt een andere gezonde node een hint bij als er data geschreven wordt.
 Wanneer alle nodes in het slechtste geval offline zouden zijn, houdt de coördinator deze hint bij.
 Als de node dan online komt, wordt er eerst voor gezorgd dat deze writes uitgevoerd worden en kunnen in de tijd die hiervoor nodig is geen reads uitgevoerd worden.
-Als in deze periode toch reads uitvoerd zouden worden kan dit leiden tot inconsistente reads.
+Als in deze periode toch reads uitvoerd zouden worden, kan dit leiden tot inconsistente reads.
 
 Standaard houdt Cassandra deze hints drie uur bij.
 Deze limiet bestaat om te voorkomen dat deze hint-wachtlijst niet te lang wordt.
@@ -68,7 +68,7 @@ Hiervoor zijn drie soorten read repairs \citep{strickland2014availability}:
 	\item \textbf{Manuele repair}:
 	Dit is een volledige repair en deze zou ook regelmatig uitgevoerd moeten worden.
 	Men kan deze repair forceren via ''nodetool repair'', maar Cassandra voorziet ook een veld in de instellingen om dit op regelmatige basis uit te voeren.
-	De standaard waarde om een manueel herstel door te voeren is tien dagen.
+	De standaardwaarde om een manueel herstel door te voeren is tien dagen.
 \end{enumerate}
 
 Bij manuele herstelling kan de opmerking gemaakt worden, dat hier problemen kunnen optreden als men een record verwijderd heeft.

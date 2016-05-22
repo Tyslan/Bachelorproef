@@ -1,9 +1,9 @@
 \chapter{Datamodellering in Cassandra}
 \label{ch:cassandra_modelling}
 \section{Primaire sleutel}
-Binnen de primaire sleutel in Cassandra worden de partitie kolommen (\ref{partition_key}) en clustering kolommen (\ref{clustering_key}) vastgelegd voor een tabel.
+Binnen de primaire sleutel in Cassandra worden de partitiekolommen (\ref{partition_key}) en clusteringkolommen (\ref{clustering_key}) vastgelegd voor een tabel.
 In tegenstelling tot relationele databases wordt de primaire sleutel hier niet gebruikt als unieke sleutel voor de rij, maar om snel te weten te komen waar de data zich binnen de cluster bevindt \citep{kan2014cassandra}.
-Als een tabel slechts één kolom heeft als primaire sleutel, dan is deze kolom meteen ook de partitie kolom en zijn er geen clustering kolommen.
+Als een tabel slechts één kolom heeft als primaire sleutel, dan is deze kolom meteen ook de partitiekolom en zijn er geen clusteringkolommen.
 
 Door het feit dat de primaire sleutel in Cassandra niet uniek hoeft te zijn, gedragen het INSERT commando en het UPDATE commando zich op een identieke wijze.
 Een nadeel hiervan is dat er geen waarschuwing weergegeven wordt als een rij overschreven zou worden.
@@ -11,49 +11,49 @@ Omdat dit veelal ongewenst gedrag is binnen applicaties komt men al snel terecht
 
 \section{Partitie kolom}
 \label{partition_key}
-Het eerste deel van de primaire sleutel bestaat uit de partitie kolommen.
-Het doel van deze partitie kolommen is om de data gebalanceerd over alle nodes te spreiden.
+Het eerste deel van de primaire sleutel bestaat uit de partitiekolommen.
+Het doel van deze partitiekolommen is om de data gebalanceerd over alle nodes te spreiden.
 Op deze manier kan de fysieke locatie van de data ook snel achterhaald worden \citep{kan2014cassandra}.
 
-Bij het kiezen van de partitie kolommen dient men met een aantal zaken rekening te houden om de data evenwichtig over alle nodes te spreiden, maar er is slechts één fysische restrictie.
+Bij het kiezen van de partitiekolommen dient men met een aantal zaken rekening te houden om de data evenwichtig over alle nodes te spreiden, maar er is slechts één fysische restrictie.
 Iedere rij kan slechts 2 miljard kolommen bevatten \citep{McFadin2013Timeseries}.
 In de meeste gevallen is dit ruim voldoende.
 Tijdsreeksen vormen hier een uitzondering op.
 Deze reeksen kunnen al gauw miljarden entries bevatten.
-Hier is het dus zeer belangrijk om  goede partitie kolommen te kiezen of men komt hier al snel in de problemen.
+Hier is het dus zeer belangrijk om  goede partitiekolommen te kiezen of men komt hier al snel in de problemen.
 
 \section{Clustering kolom}
 \label{clustering_key}
-Het laatste deel van de primaire sleutel bestaat uit de clustering kolommen.
+Het laatste deel van de primaire sleutel bestaat uit de clusteringkolommen.
 Deze bepalen de volgorde van de data op de fysieke media \citep{strickland2014availability}.
-De clustering kolommen hebben echter geen invloed op de fysieke locatie van de data binnen de cluster.
+De clusteringkolommen hebben echter geen invloed op de fysieke locatie van de data binnen de cluster.
 Toch zullen ze een belangrijke invloed hebben op welke query's uitgevoerd kunnen worden.
 
 \section{De WHERE clausule}
 Zoals \cite{Lerer2015Where} aanhaalt is één van de grootste verschillen tussen CQL en SQL de WHERE clausule.
 In SQL kent de WHERE clausule geen restricties.
 Bij CQL is dit anders.
-Hier worden restricties opgelegd door de partitie en clustering kolommen.
-Eveneens kan er enkel op de partitie en clustering kolommen gefilterd worden.
+Hier worden restricties opgelegd door de partitie en clusteringkolommen.
+Eveneens kan er enkel op de partitie- en clusteringkolommen gefilterd worden.
 
-\subsection{Restricties opgelegd door de partitie kolommen}
+\subsection{Restricties opgelegd door de partitiekolommen}
 
-Een eerste restrictie die wordt opgelegd door de partitie kolommen is dat ofwel alle partitie kolommen worden opgenomen in de WHERE clausule ofwel geen enkele.
+Een eerste restrictie die wordt opgelegd door de partitiekolommen is dat ofwel alle partitiekolommen worden opgenomen in de WHERE clausule ofwel geen enkele.
 Dit is nodig omdat Cassandra anders de hash niet kan berekenen.
 Deze hash is echter nodig om te weten op welke node de data zich bevindt.
 
-Een volgende restrictie die wordt opgelegd door de partitie kolommen is het feit dat enkel de '=' en IN operator rechtstreeks gebruikt kunnen worden.
-Tot Cassandra 2.2 kon de IN operator enkel op de laatste gedefinieerde partitie kolom toegepast worden.
+Een volgende restrictie die wordt opgelegd door de partitiekolommen is het feit dat enkel de '=' en IN operator rechtstreeks gebruikt kunnen worden.
+Tot Cassandra 2.2 kon de IN operator enkel op de laatste gedefinieerde partitiekolom toegepast worden.
 
-De laatste restrictie die wordt opgelegd door de partitie kolommen heeft te maken met de >, >=, < en <= operators.
+De laatste restrictie die wordt opgelegd door de partitiekolommen heeft te maken met de >, >=, < en <= operators.
 Deze zijn enkel rechtstreeks toepasbaar als de partitioner ingesteld is op ByteOrderedPartitioner.
 Indien dit niet het geval is moet men een omweg maken via de token functie.
 Op het eerste zicht lijkt het gebruik van de token functie minder efficiënt voor het selecteren van data, maar dit weegt niet op tegen de nadelen die ByteOrderedPartitioner heeft op het gebied van de distributie van de data, zoals eerder vermeld werd.
 Wel dient hiermee opgepast te worden omdat de operators dan uitgevoerd worden op de tokens en niet rechtstreeks op de data.
 Dit levert niet altijd het gewenste resultaat op.
 
-\subsection{Restricties opgelegd door de clustering kolommen}
-Voor de restricties op de clustering kolommen uitgelegd kunnen worden, moet eerst uitgelegd worden hoe de data in Cassandra binnen een partitie opgeslagen wordt.
+\subsection{Restricties opgelegd door de clusteringkolommen}
+Voor de restricties op de clusteringkolommen uitgelegd kunnen worden, moet eerst uitgelegd worden hoe de data in Cassandra binnen een partitie opgeslagen wordt.
 Dit zal nu aan de hand van een voorbeeld uitgelegd worden \citep{Lerer2015Where}.
 Neem de onderstaande tabel:
 
@@ -77,13 +77,13 @@ Hier wordt de data nu als volgt opgeslagen binnen de partitie:
 \end{lstlisting}
 
 De eerste restrictie wordt hier opgelegd door de manier waarop de data opgeslagen is.
-Als men een voorwaarde wil vastleggen voor een clustering kolom, dan dienen de clustering kolommen die voor deze komen in de primaire sleutel ook vastgelegd te worden.
+Als men een voorwaarde wil vastleggen voor een clusteringkolom, dan dienen de clusteringkolommen die voor deze komen in de primaire sleutel ook vastgelegd te worden.
 Dit is nodig omdat Cassandra de data anders niet efficiënt kan terugvinden.
 
-Tot Cassandra 2.2 was de IN operator enkel toegelaten op de laatste clustering kolom.
+Tot Cassandra 2.2 was de IN operator enkel toegelaten op de laatste clusteringkolom.
 Sinds Cassandra 2.2 is deze restrictie vervallen en kan men zelfs multi-kolom IN restricties opleggen.
 
-De >, >=, < en <= operators zijn ook enkel toegestaan op de laatste clustering kolom waar een restrictie aan opgelegd is.
+De >, >=, < en <= operators zijn ook enkel toegestaan op de laatste clusteringkolom waar een restrictie aan opgelegd is.
 Toch is hier een oplossing voor aangezien men deze operators kan toepassen over meerdere kolommen.
 Bij deze multi-column slices is het echter wel belangrijk dat de restrictie van de WHERE clausule met dezelfde kolom start.
 
@@ -96,8 +96,8 @@ Zoals in bovenstaande sectie duidelijk werd, dient er bij Cassandra met heel wat
 Zoals door Hobbs aangegeven wordt, lijkt de querytaal van Cassandra CQL sterk op SQL, maar kan het gebruik ervan zeer verschillend zijn.
 
 Een eerste doel bij het opstellen van een datamodel in Cassandra is om de data evenwichtig over alle nodes te verspreiden.
-Dit kan bekomen worden door de partitie kolommen goed te kiezen.
-Zoals eerder vermeld is, worden de partitie kolommen bepaald door het eerste deel van de primaire sleutel.
+Dit kan bekomen worden door de partitiekolommen goed te kiezen.
+Zoals eerder vermeld is, worden de partitiekolommen bepaald door het eerste deel van de primaire sleutel.
 
 Een tweede doel is om zo weinig mogelijk partitie reads te moeten doen.
 Doordat iedere partitie op een andere node kan staan is dit belangrijk.
@@ -118,7 +118,7 @@ Voor men begint aan het opstellen van een datamodel moet al nagedacht worden ove
 Dit staat in schril contrast met relationele databanken waar het datamodel wordt bepaald door de objecten en hun relaties.
 
 Door na te denken over de te ondersteunen query's kan het aantal partitie reads al drastisch verminderd worden.
-Ook dient men rekening te houden met de restricties die de partitie en clustering kolommen opleggen aan de WHERE clausule.
+Ook dient men rekening te houden met de restricties die de partitie en clusteringkolommen opleggen aan de WHERE clausule.
 
 Voor iedere query zou er slechts één partitie read uitgevoerd mogen worden.
 Hiervoor is het belangrijk dat de tabellen geoptimaliseerd zijn voor de reads die uitgevoerd gaan worden.
