@@ -19,17 +19,17 @@ Er zijn drie soorten partitioners in Cassandra:
 \begin{enumerate}
 	\item \textbf{RandomPartitioner}:
 	Dit was de standaard partitioner tot Cassandra 1.2.
-	Aan de hand van de MD5 hash van de rijsleutel probeert deze partitioner de data evenwichtig over alle nodes te verspreiden.
+	Aan de hand van de MD5 hash van de primaire sleutel probeert deze partitioner de data evenwichtig over alle nodes te verspreiden.
 	Omdat de MD5 Hash functie vrij traag is, werd er een andere partitioner als standaard aangesteld.
 	
 	\item \textbf{Murmur3Partitioner}:
 	Sinds Cassandra 1.2 is dit de standaard partitioner van deze databank.
-	Deze partitioner maakt gebruik van de MurmurHash functie, waardoor de hash een 64-bit hashwaarde van de rijsleutel wordt.
+	Deze partitioner maakt gebruik van de MurmurHash functie, waardoor de hash een 64-bit hashwaarde van de primaire sleutel wordt.
 	
 	\item \textbf{ByteOrderedPartitioner}:
 	Zoals de naam doet vermoeden, wordt deze partitioner gebruikt voor geordende partitionering.
-	Deze partitioner ordent de rijen volgens de bytes van de rijsleutel.
-	De tokens worden berekend aan de hand van de hexadecimale representatie van de leidende tekens van de rijsleutel.
+	Deze partitioner ordent de rijen volgens de bytes van de primaire sleutel.
+	De tokens worden berekend aan de hand van de hexadecimale representatie van de leidende tekens van de primaire sleutel.
 	Op deze manier kan men, net zoals men met een cursor in een SQL omgeving zou doen, de tabel geordend overlopen, gesorteerd op de primaire sleutel.
 	
 \end{enumerate}
@@ -42,7 +42,7 @@ Er zijn drie soorten partitioners in Cassandra:
 \end{figure}
 
 De cluster op de bovenstaande figuur (Figuur \ref{fig:partitioner}) bestaat uit 6 nodes.
-De partitioner zal er nu voor zorgen dat er zes ranges zijn voor de hashwaarden van de rijsleutel, in dit geval A, B, C, D, E en F.
+De partitioner zal er nu voor zorgen dat er zes ranges zijn voor de hashwaarden van de primaire sleutel, in dit geval A, B, C, D, E en F.
 Wanneer een record wordt ingevoerd zal de partitioner hier nu de hashwaarde voor berekend worden.
 Indien de hashwaarde zich in de range A bevindt, zal de partitioner er nu voor zorgen dat deze record op node 1 geplaatst zal worden.
 
