@@ -38,7 +38,7 @@ Eveneens kan er enkel op de partitie en clustering kolommen gefilterd worden.
 
 \subsection{Restricties opgelegd door de partitie kolommen}
 
-Een eerste restrictie die wordt opgelegd door de partitie kolommen is dat ofwel alle partitie kolommen worden opgenomen in de WHERE clausule ofwel geen enkel.
+Een eerste restrictie die wordt opgelegd door de partitie kolommen is dat ofwel alle partitie kolommen worden opgenomen in de WHERE clausule ofwel geen enkele.
 Dit is nodig omdat Cassandra anders de hash niet kan berekenen.
 Deze hash is echter nodig om te weten op welke node de data zich bevindt.
 
@@ -53,7 +53,7 @@ Wel dient hiermee opgepast te worden omdat de operators dan uitgevoerd worden op
 Dit levert niet altijd het gewenste resultaat op.
 
 \subsection{Restricties opgelegd door de clustering kolommen}
-Voor de restricties op de clustering kollomen uitgelegd kunnen worden, moet eerst uitgelegd worden hoe de data in Cassandra binnen een partitie opgeslagen wordt.
+Voor de restricties op de clustering kolommen uitgelegd kunnen worden, moet eerst uitgelegd worden hoe de data in Cassandra binnen een partitie opgeslagen wordt.
 Dit zal nu aan de hand van een voorbeeld uitgelegd worden \citep{Lerer2015Where}.
 Neem de onderstaande tabel:
 
@@ -87,6 +87,9 @@ De >, >=, < en <= operators zijn ook enkel toegestaan op de laatste clustering k
 Toch is hier een oplossing voor aangezien men deze operators kan toepassen over meerdere kolommen.
 Bij deze multi-column slices is het echter wel belangrijk dat de restrictie van de WHERE clausule met dezelfde kolom start.
 
+%TODO
+%!!!VOORBEELD!!!
+
 \section{Doelen bij datamodellering in Cassandra}
 Zoals in bovenstaande sectie duidelijk werd, dient er bij Cassandra met heel wat rekening gehouden te worden als men een datamodel creëert.
 \cite{Hobbs2015Datamodelling} definieerde wat de doelen zijn bij het opstellen van een datamodel in Cassandra.
@@ -110,7 +113,7 @@ Hierbij gaat men ervan uit dat schijfruimte goedkoop is in vergelijking met ande
 Verder heeft Cassandra geen JOIN waardoor het ook hoogst inefficiënt en onpraktisch zou zijn om geen duplicate data te hebben.
 
 \section{Datamodel opstellen voor Cassandra}
-\cite{Hobbs2015Datamodelling} definieerde niet enkel de doelen van een datamodel in Cassandra, maar haalt ook aan hoe deze bekomen kunnen worden.
+\cite{Hobbs2015Datamodelling} definieerde niet enkel de doelen van een datamodel in Cassandra, maar haalt ook aan hoe deze gerealiseerd kunnen worden.
 Voor men begint aan het opstellen van een datamodel moet al nagedacht worden over de query's die ondersteund moeten worden.
 Dit staat in schril contrast met relationele databanken waar het datamodel wordt bepaald door de objecten en hun relaties.
 
@@ -128,13 +131,13 @@ De oplossing voor Cassandra zijn de volgende twee tabellen:
 CREATE TABLE users_by_username (
   username text PRIMARY KEY,
   email text,
-  age int
+  birthday timestamp
 )
 
 CREATE TABLE users_by_email (
   email text PRIMARY KEY,
   username text,
-  age int
+  birthday timestamp
 )
 \end{lstlisting}
 
