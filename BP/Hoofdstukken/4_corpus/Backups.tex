@@ -18,7 +18,8 @@ $ nodetool -h host -p JMXport snapshot mykeyspace
 
 Het gebruik van snapshots heeft wel een nadeel.
 Het verhindert de verwijdering van oude, overbodige records \citep{DataStax2016Snapshot}.
-%TODO meer uitleg
+Snapshots verhinderen dus dat data die gemarkeerd is met een ''tombstone marker'' verwijderd worden.
+Deze markering werd reeds in het vorige hoofdstuk (\ref{sec:read_repair}) aangehaald bij de herstelmechanismes.
 
 Om een snapshot te gebruiken bij de herstelling van een database, moet men er eerst voor zorgen dat de tabellen die hersteld moeten worden, aangemaakt en ook leeg zijn.
 Daarna kan men de snapshot inladen met de sstableloader tool.
