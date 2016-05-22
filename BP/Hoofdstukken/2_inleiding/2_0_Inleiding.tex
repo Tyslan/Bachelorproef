@@ -15,16 +15,31 @@ Kortom databanken onder de noemer NoSQL zijn aangepast om de problemen, die zich
 Elk van deze types heeft zijn eigen specifieke use cases.
 Zelfs binnen de verschillende types NoSQL databanken komen er nog verschillende specifieke use cases voor.
 
-%TODO CAP beter uitleggen en een figuur toevoegen
-Binnen NoSQL geldt het CAP theorema.
+Bij gedistribueerde systemen zijn de consistentie, de beschikbaarheid en de partitie tolerantie enorm belangrijk.
+\cite{brewer2000towards} stelde hiervoor het CAP theorema op en stelde dat het onmogelijk was om binnen een gedistribueerd systeem deze drie zaken samen te bekomen.
+Hij gaf hiermee de aanzet dat er slechts twee van de drie punten in het CAP theorema tegelijk verkregen kunnen worden.
+Men is dus genoodzaakt om één eigenschap op te offeren.
+
+Maar wat houden deze drie punten die Brewer aanhaalt nu juist in?
+
 \begin{itemize}
 	\item \textbf{Consistency}: De data is op ieder moment op alle nodes gelijk
 	\item \textbf{Availability}: Als een node uitvalt, dan beïnvloedt dit de andere nodes niet.
 	\item \textbf{Partition Tolerance}: Het systeem blijft werken ook al zijn er netwerkfouten.
 \end{itemize}
 
-\cite{brewer2000towards} stelde dat het onmogelijk was om binnen een gedistribueerd systeem deze drie zaken samen te bekomen.
-Hij gaf hiermee de aanzet dat er slechts twee van de drie punten in het CAP theorema tegelijk verkregen kunnen worden.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{img/2_inleiding/cap}
+	\caption{CAP theorema \citep{Alvarado2014CAP}}
+	\label{fig:cap}
+\end{figure}
+
+Als ontwikkelaar heeft men keuze uit een hele reeks databanken.
+Voor de komst van NoSQL was er echter geen sprake van een keuze.
+Lange tijd kon er enkel een relationele database gebruikt worden omdat er niets anders voor handen was.
+Bij de keuze voor een databank is het belangrijk dat men weet hoe de data die in de databank zal opgeslagen worden, gebruikt zal worden.
+Wanneer men dit weet kan men gericht gaan zoeken naar een geschikte databank, hetzij een relationele databank, hetzij een NoSQL databank.
 
 \section{Cassandra}
 
