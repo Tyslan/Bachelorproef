@@ -2,28 +2,28 @@
 \label{ch:inleiding}
 
 \section{NoSQL}
-Sinds de term in 1998 voor het eerst gebruikt werd door Carlo Strozzi, ging een grote bal aan het rollen rond NoSQL databanken.
-Toen hij deze term de wereld instuurde, bedoelde Strozzi dat de databank die op dat moment besproken werd geen SQL interface aanbood.
-In 2009 werd de term NoSQL opnieuw gebruikt door Johan Oskarsson als hashtag voor een meetup waar de problemen met relationele databanken en de huidige manier van programmeren besproken gingen worden.
-Nu wordt NoSQL begrepen als 'Not only SQL', wat erop wijst dat er meerdere manieren zijn om data op te slaan. \citep{Fowler2013Introduction}
+Sinds de term in 1998 voor het eerst gebruikt werd door Carlo Strozzi, ging de bal aan het rollen rond NoSQL databanken.
+Toen hij deze term de wereld instuurde, , doelde Strozzi met de term op een databank die op dat moment geen SQL interface aanbood.
+In 2009 werd de term NoSQL opnieuw gebruikt door Johan Oskarsson als hashtag voor een meetup, waar de problemen met relationele databanken en de huidige manier van programmeren besproken gingen worden.
+Nu wordt NoSQL gelezen als 'Not only SQL', wat erop wijst dat er meerdere manieren zijn om data op te slaan. \citep{Fowler2013Introduction}
 
-NoSQL databanken vinden hun oorsprong in de verschillen tussen een relationeel model en het object georiënteerd programmeren, het zogenoemde 'impedance mismatch', het feit dat relationele databanken vaak niet goed werken op een cluster of niet met grote hoeveelheden realtime data om kunnen gaan\dots
-Hierdoor maken NoSQL databanken vaak geen gebruik van een relationeel model, zijn ze gemaakt om op clusters te werken, zijn ze schema-less\dots
-Kortom databanken onder de noemer NoSQL zijn aangepast om de problemen, die zich nu binnen de Informatica manifesteren, aan te pakken \citep{Fowler2012NoSQLDef}.
+NoSQL databanken vinden hun oorsprong in de moeilijkheid om objecten uit een object georiënteerd programma op te slaan in een relationele databank: de  zogenoemde 'impedance mismatch', bovendien is er het feit dat relationele databanken vaak niet goed werken op een cluster of niet met grote hoeveelheden realtime data om kunnen gaan\dots
+Als gevolg hiervan maken NoSQL databanken vaak geen gebruik van een relationeel model, zijn ze gemaakt om op clusters te werken en zijn ze bovendien schema-less\dots
+Kortom databanken onder de noemer NoSQL zijn aangepast om de problemen, die zich nu binnen de relationele databanken manifesteren, aan te pakken \citep{Fowler2012NoSQLDef}.
 
-\cite{Sadalage2014OverviewNoSQL} zegt dat binnen de NoSQL databanken vier grote types naar voor geschoven zijn, namelijk key-value stores (Riak, Redis\dots), document stores (MongoDB, CouchDB\dots), Column Family Stores (Cassandra, HBase\dots) en Graph databases (Neo4J, Infinite Graph\dots).
+\cite{Sadalage2014OverviewNoSQL} zegt dat binnen de NoSQL databanken vier grote types naar voor geschoven kunnen worden, namelijk key-value stores (Riak, Redis\dots), document stores (MongoDB, CouchDB\dots), Column Family Stores (Cassandra, HBase\dots) en Graph databases (Neo4J, Infinite Graph\dots).
 Elk van deze types heeft zijn eigen specifieke use cases.
 Zelfs binnen de verschillende types NoSQL databanken komen er nog verschillende specifieke use cases voor.
 
 Binnen NoSQL geldt het CAP theorema.
 \begin{itemize}
 	\item \textbf{Consistency}: De data is op ieder moment op alle nodes gelijk
-	\item \textbf{Availability}: Als een node uitvalt, dan beïnvloed dit de andere nodes niet.
+	\item \textbf{Availability}: Als een node uitvalt, dan beïnvloedt dit de andere nodes niet.
 	\item \textbf{Partition Tolerance}: Het systeem blijft werken ook al zijn er netwerkfouten.
 \end{itemize}
 
 \cite{brewer2000towards} stelde dat het onmogelijk was om binnen een gedistribueerd systeem deze drie zaken samen te bekomen.
-Hij gaf hiermee de aanzet dat er slechts twee van de drie punten in het CAP theorema verkregen konden worden.
+Hij gaf hiermee de aanzet dat er slechts twee van de drie punten in het CAP theorema tegelijk verkregen kunnen worden.
 
 \section{Cassandra}
 
@@ -32,13 +32,13 @@ Cassandra is een Column Family database die focust op schaalbaarheid en beschikb
 Cassandra is op dit moment een productiewaardige database.
 Enkele bekende gebruikers van Cassandra zijn Facebook, Apple, Netflix, GitHub, Instagram, GoDaddy\dots
 
-Cassandra is een project dat zijn oorsprong vond bij Facebook.
+Cassandra is een project dat zijn oorsprong vindt bij Facebook.
 In 2008 was Cassandra, bedacht door Lakshman en Malik, de oplossing voor het Inbox Search probleem van Facebook.
-De moeilijkheid hierbij was dat er een systeem nodig was die een hoge throughput nodig heeft, die miljarden write operaties per dag moet aankunnen en die kan mee schalen met het aantal gebruikers \citep{lakshman2010cassandra}.
+De moeilijkheid hierbij was dat er een systeem nodig was die eerst en vooral een hoge throughput toelaat, die daarnaast miljarden write operaties per dag moet aankunnen en die bovendien mee kan schalen met het aantal gebruikers \citep{lakshman2010cassandra}.
 Om tot deze oplossing te komen baseerden Lakshman en Malik zich op twee andere projecten.
 
 Een eerste project waarop Cassandra gebaseerd is, is Google BigTable.
-Google BigTable had namelijk al een oplossing voor een eerste probleem dat Lakshman en Malik moesten oplossen: een schaalbare database die geen realtime antwoorden opoffert \citep{chang2008bigtable}.
+Google BigTable had namelijk al een oplossing voor een eerste probleem dat Lakshman en Malik moesten oplossen: een schaalbare database die ook realtime antwoorden toelaat \citep{chang2008bigtable}.
 Lakshmans vorige project, Amazon Dynamo, was de tweede inspiratiebron voor Cassandra.
 Dynamo zorgde eerder al voor een hoge betrouwbaarheid bij een schaalbare database \citep{decandia2007dynamo}.
 
@@ -50,9 +50,9 @@ Binnen Cassandra kan er toch een keuze gemaakt worden tussen snelheid en consist
 Hiermee kan een zeer hoge consistentie en ook een aanvaardbare snelheid verkregen worden \citep{ellis2009cassandra}.
 Met het oorspronkelijk CAP theorema is dit echter niet mogelijk.
 \cite{brewer2012cap} herformuleerde echter het CAP theorema omdat hij vond dat het twee-uit-drie-concept misleidend was.
-Hier stelde hij dat een keuze tussen de drie mogelijkheden mogelijk was als er goed nagedacht werd over de partities.
+Hier stelde hij dat een keuze voor de drie mogelijkheden mogelijk was als er goed nagedacht werd over de partities.
 
-\section{Probleemstelling en Onderzoeksvragen}
+\section{Probleemstelling en onderzoeksvragen}
 \label{sec:onderzoeksvragen}
 
 % TODO: Wees zo concreet mogelijk bij het formuleren van je
@@ -64,4 +64,4 @@ Eerst en vooral zal de schaalbaarheid van Cassandra gecontroleerd worden.
 Is het werkelijk eenvoudig om de database op verschillende eenvoudige servers te installeren?
 Een tweede punt dat nagegaan wordt is de betrouwbaarheid van Cassandra.
 Is er werkelijk geen ''single point of failure'' en in hoeverre zijn back-ups nodig binnen deze NoSQL omgeving?
-Ook zal er stilgestaan worden bij de data modellering in Cassandra.
+Een laatste punt waarbij er stilgestaan wordt, is de data modellering in Cassandra.
