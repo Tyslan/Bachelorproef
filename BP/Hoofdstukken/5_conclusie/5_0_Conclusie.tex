@@ -6,37 +6,36 @@
 % zaken die nog niet duidelijk zijn? Heeft het ondezoek geleid tot nieuwe
 % vragen die uitnodigen tot verder onderzoek?
 
-De schaalbaarheid van Cassandra werd nagegaan door nodes toe te voegen aan de cluster en het verwijderen hiervan.
-Via de configuratie files van Cassandra is dit een heel karwei om te doen.
+De schaalbaarheid van Cassandra werd nagegaan door nodes toe te voegen aan de cluster en vervolgens weer te verwijderen.
+Om dit te doen via de configuratie files van Cassandra is dit een heel karwei.
 Verder werd er ook niet in geslaagd om op deze manier een werkende cluster te verkrijgen binnen deze bachelorproef.
-Toen werd overgestapt naar het OpsCenter van DataStax was dit echter een ander verhaal.
-Via deze weg was het zeer eenvoudig om een cluster te beheren en hier nodes aan toe te voegen of nodes te verwijderen.
+Toen werd overgestapt naar het OpsCenter van DataStax.
+Op deze manier was het zeer eenvoudig om een cluster te beheren en hier nodes aan toe te voegen of nodes te verwijderen.
 
 Na de schaalbaarheid werd de betrouwbaarheid van de database getest.
-Dit werd gedaan a.d.h.v. het uitschakelen van de nodes en zo af te toetsen of de theorie wel strookt met de werkelijkheid.
-Bij uitvallen van de nodes kon telkens vastgesteld worden dat de data beschikbaar bleef.
+Dit werd gedaan aan de hand van het uitschakelen van de nodes om zo af te toetsen of de theorie wel strookt met de werkelijkheid.
+Bij het uitvallen van de nodes kon telkens vastgesteld worden dat de data beschikbaar bleef.
 Het hinting systeem van Cassandra bleek ook uitstekend te werken in deze test.
-Toen enkel één node online was werden hier toch updates van records op uitgevoerd en bij het opnieuw opstarten van een node kon via OpsCenter vastgesteld worden dat er data uitgewisseld werd tussen de nodes.
-Als men vervolgens de node, die eerst online was, uitschakelt, kan men toch de geüpdatete data terugvinden op de node die juist terug online komt.
-Met het onderzoek dat in deze bachelorproef gedaan is, kan besloten worden dat Cassandra geen last heeft van ''single points of failure''.
+Toen enkel één node online was, werden hier toch updates van records op uitgevoerd en bij het opnieuw opstarten van een node kon via OpsCenter vastgesteld worden dat er data uitgewisseld werd tussen de nodes.
+Als men vervolgens de node, die eerst online was, uitschakelde, kon men toch de geüpdatete data terugvinden op de node die juist terug online kwam.
+Met de proof of concept die in deze bachelorproef opgezet werd, kan besloten worden dat Cassandra geen last heeft van een ''single point of failure''.
 
 Bij de data modellering van Cassandra zijn er toch een aantal eigenaardigheden als men vanuit een SQL omgeving komt.
-Zo is het principe van modelleren naar de query's die uitgevoerd zullen worden bijzonder.
+Zo is men niet vertrouw met het principe van het modelleren van de data naar de query's die uitgevoerd zullen worden.
 Het is echter wel nodig om hierbij stil te staan aangezien de primaire sleutel, die bestaat uit de partitie en clustering sleutel, restricties oplegt aan de WHERE clausule.
-Toch is de reden waarom Cassandra deze restricties oplegt goed te begrijpen.
-Want op deze manier kan de data zeer snel opgehaald worden.
+Toch is de reden waarom Cassandra deze restricties oplegt goed te begrijpen, want op deze manier kan de data zeer snel opgehaald worden.
 
 Voor de back-ups kan besloten worden dat deze nog altijd nodig zijn.
-De replica's zijn hier geen volwaardige vervangers voor.
-Door het gebruik van replica's wordt de beschikbaarheid van de data gegarandeerd, maar dit is geen garantie tegen corrupte data.
+De replica's zijn hiervoor geen volwaardige vervangers.
+Door het gebruik van replica's wordt de beschikbaarheid van de data gegarandeerd, maar dit biedt geen garantie tegen corrupte data.
 
-Eén opmerking die bij dit alles moet gemaakt worden is dat alle test op virtuele machines zijn uitgevoerd en waarbij er slechts één datacenter beschikbaar was.
-Door het gebruik van virtuele machines zijn de absolute tijdsgegevens in deze bachelorproef niet representatief voor een echte cluster waar de machines voor Cassandra alleen zijn voorbehouden.
+Eén opmerking die bij dit alles gemaakt moet worden is dat alle testen op virtuele machines werden uitgevoerd en daarbij slechts één datacenter beschikbaar was.
+Door het gebruik van virtuele machines zijn de absolute tijdsgegevens in deze bachelorproef niet representatief voor een echte cluster waar de machines alleen zijn voorbehouden voor Cassandra.
 
-Binnen het CAP theorema was de focus bij Cassandra vooral op beschikbaarheid en partitionering.
+Binnen het CAP theorema ligt de focus bij Cassandra vooral op beschikbaarheid en partitionering.
 Hier slaagt Cassandra zeer goed in.
-Maar meer zelf op het gebied van consistentie wordt zeer goed gescoord door de goed uitgedachte herstelmechanismes.
-Met de woorden van \cite{kan2014cassandra} over wat Cassandra nu precies is kan de bachelorproef afgesloten worden, want niets in dit onderzoek kon iets van wat hij zei weerleggen.
+Maar zelfs op het gebied van consistentie wordt zeer goed gescoord door de goed uitgedachte herstelmechanismes.
+Met de woorden van \cite{kan2014cassandra} over wat Cassandra nu precies is, kan de bachelorproef afgesloten worden, want niets in dit onderzoek kan iets van wat hij zei weerleggen.
 
 \emph{
 	''Cassandra can be simply described in a single phrase: a massively scalable, highly available open source NoSQL database that is based on peer-to-peer architecture.''
