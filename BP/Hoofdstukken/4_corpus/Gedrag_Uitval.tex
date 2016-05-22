@@ -2,18 +2,19 @@
 \label{ch:cassandra_uitval}
 
 \section{Gossip en foutdetectie}
-De nodes van Cassandra communiceren ongeveer iedere seconde met elkaar om informatie over hun eigen status en over de status van andere nodes waarmee ze in contact staan.
+De nodes van Cassandra communiceren ongeveer iedere seconde met elkaar om informatie over hun eigen status en de status van andere nodes waarmee ze in contact staan.
 Hiervoor maakt Cassandra gebruik van een peer-to-peer protocol.
 Op deze manier kunnen nodes snel de status van andere nodes weten.
 Deze informatie wordt ook lokaal opgeslagen.
 
-Cassandra gebruikt het ''Phi Accrual Failure Detection Algoritm'' voor het detecteren van het uitvallen van nodes \citep{kan2014cassandra}.
-Het idee bij dit algoritme is dat de status niet weergegeven wordt door een booleaanse waarde, dood of levend, maar door een waarde die aangeeft hoe groot de kans is dat een node dood of leven is.
-Als een node op deze manier dood verklaard wordt, blijven de andere nodes toch nog communiceren met deze node om ze te bepalen wanneer deze terug levend is.
+Cassandra gebruikt het ''Phi Accrual Failure Detection Algorithm'' voor het detecteren van het uitvallen van nodes \citep{kan2014cassandra}.
+Het idee bij dit algoritme is dat de status niet weergegeven wordt door een booleaanse waarde, dood of levend, maar door een waarde die aangeeft hoe groot de kans is dat een node dood of levend is.
+Als een node op deze manier dood verklaard wordt, blijven de andere nodes toch nog communiceren met deze node om te bepalen wanneer deze terug online is.
 
 \section{Herstelmechanisme}
 % HA p74
-Cassandra voorziet drie built-in herstelmechanismes:
+%TODO ref
+Cassandra voorziet drie ingebouwde herstelmechanismes:
 
 \begin{enumerate}
 	\item Hinted handoff
@@ -22,81 +23,79 @@ Cassandra voorziet drie built-in herstelmechanismes:
 \end{enumerate}
 
 \subsection{Hinted handoff}
-Het doel van hinted handoff is om de tijd die nodig is om node te herstellen na het uitvallen, te minimaliseren.
-Hierbij wordt er wat lees consistentie opgeofferd om de schrijf beschikbaarheid te verhogen.
+Het doel van hinted handoff is om de tijd die nodig is om een node te herstellen na het uitvallen, te minimaliseren.
+Hierbij wordt er wat leesconsistentie opgeofferd om de schrijfbeschikbaarheid te verhogen.
 
-In het geval een node offline is houdt een andere gezonde node een hint bij als er data geschreven wordt.
-Wanneer in het slechtste geval alle nodes offline zijn, houdt de coördinator deze hint bij.
-Als de node dan online komt wordt eerst gezorgd dat deze writes uitgevoerd worden en kan in de tijd die hiervoor nodig is geen reads uitgevoerd worden.
+In het geval een node offline is, houdt een andere gezonde node een hint bij als er data geschreven wordt.
+Wanneer alle nodes in het slechtste geval offline zouden zijn, houdt de coördinator deze hint bij.
+Als de node dan online komt, wordt er eerst voor gezorgd dat deze writes uitgevoerd worden en kunnen in de tijd die hiervoor nodig is geen reads uitgevoerd worden.
 Als in deze periode toch reads uitvoerd zouden worden kan dit leiden tot inconsistente reads.
 
 Standaard houdt Cassandra deze hints drie uur bij.
-Dit limiet is om te voorkomen dat deze hint wachtlijst niet te lang wordt.
-Na dit limiet is het nodig om handmatig een herstel te doen om de consistentie te garanderen \citep{strickland2014availability}.
+Deze limiet bestaat om te voorkomen dat deze hint-wachtlijst niet te lang wordt.
+Na deze periode van drie uur is het nodig om handmatig een herstel te doen om zo de consistentie te garanderen \citep{strickland2014availability}.
 
 \subsection{Anti-entropy repair}
-Dit algoritme staat in voor de synchronisatie van replica's en zorgt dat deze allen up-to-date zijn op alle nodes.
+Dit algoritme staat in voor de synchronisatie van replica's en zorgt ervoor dat deze up-to-date zijn op alle nodes.
 Dit proces gebeurt asynchroon.
-Binnen anti-entropy repair word gebruik gemaakt van de manuele read repair (\ref{sec:read_repair}) \citep{strickland2014availability}.
+Binnen anti-entropy repair wordt gebruik gemaakt van de manuele read repair (\ref{sec:read_repair}) \citep{strickland2014availability}.
 
 \subsection{Read repair}
 \label{sec:read_repair}
 Deze repairs worden vaak opgeroepen door de anti-entropy repair.
-In latere versies van Cassandra wordt de anti-entropy continue gecontroleerd.
-Anti-entropie betekend dat alle replica's vergeleken worden en dat deze ook geüpdatet worden naar de meest recente versie \citep{Kunz2013Entropy}.
+In latere versies van Cassandra wordt de anti-entropy continu gecontroleerd.
+Anti-entropie betekent dat alle replica's vergeleken worden en dat deze ook geüpdatet worden naar de meest recente versie \citep{Kunz2013Entropy}.
 
-Bij Cassandra staan alle nodes constant in communicatie met elkaar.
-Wanneer data opgehaald wordt, dan is er een kans dat deze vergeleken wordt met de andere replica's.
-Wanneer hier verschillen opgemerkt worden dan gaat Cassandra de data herstellen naar een consistente staat.
+Bij Cassandra staan alle nodes constant met elkaar in verbinding.
+Wanneer data opgehaald wordt, bestaat er een kans dat deze vergeleken wordt met de andere replica's.
+Wanneer hier verschillen opgemerkt worden, gaat Cassandra de data herstellen naar een consistente staat.
 Hiervoor zijn drie soorten read repairs \citep{strickland2014availability}:
 
 \begin{enumerate}
 	\item \textbf{Synchronous read repair}:
-	Wanneer de data vergeleken wordt gebeurt dit op basis van de checksum die aan de andere nodes gevraagd wordt.
-	Als deze checksum niet overeenkomt dan wordt de volledige replica doorgestuurd.
+	Wanneer de data vergeleken wordt, gebeurt dit op basis van de checksum die aan de andere nodes gevraagd wordt.
+	Als deze checksum niet overeenkomt, dan wordt de volledige replica doorgestuurd.
 	Vervolgens wordt dan naar de timestamp gekeken van de data en wordt de oudste geüpdatet.
-	Dit betekend dat de oude replica's geüpdatet worden als ze opgevraagd worden.
+	Dit betekent dat de oude replica's geüpdatet worden als ze opgevraagd worden.
 	
 	\item \textbf{Asynchronous read repair}:
 	Cassandra heeft ook een systeem voor data die niet gecontroleerd wordt bij de reads.
 	Hierbij wordt een kans ingesteld wanneer de data gecontroleerd wordt.
 	Deze kans is standaard tien procent.
 	Dit wil zeggen dat de replica's tien procent van de tijd gecontroleerd worden.
-	Als hier verschillen opgemerkt worden dan wordt de data tijdens de read hersteld.
+	Als hier verschillen opgemerkt worden, dan wordt de data tijdens de read hersteld.
 	
 	\item \textbf{Manuele repair}:
-	Dit is een volledige repair en zou ook regelmatig uitgevoerd moeten worden.
+	Dit is een volledige repair en deze zou ook regelmatig uitgevoerd moeten worden.
 	Men kan deze repair forceren via ''nodetool repair'', maar Cassandra voorziet ook een veld in de instellingen om dit op regelmatige basis uit te voeren.
 	De standaard waarde om een manueel herstel door te voeren is tien dagen.
 \end{enumerate}
 
-Bij manuele herstelling kan de opmerking gemaakt worden dat hier problemen kunnen optreden als men een record verwijderd heeft.
+Bij manuele herstelling kan de opmerking gemaakt worden, dat hier problemen kunnen optreden als men een record verwijderd heeft.
 Dit is echter niet het geval doordat Cassandra wacht om een record effectief te verwijderen.
-In plaats van een record meteen te verwijderen, wordt hier een tombstone marker aan mee gegeven zodat Cassandra weet dat dit record niet teruggegeven mag worden.
+In plaats van een record meteen te verwijderen, wordt hier een ''tombstone marker'' aan meegegeven zodat Cassandra weet dat dit record niet teruggegeven mag worden.
 Deze records worden uiteindelijk wel verwijderd via de garbage collection van Cassandra.
-Op basis van de tombstone bepaald de garbage collection dan of het record effectief effectief verwijderd mag worden \citep{strickland2014availability}.
+Op basis van de tombstone bepaalt de garbage collection dan of het record effectief verwijderd mag worden \citep{strickland2014availability}.
 
 \section{Ondervindingen bij het uitzetten van een node}
-Om het gedrag bij het uitvallen bij een node te verifiëren, werd gebruik gemaakt van de cluster die eerder opgezet was (\ref{ch:cassandra_cluster}).
+Om het gedrag bij het uitvallen van een node te verifiëren, werd gebruik gemaakt van de cluster die eerder opgezet was (\ref{ch:cassandra_cluster}).
 In deze cluster zijn vier nodes aanwezig.
-Om hier het gedrag te testen werd er een keyspace aangemaakt met replicatie factor vier.
+Om het gedrag te testen werd hier een keyspace aangemaakt met replicatie factor vier.
 Zo zou de data op iedere node aanwezig horen te zijn.
 De replicatie strategie is hier SimpleStrategy omdat er maar één datacenter in deze cluster aanwezig is. Vervolgens werd er data in de cluster geïmporteerd.
-Na het importeren werd gewacht tot de data over alle nodes verdeeld was.
-Dit kon men waarnemen in OpsCenter.
-Toen alle replica's aangemaakt waren kon het testen beginnen.
+Na het importeren werd gewacht tot de data over alle nodes verspreid was, wat in OpsCenter waargenomen kon worden.
+Toen alle replica's aangemaakt waren, kon het testen beginnen.
 
 Door de uitgekozen strategie en replicatie factor zou op iedere node een replica van de data aanwezig moeten zijn.
-Om dit na te gaan werden alle nodes alleen opgestart en hier werd dan gekeken op een specifiek record aanwezig was.
+Om dit na te gaan, werden alle nodes alleen opgestart en daarna werd gekeken of er een specifieke record aanwezig was.
 Deze manier van werken werd voor een aantal records herhaald om toevalligheden te vermijden.
 Hier kon telkens vastgesteld worden dat de data op de node aanwezig was.
-Op deze manier kan aangetoond worden dat de replicatie van Cassandra uitstekend werkt.
+Dit toont aan dat de replicatie van de data door Cassandra uitstekend werkt.
 
-Om de consistentie van Cassandra na te gaan werd een gelijkaardig proces gevolgd.
-Hierbij werd telkens één node van de cluster opgestart terwijl de andere offline waren.
+Om de consistentie van Cassandra na te gaan werd een gelijkaardig stappenplan gevolgd.
+Hierbij werd telkens één node van de cluster opgestart, terwijl de andere nodes offline waren.
 Op deze ene node werden dan een aantal records geüpdatet.
 Dit werd herhaald voor alle nodes van de cluster.
-Vervolgens werden alle clusters opgestart en werd gewacht tot er geen activiteit meer gezien kon worden in het dashboard van OpsCenter.
-Toen dit proces voltooid was op alle clusters werd nagegaan welke versie van de records teruggegeven werd.
-Hier werd voor alle aangepaste records de geüpdatete versie teruggegeven net zoals de ontwikkelaars van Cassandra beloven.
-
+Vervolgens werden alle nodes opgestart en werd er gewacht tot er geen activiteit meer te zien was in het dashboard van OpsCenter.
+Toen dit proces voor alle nodes voltooid was, werd nagegaan welke versie van de records opgehaald werd.
+Hier werd voor alle aangepaste records de geüpdatete versie teruggegeven, net zoals door de ontwikkelaars van Cassandra beloofd is.
