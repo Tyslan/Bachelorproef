@@ -67,7 +67,7 @@ Ondanks dit feit zijn er toch een aantal problemen met deze partitioner:
 Om de hoge beschikbaarheid te verkrijgen maakt Cassandra gebruik van data replicatie.
 Door de replicatie wordt de kans op een ''Single point of Failure'' enorm beperkt.
 Cassandra biedt een methode aan om de replicatiefactor te blijven behouden zelfs indien bepaalde nodes uitgevallen zouden zijn.
-Deze replicatiefactor wordt ingesteld op keyspace niveau.
+Deze replicatiefactor wordt ingesteld op keyspace niveau, wat vergelijkbaar is met het database of schema niveau bij relationele databanken (\ref{sec:keyspace}).
 De replicatiefactor bepaalt hoeveel replica's van de data bijgehouden worden.
 Op basis van de partitioner en de replicatiestrategie wordt  bepaald waar de replica's opgeslagen worden.
 Om deze replicatie in goede banen te leiden zijn er een aantal strategieën uitgewerkt \citep{kan2014cassandra}.
@@ -107,7 +107,20 @@ Ook kan men door het gebruik van deze strategie voor ieder datacenter een andere
 \section{Snitches}
 \label{sec_snitch}
 Een snitch is ervoor verantwoordelijk om de data snel en efficiënt op te halen binnen de cluster.
-Een andere verantwoordelijkheid van een snitch is om mee te helpen bepalen waar de replica's fysiek opgeslagen worden.
+Hierdoor is het belangrijk dat de snitch snel de fysieke locatie van de replica's kan achterhalen.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\textwidth]{img/4_architectuur/snitch}
+	\caption{Illustratie werking snitch \citep{Planet2013Snitch}}
+	\label{fig:snitch}
+\end{figure}
+
+Op figuur \ref{fig:snitch} is te zien hoe een snitch nu juist te werk gaat.
+Er wordt een query naar de coördinator, de node waarmee de client verbonden is, gestuurd.
+De snitch op de coördinator zal vervolgens proberen om informatie, zoals de huidige belasting, te verzamelen over de nodes waar de gevraagde data opgeslagen is.
+Op basis van de teruggekregen informatie zal de snitch dan beslissen aan welke node de query doorgegeven zal worden voor verdere verwerking.
+
 Er zijn acht soorten snitches beschikbaar op Cassandra \citep{strickland2014availability}.
 
 \begin{enumerate}
@@ -120,7 +133,7 @@ Er zijn acht soorten snitches beschikbaar op Cassandra \citep{strickland2014avai
 	Het probleem is hier dat ervan uitgegaan wordt dat het ip-adres de structuur van het datacenters en de racks reflecteert.
 	
 	\item \textbf{PropertyFileSnitch}:
-	Met deze snitch kan de administrator zelf instellen welke nodes tot welke rack en datacenter behoren.
+	Met deze snitch kan de administrator zelf instellen welke nodes tot welke rack en tot welk datacenter behoren.
 	Als men deze snitch gebruikt moet men dus de hele topologie uitschrijven. 
 	Iedere node moet ook op precies dezelfde manier geconfigureerd worden.
 	Dit alles geeft veel overhead als er nodes toegevoegd of verwijderd moeten worden.
