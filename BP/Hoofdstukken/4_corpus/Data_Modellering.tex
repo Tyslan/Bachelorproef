@@ -35,10 +35,9 @@ In SQL kent de WHERE clausule geen restricties.
 Bij CQL is dit anders.
 Hier worden restricties opgelegd door de partitie en clusteringkolommen.
 Eveneens kan er enkel op de partitie- en clusteringkolommen gefilterd worden.
-Al deze restricties komen er door de achterliggende architectuur bij Cassandra (zie sectie \ref{sec:highthroughput}).
+Al deze restricties komen er door de achterliggende architectuur bij Cassandra.
 
 \subsection{Restricties opgelegd door de partitiekolommen}
-
 Een eerste restrictie die wordt opgelegd door de partitiekolommen is dat ofwel alle partitiekolommen worden opgenomen in de WHERE clausule ofwel geen enkele.
 Dit is nodig omdat de partitioner anders de hashwaarde niet kan berekenen.
 Deze hashwaarde is echter nodig om te weten op welke node de data zich bevindt (zie sectie \ref{sec:partitioner}).
@@ -204,21 +203,21 @@ Dus door een niet-doel proberen te bereiken is hier een belangrijk doel verloren
 Nu alle concepten van datamodellering duidelijk zijn, kan er ook verklaard worden waarom dit een effect kan hebben op de schrijf- en leessnelheid van Cassandra.
 Hiervoor moet men kijken hoe Cassandra de data fysiek opslaat op de nodes, voor de clusteringkolommen werd dit al even kort aangehaald (zie code fragement \ref{lst:data_partitie}).
 
-Als men nu de tabel ''NumberOfTweets'' (\ref{lst:twitter_messages}) er opnieuw bijneemt, weet men dat de partitiekolommen ''userid'' en ''date'' de node zullen bepalen waarop de data fysiek aanwezig is.
+Als men nu de tabel ''NumberOfTweets'' (\ref{lst:twitter_messages}) er opnieuw bijneemt, weet men dat de partitiekolommen, ''userid'' en ''date'', de node zullen bepalen waarop de data fysiek aanwezig is.
 Men mag aannemen dat deze partitiekolommen ervoor zullen zorgen dat de data evenwichtig verspreid wordt over alle nodes.
-Doordat de data evenwichtig verspreidt is zullen de query's ook verspreid worden over de nodes.
-Hoe het verdelen van de query's in zijn werk ging werd reeds uitgelegd bij de snitches (zie sectie \ref{sec_snitch}).
+Door deze evenwichtige verspreiding zullen de query's ook beter verdeeld worden over de nodes.
+Hoe het verdelen van de query's in zijn werk gaat, werd reeds uitgelegd bij de snitches (zie sectie \ref{sec_snitch}).
 De hoge schrijfsnelheid wordt bekomen doordat de partitioner het werk over alle nodes verdeelt (zie sectie \ref{sec:partitioner}).
 Het is dus zo dat hoe beter de data verspreid is over alle nodes, hoe beter het werk verdeeld kan worden over de nodes.
 Door een goede verdeling van het werk kunnen veel query's tegelijk uitgevoerd worden.
 Het datamodel is verantwoordelijk voor het verspreiden van de data over alle nodes door middel van de partitiekolommen en zo ook rechtstreeks voor het verspreiden van alle query's over alle nodes.
 
-De clusteringkolommen hebben ook een grote bijdrage tot de hoge leessnelheid van Cassandra.
+De clusteringkolommen leveren ook een grote bijdrage tot de hoge leessnelheid van Cassandra.
 De clusteringkolommen bepalen hoe de data opgeslagen wordt binnen de partitie.
-Met een partitie wordt hier bedoeld op data die gegroepeerd is volgens identieke waarden voor de partitiekolommen.
-Binnen de partitie worden de clusteringkolommen opgeslagen in een boomstructuur, zoals al eerder vermeld werd.
+Met een partitie wordt hier gedoeld op data die gegroepeerd is volgens identieke waarden voor de partitiekolommen.
+Binnen de partitie worden de clusteringkolommen opgeslagen in een boomstructuur, zoals eerder al vermeld werd.
 Een boomstructuur is een structuur die zeer geschikt is om er opzoekingen in te doen.
-Cassandra zorgt er ook voor dat de waarden in de lagen van de boom gerangschikt zijn per.
+Cassandra zorgt er ook voor dat de waarden in de lagen van de boom gerangschikt zijn.
 Voor de tabel ''NumberOfTwitterMessages'' (\ref{lst:twitter_messages}) kan dit er dan zoals in figuur \ref{fig:physicalClusterCol} uitzien.
 
 \begin{figure}[H]
@@ -246,8 +245,9 @@ Voor de tabel ''NumberOfTwitterMessages'' (\ref{lst:twitter_messages}) kan dit e
 	\label{fig:physicalClusterCol}
 \end{figure}
 
-Door gebruik te maken van deze boomstructuur kan Cassandra dus zeer snel de resultaten voor de query's ophalen eenmaal de juiste node en partitie bereikt zijn.
-Opnieuw is het datamodel verantwoordelijk voor de clusteringkolommen en hiermee verantwoordelijk hoe efficiënt de data opgehaald kan worden.
+Door gebruik te maken van deze boomstructuur slaagt Cassandra er dus zeer snel in om de resultaten voor de query's op te halen eenmaal de juiste node en partitie bereikt zijn.
+Ook hier is het datamodel verantwoordelijk voor de clusteringkolommen en hiermee dan ook verantwoordelijk voor de efficiëntie waarmee de data opgehaald kan worden.
 
-Het datamodel bepaalt dus voor hoe efficiënt er gebruik gemaakt wordt van de achterliggende architectuur in Cassandra.
-Door het datamodel te optimaliseren kan men 
+Het datamodel bepaalt dus hoe efficiënt er gebruik gemaakt wordt van de achterliggende architectuur in Cassandra.
+Door het datamodel te optimaliseren kan men hierdoor zeer hoge snelheden bekomen.
+Indien men een datamodel maakt dat geen rekening houdt met de query's die uitgevoerd zullen worden, kan men er dus ook voor zorgen dat de snelheden gekelderd worden.
