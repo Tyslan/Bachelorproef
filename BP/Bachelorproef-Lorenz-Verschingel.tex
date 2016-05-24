@@ -40,9 +40,12 @@
 \usepackage{lmodern}
 \usepackage{textcomp}
 
-\usepackage{pgfplots}
+\usepackage{tikz}
 
 %%---------- Layout ------------------------------------------------------
+% Listing -> Code fragment
+\renewcommand{\lstlistingname}{Code fragment}
+\renewcommand{\lstlistlistingname}{Lijst van \lstlistingname en}% List of Listings -> List of Algorithms
 
 % hoofdingen, enz.
 \pagestyle{fancy}
@@ -154,5 +157,6 @@
 
 \listoffigures
 \listoftables
+\lstlistoflistings
 
 \end{document}

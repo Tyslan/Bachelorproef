@@ -35,12 +35,13 @@ In SQL kent de WHERE clausule geen restricties.
 Bij CQL is dit anders.
 Hier worden restricties opgelegd door de partitie en clusteringkolommen.
 Eveneens kan er enkel op de partitie- en clusteringkolommen gefilterd worden.
+Al deze restricties komen er door de achterliggende architectuur bij Cassandra (zie sectie \ref{sec:highthroughput}).
 
 \subsection{Restricties opgelegd door de partitiekolommen}
 
 Een eerste restrictie die wordt opgelegd door de partitiekolommen is dat ofwel alle partitiekolommen worden opgenomen in de WHERE clausule ofwel geen enkele.
-Dit is nodig omdat Cassandra anders de hash niet kan berekenen.
-Deze hash is echter nodig om te weten op welke node de data zich bevindt.
+Dit is nodig omdat de partitioner anders de hashwaarde niet kan berekenen.
+Deze hashwaarde is echter nodig om te weten op welke node de data zich bevindt (zie sectie \ref{sec:partitioner}).
 
 Een volgende restrictie die wordt opgelegd door de partitiekolommen is het feit dat enkel de '=' en IN operator rechtstreeks gebruikt kunnen worden.
 Tot Cassandra 2.2 kon de IN operator enkel op de laatste gedefinieerde partitiekolom toegepast worden.
@@ -73,10 +74,10 @@ Dit is nodig omdat Cassandra de data anders niet efficiënt kan terugvinden.
 
 \begin{lstlisting}[caption={Foutieve query bij meerdere partitiekolommen}, label={lst:queryMulticlusterColWrong1}, language=SQL]
 SELECT nrOfTweets FROM NumberOfTwitterMessages
-WHERE userid = 2222
-AND date = '2016-04-25'
-AND minute = 30
-);
+  WHERE userid = 2222
+  AND date = '2016-04-25'
+  AND minute = 30
+;
 \end{lstlisting}
 
 Om te zien waarom deze data niet efficiënt opgehaald kan worden met query \ref{lst:queryMulticlusterColWrong1}, moet men kijken naar de manier waarop Cassandra de data opslaat binnen de partities (zie code fragment \ref{lst:data_partitie}).
@@ -85,9 +86,9 @@ Als men echter een top in deze boom weglaat (hier het veld ''hour''), kan het pa
 
 \begin{lstlisting}[caption={Data opslag binnen een partitie}, label={lst:data_partitie}]
 {hour: 20 
-	{minute: 4 {nrOfTweets: 6}} 
-	{minute: 7 {nrOfTweets: 1}}
-	{minute: 21 {nrOfTweets: 16}}
+  {minute: 4 {nrOfTweets: 6}} 
+  {minute: 7 {nrOfTweets: 1}}
+  {minute: 21 {nrOfTweets: 16}}
 ...
 }
 \end{lstlisting}
@@ -103,18 +104,20 @@ Query \ref{lst:queryMultiCol2} is equivalent aan de vorige query, maar hier word
 
 \begin{lstlisting}[caption={Multi-column slice restrictie}, label={lst:queryMultiCol1}, language=SQL]
 SELECT * FROM NumberOfTwitterMessages
-WHERE userid = 2222
-AND date = '2016-04-25'
-AND (hour, minute) >= (12, 30) AND (hour, minute) <= (14, 0)
-);
+  WHERE userid = 2222
+  AND date = '2016-04-25'
+  AND (hour, minute) >= (12, 30)
+  AND (hour, minute) <= (14, 0)
+;
 \end{lstlisting}
 
 \begin{lstlisting}[caption={De restrictie moet starten met dezelfde kolom}, label={lst:queryMultiCol2}, language=SQL]
 SELECT * FROM NumberOfTwitterMessages
-WHERE userid = 2222
-AND date = '2016-04-25'
-AND (hour, minute) >= (12, 30) AND (hour) <= (14)
-);
+  WHERE userid = 2222
+  AND date = '2016-04-25'
+  AND (hour, minute) >= (12, 30) 
+  AND (hour) <= (14)
+;
 \end{lstlisting}
 
 \section{Doelen bij datamodellering in Cassandra}
@@ -154,18 +157,18 @@ Een goed voorbeeld waarin alle zaken meteen duidelijk worden, wordt ook gegeven 
 In dit voorbeeld is het de bedoeling om users op het halen volgens hun email of username.
 De oplossing voor Cassandra zijn de volgende twee tabellen \ref{lst:GoodExample}:
 
-\begin{lstlisting}[caption={Correcte modellering bij Cassandra},\label{lst:GoodExample}, language=SQL]
+\begin{lstlisting}[caption={Correcte modellering bij Cassandra},label={lst:GoodExample}, language=SQL]
 CREATE TABLE users_by_username (
   username text PRIMARY KEY,
   email text,
   birthday timestamp
-)
+);
 
 CREATE TABLE users_by_email (
   email text PRIMARY KEY,
   username text,
   birthday timestamp
-)
+);
 \end{lstlisting}
 
 Bij dit datamodel krijgt iedere user zijn eigen partitie.
@@ -174,24 +177,77 @@ Om een user op te zoeken via een email of username dient slechts één partitie 
 
 Stel dat men nu zou proberen om redundante data te verminderen, wat in Cassandra geen doel mag zijn, met de volgende tabellen \ref{lst:BadExample}:
 
-\begin{lstlisting}[caption={Foutieve modellering bij Cassandra},\label{lst:BadExample}, language=SQL]
+\begin{lstlisting}[caption={Foutieve modellering bij Cassandra},label={lst:BadExample}, language=SQL]
 CREATE TABLE users (
   id uuid PRIMARY KEY,
   username text,
   email text,
   birthday int
-)
+);
 
 CREATE TABLE users_by_username (
   username text PRIMARY KEY,
   id uuid
-)
+);
 
 CREATE TABLE users_by_email (
   email text PRIMARY KEY,
   id uuid
-)
+);
 \end{lstlisting}
 
 De data zal met deze tabellen nog steeds evenwichtig gedistribueerd zijn over de nodes, maar nu moet men meer dan één partitie read doen.
 Dus door een niet-doel proberen te bereiken is hier een belangrijk doel verloren gegaan.
+
+\section{Datamodel en de hoge snelheid}
+\label{sec:highthroughput}
+Nu alle concepten van datamodellering duidelijk zijn, kan er ook verklaard worden waarom dit een effect kan hebben op de schrijf- en leessnelheid van Cassandra.
+Hiervoor moet men kijken hoe Cassandra de data fysiek opslaat op de nodes, voor de clusteringkolommen werd dit al even kort aangehaald (zie code fragement \ref{lst:data_partitie}).
+
+Als men nu de tabel ''NumberOfTweets'' (\ref{lst:twitter_messages}) er opnieuw bijneemt, weet men dat de partitiekolommen ''userid'' en ''date'' de node zullen bepalen waarop de data fysiek aanwezig is.
+Men mag aannemen dat deze partitiekolommen ervoor zullen zorgen dat de data evenwichtig verspreid wordt over alle nodes.
+Doordat de data evenwichtig verspreidt is zullen de query's ook verspreid worden over de nodes.
+Hoe het verdelen van de query's in zijn werk ging werd reeds uitgelegd bij de snitches (zie sectie \ref{sec_snitch}).
+De hoge schrijfsnelheid wordt bekomen doordat de partitioner het werk over alle nodes verdeelt (zie sectie \ref{sec:partitioner}).
+Het is dus zo dat hoe beter de data verspreid is over alle nodes, hoe beter het werk verdeeld kan worden over de nodes.
+Door een goede verdeling van het werk kunnen veel query's tegelijk uitgevoerd worden.
+Het datamodel is verantwoordelijk voor het verspreiden van de data over alle nodes door middel van de partitiekolommen en zo ook rechtstreeks voor het verspreiden van alle query's over alle nodes.
+
+De clusteringkolommen hebben ook een grote bijdrage tot de hoge leessnelheid van Cassandra.
+De clusteringkolommen bepalen hoe de data opgeslagen wordt binnen de partitie.
+Met een partitie wordt hier bedoeld op data die gegroepeerd is volgens identieke waarden voor de partitiekolommen.
+Binnen de partitie worden de clusteringkolommen opgeslagen in een boomstructuur, zoals al eerder vermeld werd.
+Een boomstructuur is een structuur die zeer geschikt is om er opzoekingen in te doen.
+Cassandra zorgt er ook voor dat de waarden in de lagen van de boom gerangschikt zijn per.
+Voor de tabel ''NumberOfTwitterMessages'' (\ref{lst:twitter_messages}) kan dit er dan zoals in figuur \ref{fig:physicalClusterCol} uitzien.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[sibling distance=15em,
+	every node/.style = {shape=rectangle, rounded corners,
+		draw, align=center}]]
+	\node {Partitie}
+	child { node {hour: 1} 
+		child{ node {minute: 7}
+			child{node {nrOfTweets: 6}}
+		}
+		child{ node {minute: 31}
+			child{node {nrOfTweets: 1}}
+		}
+	}
+	child { node {hour: 13}
+			child{ node {minute: 14}
+				child{node {nrOfTweets: 11}}
+			}
+	}
+	;
+	\end{tikzpicture}
+	\caption{Mogelijke fysieke structuur binnen een partitie}
+	\label{fig:physicalClusterCol}
+\end{figure}
+
+Door gebruik te maken van deze boomstructuur kan Cassandra dus zeer snel de resultaten voor de query's ophalen eenmaal de juiste node en partitie bereikt zijn.
+Opnieuw is het datamodel verantwoordelijk voor de clusteringkolommen en hiermee verantwoordelijk hoe efficiënt de data opgehaald kan worden.
+
+Het datamodel bepaalt dus voor hoe efficiënt er gebruik gemaakt wordt van de achterliggende architectuur in Cassandra.
+Door het datamodel te optimaliseren kan men 
