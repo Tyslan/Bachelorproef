@@ -66,20 +66,31 @@ CREATE TABLE NumberOfTwitterMessages (
 
 \end{lstlisting}
 
-Hier wordt de data nu als volgt opgeslagen binnen de partitie: 
-
-\begin{lstlisting}
-{hour: 20 
-  {minute: 4 {nrOfTweets: 6}} 
-  {minute: 7 {nrOfTweets: 1}}
-  {minute: 21 {nrOfTweets: 16}}
-  ...
-}
-\end{lstlisting}
-
 De eerste restrictie wordt hier opgelegd door de manier waarop de data opgeslagen is.
 Als men een voorwaarde wil vastleggen voor een clusteringkolom, dan dienen de clusteringkolommen die voor deze komen in de primaire sleutel ook vastgelegd te worden.
+Query \ref{lst:queryMulticlusterColWrong1} is dus niet mogelijk voor de tabel ''NumberOfTwitterMessages'' (\ref{lst:twitter_messages}) omdat hier geen restrictie is op het veld ''hour'', terwijl dit voor het veld ''minute'' komt in de primaire sleutel.
 Dit is nodig omdat Cassandra de data anders niet efficiënt kan terugvinden.
+
+\begin{lstlisting}[caption={Foutieve query bij meerdere partitiekolommen}, label={lst:queryMulticlusterColWrong1}, language=SQL]
+SELECT nrOfTweets FROM NumberOfTwitterMessages
+WHERE userid = 2222
+AND date = '2016-04-25'
+AND minute = 30
+);
+\end{lstlisting}
+
+Om te zien waarom deze data niet efficiënt opgehaald kan worden met query \ref{lst:queryMulticlusterColWrong1}, moet men kijken naar de manier waarop Cassandra de data opslaat binnen de partities (zie code fragment \ref{lst:data_partitie}).
+Hierbij kan men zien dat er in een boomstructuur gewerkt wordt om de data op te slaan.
+Als men echter een top in deze boom weglaat (hier het veld ''hour''), kan het pad naar het veld ''nrOfTweets'', het resultaat van de query, niet op een efficiënte manier bepaald worden.
+
+\begin{lstlisting}[caption={Data opslag binnen een partitie}, label={lst:data_partitie}]
+{hour: 20 
+	{minute: 4 {nrOfTweets: 6}} 
+	{minute: 7 {nrOfTweets: 1}}
+	{minute: 21 {nrOfTweets: 16}}
+...
+}
+\end{lstlisting}
 
 Tot Cassandra 2.2 was de IN operator enkel toegelaten op de laatste clusteringkolom.
 Sinds Cassandra 2.2 is deze restrictie vervallen en kan men zelfs multi-kolom IN restricties opleggen.
@@ -87,10 +98,10 @@ Sinds Cassandra 2.2 is deze restrictie vervallen en kan men zelfs multi-kolom IN
 De >, >=, < en <= operators zijn ook enkel toegestaan op de laatste clusteringkolom waar een restrictie aan opgelegd is.
 Toch is hier een oplossing voor aangezien men deze operators kan toepassen over meerdere kolommen.
 Bij deze multi-column slices is het echter wel belangrijk dat de restrictie van de WHERE clausule met dezelfde kolom start.
-Zo is query \ref{lst:query1} perfect mogelijk.
-Query \ref{lst:query2} is equivalent aan de vorige query, maar hier wordt ook aangetoond dat de multi-column slice met dezelfde kolom moet beginnen.
+Zo is query \ref{lst:queryMultiCol1} perfect mogelijk.
+Query \ref{lst:queryMultiCol2} is equivalent aan de vorige query, maar hier wordt ook aangetoond dat de multi-column slice met dezelfde kolom moet beginnen.
 
-\begin{lstlisting}[caption={Multi-column slice restrictie}, label={lst:query1}, language=SQL]
+\begin{lstlisting}[caption={Multi-column slice restrictie}, label={lst:queryMultiCol1}, language=SQL]
 SELECT * FROM NumberOfTwitterMessages
 WHERE userid = 2222
 AND date = '2016-04-25'
@@ -98,7 +109,7 @@ AND (hour, minute) >= (12, 30) AND (hour, minute) <= (14, 0)
 );
 \end{lstlisting}
 
-\begin{lstlisting}[caption={De restrictie moet starten met dezelfde kolom}, label={lst:query2}, language=SQL]
+\begin{lstlisting}[caption={De restrictie moet starten met dezelfde kolom}, label={lst:queryMultiCol2}, language=SQL]
 SELECT * FROM NumberOfTwitterMessages
 WHERE userid = 2222
 AND date = '2016-04-25'
@@ -121,7 +132,7 @@ Als de partities effectief op verschillende nodes staan moeten de afzonderlijke 
 Het is zelfs zo dat als de data op dezelfde node staat, de partitie reads nog steeds inefficiënt zijn.
 Dit komt door de manier waarop Cassandra de rijen opslaat.
 
-Zaken die bij relationele databanken belangrijk zijn zoals het aantal writes en data duplicatie minimaliseren, zijn binnen Cassandra geen doelen.
+Zaken die bij relationele databanken belangrijk zijn zoals het aantal writes en data duplicatie minimaliseren, zijn binnen Cassandra onbelangrijk.
 In Cassandra zijn write operaties goedkoop omdat Cassandra hiervoor geoptimaliseerd is.
 Denormalisatie en duplicatie van data zijn ook zeer normaal binnen Cassandra.
 Dit komt door de architectuur van Cassandra.
@@ -141,9 +152,9 @@ Hiervoor is het belangrijk dat de tabellen geoptimaliseerd zijn voor de reads di
 
 Een goed voorbeeld waarin alle zaken meteen duidelijk worden, wordt ook gegeven door \cite{Hobbs2015Datamodelling} .
 In dit voorbeeld is het de bedoeling om users op het halen volgens hun email of username.
-De oplossing voor Cassandra zijn de volgende twee tabellen:
+De oplossing voor Cassandra zijn de volgende twee tabellen \ref{lst:GoodExample}:
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Correcte modellering bij Cassandra},\label{lst:GoodExample}, language=SQL]
 CREATE TABLE users_by_username (
   username text PRIMARY KEY,
   email text,
@@ -161,14 +172,14 @@ Bij dit datamodel krijgt iedere user zijn eigen partitie.
 Cassandra kan zo de data evenwichtig verdelen over de nodes.
 Om een user op te zoeken via een email of username dient slechts één partitie gelezen te worden.
 
-Stel dat men nu zou proberen om redundante data te verminderen, wat in Cassandra geen doel mag zijn, met de volgende tabellen:
+Stel dat men nu zou proberen om redundante data te verminderen, wat in Cassandra geen doel mag zijn, met de volgende tabellen \ref{lst:BadExample}:
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Foutieve modellering bij Cassandra},\label{lst:BadExample}, language=SQL]
 CREATE TABLE users (
   id uuid PRIMARY KEY,
   username text,
   email text,
-  age int
+  birthday int
 )
 
 CREATE TABLE users_by_username (
