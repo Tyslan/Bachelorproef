@@ -13,6 +13,13 @@ Binnen Cassandra is een kolom de kleinste datastructuur die er bestaat.
 De kolom van een relationele database kan niet vergeleken worden met een kolom in Cassandra.
 Hun functie is volledig anders.
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\textwidth]{img/4_data/column}
+	\caption{Kolommen in Cassandra}
+	\label{fig:column}
+\end{figure}
+
 Een kolom in Cassandra bevat drie of vier elementen:
 \begin{enumerate}
 	\item De naam van de kolom
@@ -27,7 +34,7 @@ De naam en waarde worden opgeslagen als byte arrays.
 Toch voorziet Cassandra een resem built-in types.
 De timestamp is er om conflicten op te lossen.
 De time-to-live is een optioneel veld.
-Hiermee kan aangegeven worden hoe lang de kolom opgeslagen moet worden.
+Hiermee kan aangegeven worden hoelang de kolom opgeslagen moet worden.
 
 \section{Row}
 Een rij kan beschouwd worden als een geordende lijst van kolommen.
