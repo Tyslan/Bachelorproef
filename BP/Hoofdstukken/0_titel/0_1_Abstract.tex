@@ -8,18 +8,18 @@ Hierbij stellen bepaalde van deze databanken hun gebruiksgemak en kunnen nogal v
 
 In deze bachelorproef wordt onderzoek gedaan naar de schaalbaarheid en de betrouwbaarheid van de NoSQL database Cassandra.
 Dit onderzoek wordt uitgevoerd aan de hand van een virtuele cluster die opgezet is met Vagrant.
-Een ander punt dat onderzocht werd was hoe data modellering in Cassandra in zijn werk gaat.
+Een ander punt dat onderzocht werd, was hoe data modellering in Cassandra in zijn werk gaat.
 
-De schaalbaarheid wordt nagegaan door te kijken hoe gemakkelijk het is om een cluster op te zetten en om hieraan later nodes toe te voegen en te verwijderen.
+De schaalbaarheid wordt nagegaan door te kijken hoe gemakkelijk het is om een cluster op te zetten en om hieraan later nodes toe te voegen en weer te verwijderen.
 In een virtuele omgeving is dit zeer gemakkelijk na te gaan.
 Hierbij werd vastgesteld dat het opzetten van de cluster, het toevoegen van nodes en het verwijderen van nodes niet zo gemakkelijk gaat als wordt voorgesteld als men Apache Cassandra gebruikt.
-Als men hier echter hulpprogramma's gaat gebruiken zoals het OpsCenter van DataStax gaat dit wel zeer vlot.
+Als men hier echter hulpprogramma's voor gaat gebruiken zoals het OpsCenter van DataStax gaat dit wel zeer vlot.
 
 Om de betrouwbaarheid na te gaan werden opzettelijk nodes uitgezet om te kijken hoe Cassandra hierop reageert.
 In deze testen doet Cassandra exact wat beloofd wordt.
 De data blijft beschikbaar en wijzigingen worden bij het online komen van de node doorgegeven.
 
-Bij de data modellering werden enkele eigenaardigheden vastgesteld zoals het feit dat de primaire sleutel restricties oplegt aan de WHERE clausule.
+Bij de datamodellering werden enkele eigenaardigheden vastgesteld zoals het feit dat de primaire sleutel restricties oplegt aan de WHERE clausule.
 Hierdoor moet men de data binnen Cassandra modelleren naar de query's die uitgevoerd zullen worden.
 
 \end{abstract}
