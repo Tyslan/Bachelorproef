@@ -17,7 +17,7 @@ Dit werd gedaan aan de hand van het uitschakelen van de nodes om zo af te toetse
 Bij het uitvallen van de nodes kon telkens vastgesteld worden dat de data beschikbaar bleef.
 Het hinting systeem van Cassandra bleek ook uitstekend te werken in deze test.
 Toen enkel één node online was, werden hier toch updates van records op uitgevoerd en bij het opnieuw opstarten van een node kon via OpsCenter vastgesteld worden dat er data uitgewisseld werd tussen de nodes.
-Als men vervolgens de node, die eerst online was, uitschakelde, kon men toch de geüpdatete data terugvinden op de node die juist terug online kwam.
+Als men vervolgens de node, die eerst online was, uitschakelde, kon men toch de bijgewerkte data terugvinden op de node die juist terug online kwam.
 Met de proof of concept die in deze bachelorproef opgezet werd, kan besloten worden dat Cassandra geen last heeft van een ''single point of failure''.
 
 Bij de data modellering van Cassandra zijn er toch een aantal eigenaardigheden als men vanuit een SQL omgeving komt.
