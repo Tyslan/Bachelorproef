@@ -156,7 +156,7 @@ Een goed voorbeeld waarin alle zaken meteen duidelijk worden, wordt ook gegeven 
 In dit voorbeeld is het de bedoeling om users op het halen volgens hun email of username.
 De oplossing voor Cassandra zijn de volgende twee tabellen \ref{lst:GoodExample}:
 
-\begin{lstlisting}[caption={Correcte modellering bij Cassandra},label={lst:GoodExample}, language=SQL]
+\begin{lstlisting}[caption={Correcte datamodellering bij Cassandra},label={lst:GoodExample}, language=SQL]
 CREATE TABLE users_by_username (
   username text PRIMARY KEY,
   email text,
@@ -176,7 +176,7 @@ Om een user op te zoeken via een email of username dient slechts één partitie 
 
 Stel dat men nu zou proberen om redundante data te verminderen, wat in Cassandra geen doel mag zijn, met de volgende tabellen \ref{lst:BadExample}:
 
-\begin{lstlisting}[caption={Foutieve modellering bij Cassandra},label={lst:BadExample}, language=SQL]
+\begin{lstlisting}[caption={Foutieve datamodellering bij Cassandra},label={lst:BadExample}, language=SQL]
 CREATE TABLE users (
   id uuid PRIMARY KEY,
   username text,
@@ -225,7 +225,9 @@ Voor de tabel ''NumberOfTwitterMessages'' (\ref{lst:twitter_messages}) kan dit e
 	\begin{tikzpicture}[sibling distance=15em,
 	every node/.style = {shape=rectangle, rounded corners,
 		draw, align=center}]]
-	\node {Partitie}
+	\node {Partitie
+		\\userid: 2222
+		\\date: '2016-04-25'}
 	child { node {hour: 1} 
 		child{ node {minute: 7}
 			child{node {nrOfTweets: 6}}

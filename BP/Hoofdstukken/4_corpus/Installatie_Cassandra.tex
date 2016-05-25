@@ -22,7 +22,7 @@ Bij deze versie diende Cassandra 2.1.11 gebruikt te worden \citep{Cantoni2016}.
 De setup bestaat uit één master node waarop het OpsCenter runt en verder uit drie slave nodes waarop de uiteindelijke Cassandra database komt te runnen.
 Na de NAT router van Oracle Virtual Box werd een privaat netwerk opgezet opdat deze machines met elkaar zouden kunnen communiceren.
 Hiervoor moest iedere machine een uniek ip-adres krijgen binnen het netwerk en moest de file /etc/hosts op iedere node aangepast worden.
-De scripts hiervoor kunnen in bijlage A teruggevonden worden.
+De scripts hiervoor kunnen in bijlage B teruggevonden worden.
 
 Eenmaal de virtuele machines correct geconfigureerd waren, kon overgegaan worden tot de eigenlijke installatie van Cassandra.
 Zoals eerder vermeld, werd hiervoor gebruik gemaakt van het OpsCenter.
@@ -67,7 +67,7 @@ Hierbij is er een vrije keuze voor de naam van het datacenter en zijn de node pr
 
 \begin{figure}[H]
   	\centering
-    \includegraphics[width=0.5\textwidth]{img/4_installatie_cassandra/1_Configuration_part_2}
+    \includegraphics[width=1.0\textwidth]{img/4_installatie_cassandra/1_Configuration_part_2}
     \caption{Cassandra: Instellingen deel 2}
     \label{fig:cas_conf_2}
 \end{figure}
@@ -132,7 +132,7 @@ Als men met nodetool de status opvraagt, krijgt men eveneens alle nodes in de cl
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.5\textwidth]{img/4_installatie_cassandra/3_Node_setup}
+	\includegraphics[width=1.0\textwidth]{img/4_installatie_cassandra/3_Node_setup}
 	\caption{nodetool}
 	\label{fig:cas_nodetool}
 \end{figure}
@@ -186,7 +186,7 @@ Hier kiest men bij de acties voor ''Decommision''.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.75\textwidth]{img/4_installatie_cassandra/5_Remove_Node_2}
+	\includegraphics[width=0.8\textwidth]{img/4_installatie_cassandra/5_Remove_Node_2}
 	\caption{Verwijderen van een node: Selecteer de node}
 	\label{fig:cas_rem_2}
 \end{figure}
@@ -196,7 +196,7 @@ Hier wordt ook nog meegedeeld dat alle data van de te verwijderen node overgepla
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.5\textwidth]{img/4_installatie_cassandra/5_Remove_Node_3}
+	\includegraphics[width=0.75\textwidth]{img/4_installatie_cassandra/5_Remove_Node_3}
 	\caption{Verwijderen van een node: Selecteer de node}
 	\label{fig:cas_rem_3}
 \end{figure}
