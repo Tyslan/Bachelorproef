@@ -1,0 +1,42 @@
+- Inleiding
+  - NoSQL
+  - Cassandra
+- Architectuur
+  - Partitioner
+  - Replicatie
+  - Snitches
+  - Seed node
+- Data structuren
+  - Kolom
+  - Rij
+  - Tabel
+  - Keyspace
+- Opzetten van een Cluster
+  - Apache
+  - DataStax
+  - Toevoegen van een node
+  - Verwijderen van een node
+- Datamodellering
+  - Primaire sleutel
+  - Partitiesleutel
+  - Clusteringsleutel
+  - Restricties in WHERE clausule
+  - Doelen van het opstellen
+  - Datamodel opstellen
+  - Datamodel en snelheid
+- Data importeren
+  - cqlsh (COPY)
+  - sstableloader (cassandra-bulk-loader)
+  - Cassandra loader
+  - Resultaten van COPY
+- Gedrag bij uitval van de nodes
+  - Gossip en foutdetectie
+  - Herstelmechanisme
+  - Test
+  - Ondervindingen
+- Back-ups
+  - Hoe
+  - Nodig?
+- Use Cases
+- Besluit
+- Vragen
