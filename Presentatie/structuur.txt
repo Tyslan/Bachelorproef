@@ -1,0 +1,46 @@
+Hoe werkt Cassandra:
+  - Architectuur
+    - Partitioner
+    - Replicatie
+    - Snitches
+  - Datastructuren
+    - Alles uitleggen aan de hand van 1 figuur
+  - Herstel mechanismes
+    - Hinded handoff
+    - Anti entropy
+    - Read repair
+
+Waarom sneller:
+  - Manier van data opslaan:
+    - Partities a.d.h.v. hash
+       - Werk verdelen over de nodes (schrijven)
+    - Boomstructuur binnen de partities
+	- Snel plaats bepalen in bomen (zoeken)
+    - Datamodel -> verder in onderzoek
+	- Goed model is zeer hoge performantie
+
+Onderzoek:
+  - Schaalbaarheid
+    - Onderzoek:
+      - Cluster opzetten en 
+      - toevoegen van nodes
+      - Verwijderen nodes
+    - Resultaat:
+      - Apache Cassandra problemen met yaml file
+      - DataStax OpsCenter: alles aan de hand van wizards en geen problemen
+  - Betrouwbaarheid
+    - Onderzoek:
+	- Gedrag bij uitval
+	  - repl factor = # nodes
+          - telkens 1 node online
+	- Back ups
+    - Resultaat:
+  - Datamodellering
+    - Onderzoek:
+	- Restrecties op Where
+    - Resultaat:
+	- Modelleren naar query
+  - UCs:
+    - Resultaat:
+	- Retailers en digitale media
+	- Financiële sector

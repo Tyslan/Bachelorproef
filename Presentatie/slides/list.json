@@ -1,4 +1,50 @@
 [
     "index.md",
-    "inhoudstafel.md"
+    "content.md",
+    "how/how.md ",
+    [
+        "how/arch/architecture.md",
+        "how/arch/partitioner.md",
+        "how/arch/replication.md",
+        "how/arch/snitch.md"
+    ],
+    [
+        "how/data/data-structures.md",
+        "how/data/data-content.md"
+    ],
+    [
+        "how/repair/mechanisms.md",
+        "how/repair/methods.md"
+    ],
+    [
+        "how/speed/speed.md",
+        "how/speed/how.md"
+    ],
+    "research/research.md",
+    [
+        "research/scale/scalability.md",
+        "research/scale/res.md"
+    ],
+    [
+        "research/avail/availability.md",
+        "research/avail/how.md"
+    ],
+    [
+        "research/model/model.md",
+        "research/model/goal.md",
+        "research/model/prim-key.md",
+        "research/model/res-clus.md",
+        "research/model/create-model-1.md",
+        "research/model/create-model-2.md"
+    ],
+    [
+        "research/import/import.md",
+        "research/import/methods.md"
+    ],
+    [
+        "research/uc/uc.md",
+        "research/uc/ucs.md",
+        "research/uc/sectors.md"
+    ],
+    "conclusion.md"
 ]
